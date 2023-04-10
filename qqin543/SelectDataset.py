@@ -97,11 +97,14 @@ class Ui_Dialog1(object):
 
 
     def Download_dataset(self):
-        kaggle_dataset = "datamunge/sign-language-mnist"
-        os.system(f"kaggle datasets download -d datamunge/sign-language-mnist")
+        #Got the current be Selected Dataset Name
+        Current_dataset_name = self.comboBox.currentText()
+        if Current_dataset_name == "MNIST":
+           kaggle_dataset = "datamunge/sign-language-mnist"
+           os.system(f"kaggle datasets download -d datamunge/sign-language-mnist")
         # When the download is complete, set the progress bar value to 100%
-        self.progressBar.setValue(100)
-        self.label_3.setText("100%")
+           self.progressBar.setValue(100)
+           self.label_3.setText("100%")
     
     # Update the label text when "MNIST" is selected
     def on_dataset_selected(self, dataset_name):
