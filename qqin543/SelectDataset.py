@@ -1,4 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+import os
+
 
 class Ui_Dialog1(object):
     def setupUi(self, Dialog):
@@ -29,6 +31,8 @@ class Ui_Dialog1(object):
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.verticalLayout_7.addWidget(self.label)
+        # Connect the "activated" signal of the combo box to a slot function
+        self.comboBox.activated[str].connect(self.on_dataset_selected)
         
         self.gridLayout.addLayout(self.verticalLayout_7, 1, 0, 1, 4)
         
@@ -54,7 +58,7 @@ class Ui_Dialog1(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         
-        # Progress bar
+        # Progress bar used for indicate Import progress
         self.progressBar = QtWidgets.QProgressBar(Dialog)
         self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
@@ -72,6 +76,14 @@ class Ui_Dialog1(object):
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
+        
+        self.pushButton.clicked.connect(self.Download_dataset)
+        # Connect the Cancel Button to Delete Dataset File
+        self.pushButton_2.clicked.connect(self.Delete_file)
+        # Connect the Cancel Button to Delete Dataset File and Update Progressbar's valure
+        self.pushButton_2.clicked.connect(self.Update_Progress)
+
+
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -80,5 +92,46 @@ class Ui_Dialog1(object):
         self.comboBox.setItemText(1, _translate("Dialog", "MNIST"))
         self.label.setText(_translate("Dialog", " Please Selected a Dataset"))
         self.pushButton_2.setText(_translate("Dialog", "Cancel"))
-        self.pushButton.setText(_translate("Dialog", "Import"))
+        self.pushButton.setText(_translate("Dialog", "Download"))
         self.label_3.setText(_translate("Dialog", "0%"))
+
+
+    def Download_dataset(self):
+        kaggle_dataset = "datamunge/sign-language-mnist"
+        os.system(f"kaggle datasets download -d datamunge/sign-language-mnist")
+        # When the download is complete, set the progress bar value to 100%
+        self.progressBar.setValue(100)
+        self.label_3.setText("100%")
+    
+    # Update the label text when "MNIST" is selected
+    def on_dataset_selected(self, dataset_name):
+        # Update the label text when "MNIST" is selected
+        if dataset_name == "MNIST":
+            self.label.setText("You have selected MNIST dataset, please click Download")
+        else:
+            self.label.setText("Please select a dataset")
+
+  
+
+    
+    # Delete the Dataset file
+    def Delete_file(file_path, file_name):
+    
+      file_to_delete = os.path.join("/Users/qinqi/project-1-python-team_10/qqin543", "sign-language-mnist.zip")
+      
+      try:
+        # Remove the file
+          os.remove(file_to_delete)
+          print(f"Successfully deleted file {file_name}")
+      except FileNotFoundError:
+          print(f"File {file_name} does not exist")
+    def Update_Progress(self):
+
+     self.progressBar.setValue(0)
+     self.label_3.setText("0%")
+
+      
+
+
+
+        

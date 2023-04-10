@@ -1,11 +1,13 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox,QShortcut
+import qtpy
 from SelectDataset import Ui_Dialog1
-from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox
 from DatasetViewer import Ui_Dialog2
 from TestImagesViewer import Ui_Dialog3
-from PyQt5.QtWidgets import QShortcut
 from PyQt5.QtGui import QKeySequence
 from SaveModel import Ui_SaveModel
+from PyQt5.QtCore import QTimer
+import os
 
 class Ui_TabWidget(object):
     def setupUi(self, TabWidget):
@@ -28,6 +30,8 @@ class Ui_TabWidget(object):
         self.gridLayout.addWidget(self.pushButton, 2, 0, 1, 1)
         self.label = QtWidgets.QLabel(self.tab_Import)
         self.label.setEnabled(True)
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
+
         font = QtGui.QFont()
         font.setPointSize(35)
         self.label.setFont(font)
@@ -310,6 +314,11 @@ class Ui_TabWidget(object):
 
         #click signal connect to Test Tab
         self.pushButton_TestModel.clicked.connect(self.switchToTab3)
+        
+        #Create a Timer used for check if Dataset exit to update label
+        self.check_dataset_timer = QTimer()
+        self.check_dataset_timer.timeout.connect(self.update_dataset_label)
+        self.check_dataset_timer.start(500) 
 
 
 
@@ -317,7 +326,7 @@ class Ui_TabWidget(object):
         _translate = QtCore.QCoreApplication.translate
         TabWidget.setWindowTitle(_translate("TabWidget", "Sign Recognization"))
         self.pushButton.setText(_translate("TabWidget", "Import Dataset"))
-        self.label.setText(_translate("TabWidget", "               No Dataset Selected"))
+        self.label.setText(_translate("TabWidget", "No Dataset Selected"))
         TabWidget.setTabText(TabWidget.indexOf(self.tab_Import), _translate("TabWidget", "Import"))
         self.pushButton_ViewDataset.setText(_translate("TabWidget", "View Dataset"))
         self.pushButton_Continue.setText(_translate("TabWidget", "Continue"))
@@ -450,6 +459,25 @@ class Ui_TabWidget(object):
         self.spinBox_3.setValue(value)
         # Update the slider value to match the left spinBox's value
         self.horizontalSlider.setValue(value)
+
+    def update_dataset_label(self):
+    # Specify the dataset path
+       dataset_path = "/Users/qinqi/project-1-python-team_10/qqin543"
+    # Join the dataset file path with the dataset path
+       dataset_file = os.path.join(dataset_path, "sign-language-mnist.zip")
+
+    # Check if the dataset file exists
+       if os.path.exists(dataset_file):
+        # If the dataset file exists, set the label text to "MNIST Dataset Selected"
+        self.label.setText("MNIST Dataset Selected")
+       else:
+        self.label.setText("No Dataset Selected")
+        
+        # Stop the timer
+        
+
+
+    
 
 
 

@@ -103,12 +103,7 @@ class Ui_Dialog2(object):
         
         # Connect Cancel Button click signal to QDialog reject slot
         self.pushButton_4.clicked.connect(Dialog.reject)
-
-    
-
-   
-
-        
+      
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate

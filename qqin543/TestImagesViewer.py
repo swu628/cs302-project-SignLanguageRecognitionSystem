@@ -52,7 +52,7 @@ class Ui_Dialog3(object):
         self.label_2.setObjectName("label_2")
         self.gridLayout.addWidget(self.label_2, 20, 0, 5, 1)
         
-        # Create more buttons
+        # Create Add Tag and Clear Tag buttons
         self.pushButton_2 = QtWidgets.QPushButton(Dialog)
         self.pushButton_2.setStyleSheet("background-color:rgb(253, 128, 8)")
         self.pushButton_2.setObjectName("pushButton_2")
@@ -73,13 +73,13 @@ class Ui_Dialog3(object):
         self.pushButton_5.setObjectName("pushButton_5")
         self.gridLayout.addWidget(self.pushButton_5, 2, 1, 1, 1)
         
-        # Create text browser for show Tag Added
+        # Create text browser for Tag Added Dispaly
         self.textBrowser = QtWidgets.QTextBrowser(Dialog)
         self.textBrowser.setFrameShape(QtWidgets.QFrame.Box)
         self.textBrowser.setObjectName("textBrowser")
         self.gridLayout.addWidget(self.textBrowser, 15, 0, 1, 1)
 
-        # Create list widget for show Test Images
+        # Create list widget for show Test Display
         self.listWidget = QtWidgets.QListWidget(Dialog)
         self.listWidget.setTabletTracking(True)
         self.listWidget.setFrameShape(QtWidgets.QFrame.Box)
