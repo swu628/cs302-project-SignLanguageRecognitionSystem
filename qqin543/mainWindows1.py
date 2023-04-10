@@ -436,6 +436,8 @@ class Ui_TabWidget(object):
     def switchToStack3(self):
         # change tab
         self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget_2.setCurrentIndex(0)
+
 
     #Go to the test phase
     def switchToTab3(self):
