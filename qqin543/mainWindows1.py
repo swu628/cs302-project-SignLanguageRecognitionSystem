@@ -13,6 +13,9 @@ from SelectDataset import Ui_Dialog1
 from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox
 from DatasetViewer import Ui_Dialog2
 from TestImagesViewer import Ui_Dialog3
+from PyQt5.QtWidgets import QShortcut
+from PyQt5.QtGui import QKeySequence
+from SaveModel import Ui_SaveModel
 
 class Ui_TabWidget(object):
     def setupUi(self, TabWidget):
@@ -30,8 +33,7 @@ class Ui_TabWidget(object):
         self.gridLayout.setObjectName("gridLayout")
         self.pushButton = QtWidgets.QPushButton(self.tab_Import)
         self.pushButton.setObjectName("pushButton")
-        #click signal connect to open the SelectDataset Dialog
-        self.pushButton.clicked.connect(self.open_dialog1)
+       
         
         self.gridLayout.addWidget(self.pushButton, 2, 0, 1, 1)
         self.label = QtWidgets.QLabel(self.tab_Import)
@@ -65,8 +67,7 @@ class Ui_TabWidget(object):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.pushButton_ViewDataset = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.pushButton_ViewDataset.setObjectName("pushButton_ViewDataset")
-        #click signal connect to open the ViewDataset Dialog
-        self.pushButton_ViewDataset.clicked.connect(self.open_dialog2)
+        
         self.horizontalLayout_2.addWidget(self.pushButton_ViewDataset)
         self.gridLayoutWidget_8 = QtWidgets.QWidget(self.page_A1)
         self.gridLayoutWidget_8.setGeometry(QtCore.QRect(180, 0, 189, 293))
@@ -95,7 +96,7 @@ class Ui_TabWidget(object):
         self.pushButton_Continue = QtWidgets.QPushButton(self.layoutWidget)
         self.pushButton_Continue.setObjectName("pushButton_Continue")
         #sadasdasdasd
-        self.pushButton_Continue.clicked.connect(self.switchToTab2)
+        #self.pushButton_Continue.clicked.connect(self.switchToStack2)
         self.gridLayout_7.addWidget(self.pushButton_Continue, 1, 0, 1, 1)
         self.stackedWidget.addWidget(self.page_A1)
         self.page_A2 = QtWidgets.QWidget()
@@ -136,8 +137,7 @@ class Ui_TabWidget(object):
         self.pushButton_Back = QtWidgets.QPushButton(self.page_A2)
         self.pushButton_Back.setGeometry(QtCore.QRect(0, 290, 113, 32))
         self.pushButton_Back.setObjectName("pushButton_Back")
-        #
-        self.pushButton_Back.clicked.connect(self.switchToTab1)
+        
         self.pushButton_TrainModel = QtWidgets.QPushButton(self.page_A2)
         self.pushButton_TrainModel.setGeometry(QtCore.QRect(200, 290, 113, 32))
         self.pushButton_TrainModel.setObjectName("pushButton_TrainModel")
@@ -264,8 +264,7 @@ class Ui_TabWidget(object):
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.pushButton_DatasetImages = QtWidgets.QPushButton(self.horizontalLayoutWidget_5)
         self.pushButton_DatasetImages.setObjectName("pushButton_DatasetImages")
-        #click signal connect to open the Test Images Viewer Dialog
-        self.pushButton_DatasetImages.clicked.connect(self.open_dialog3)
+        
         self.horizontalLayout_5.addWidget(self.pushButton_DatasetImages)
         self.pushButton_Camera = QtWidgets.QPushButton(self.horizontalLayoutWidget_5)
         self.pushButton_Camera.setObjectName("pushButton_Camera")
@@ -277,6 +276,52 @@ class Ui_TabWidget(object):
         self.stackedWidget.setCurrentIndex(0)
         self.stackedWidget_2.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(TabWidget)
+
+        
+        
+        # Click signal connect to open the SelectDataset Dialog
+        self.pushButton.clicked.connect(self.open_dialog1)
+
+        # Click signal connect to open the Test Images Viewer Dialog
+        self.pushButton_DatasetImages.clicked.connect(self.open_dialog3)
+
+        # Click signal connect to open the Test Images Viewer Dialog
+        self.pushButton_SaveModel.clicked.connect(self.open_dialog4)
+
+        # Click signal connect to turn back to Dataset Selected
+        self.pushButton_Back.clicked.connect(self.switchToStack1)
+
+        # Click signal connect to model configuration
+        self.pushButton_Continue.clicked.connect(self.switchToStack2)
+
+        # Click signal connect to model configuration
+        self.pushButton_TrainNewModel.clicked.connect(self.switchToStack2)
+
+        # Click signal connect to model Train
+        self.pushButton_TrainModel.clicked.connect(self.switchToStack3)
+
+        # Click signal connect to open the ViewDataset Dialog
+        self.pushButton_ViewDataset.clicked.connect(self.open_dialog2)
+
+        # Connect the slider value change signal to the left spinBox's setValue slot
+        self.horizontalSlider.valueChanged.connect(self.spinBox_3.setValue)
+        
+        # Connect the left spinBox value change signal to the update_spinbox_2_value custom slot
+        self.spinBox_3.valueChanged.connect(self.update_spinbox_2_value)
+        
+        # Connect the right spinBox value change signal to the update_spinbox_value custom slot
+        self.spinBox_4.valueChanged.connect(self.update_spinbox_value)
+        
+        # Create shortcuts for switching stack_2 pages
+        self.shortcut_pageB1 = QShortcut(QKeySequence("Ctrl+1"), TabWidget)
+        self.shortcut_pageB1.activated.connect(lambda: self.stackedWidget_2.setCurrentIndex(0))
+        self.shortcut_pageB2 = QShortcut(QKeySequence("Ctrl+2"), TabWidget)
+        self.shortcut_pageB2.activated.connect(lambda: self.stackedWidget_2.setCurrentIndex(1))
+
+        #click signal connect to Test Tab
+        self.pushButton_TestModel.clicked.connect(self.switchToTab3)
+
+
 
     def retranslateUi(self, TabWidget):
         _translate = QtCore.QCoreApplication.translate
@@ -335,6 +380,7 @@ class Ui_TabWidget(object):
         self.pushButton_Camera.setText(_translate("TabWidget", "Camera"))
         TabWidget.setTabText(TabWidget.indexOf(self.tab_Test), _translate("TabWidget", "Test"))
     
+    
     def open_dialog1(self):
     # Create a QDialog instance
      dialog = QtWidgets.QDialog()
@@ -354,6 +400,7 @@ class Ui_TabWidget(object):
      dialog2.setupUi(dialog)
      dialog.exec_()
 
+    
     def open_dialog3(self):
     # Create a QDialog instance
      dialog = QtWidgets.QDialog()
@@ -363,20 +410,59 @@ class Ui_TabWidget(object):
      dialog3.setupUi(dialog)
      dialog.exec_()
 
+    def open_dialog4(self):
+     # Create a QDialog instance
+      dialog = QtWidgets.QDialog()
+     # Create a Ui_Dialog instance
+      dialog4 = Ui_SaveModel()
+     # Configure the QDialog instance using the setupUi method
+      dialog4.setupUi(dialog)
+      dialog.exec_()
+
+    
     #After Selected Dataset change to configration model
-    def switchToTab2(self):
+    def switchToStack2(self):
         # change tab
         self.stackedWidget.setCurrentIndex(1)
     
+    
     # Allow user turn back to Select Dataset
-    def switchToTab1(self):
+    def switchToStack1(self):
         # change tab
         self.stackedWidget.setCurrentIndex(0)
+    
+    
+    # Get into the Train Model Phase
+    def switchToStack3(self):
+        # change tab
+        self.stackedWidget.setCurrentIndex(2)
 
+    #Go to the test phase
+    def switchToTab3(self):
+       
+       TabWidget.setCurrentIndex(2)
 
-
-        
    
+    # Custom slot to update the right spinBox's value based on the left spinBox's value
+    def update_spinbox_2_value(self):
+        # Calculate the value of the right spinBox to make the sum equal to 100
+        value = 100 - self.spinBox_3.value()
+        # Set the calculated value to the right spinBox
+        self.spinBox_4.setValue(value)
+        # Update the slider value to match the left spinBox's value
+        self.horizontalSlider.setValue(self.spinBox_3.value())
+
+    # Custom slot to update the left spinBox's value based on the right spinBox's value
+    def update_spinbox_value(self):
+        # Calculate the value of the left spinBox to make the sum equal to 100
+        value = 100 - self.spinBox_4.value()
+        # Set the calculated value to the left spinBox
+        self.spinBox_3.setValue(value)
+        # Update the slider value to match the left spinBox's value
+        self.horizontalSlider.setValue(value)
+
+
+
 if __name__ == '__main__':
     import sys
     app = QtWidgets.QApplication(sys.argv)
