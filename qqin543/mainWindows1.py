@@ -111,41 +111,58 @@ class Ui_TabWidget(object):
         self.textBrowser.setFrameShape(QtWidgets.QFrame.Box)
         self.textBrowser.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.textBrowser.setObjectName("textBrowser")
-        self.comboBox = QtWidgets.QComboBox(self.page_A2)
-        self.comboBox.setGeometry(QtCore.QRect(0, 20, 171, 26))
-        self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.spinBox = QtWidgets.QSpinBox(self.page_A2)
-        self.spinBox.setGeometry(QtCore.QRect(120, 50, 91, 31))
-        self.spinBox.setObjectName("spinBox")
-        self.label_4 = QtWidgets.QLabel(self.page_A2)
-        self.label_4.setGeometry(QtCore.QRect(0, 60, 71, 16))
-        self.label_4.setObjectName("label_4")
-        self.label_5 = QtWidgets.QLabel(self.page_A2)
-        self.label_5.setGeometry(QtCore.QRect(0, 90, 101, 16))
-        self.label_5.setObjectName("label_5")
-        self.spinBox_2 = QtWidgets.QSpinBox(self.page_A2)
-        self.spinBox_2.setGeometry(QtCore.QRect(120, 80, 91, 31))
-        self.spinBox_2.setObjectName("spinBox_2")
-        self.pushButton_Back = QtWidgets.QPushButton(self.page_A2)
-        self.pushButton_Back.setGeometry(QtCore.QRect(0, 290, 113, 32))
-        self.pushButton_Back.setObjectName("pushButton_Back")
+
+        # Combobox for selecting model on select model page
+        self.selectModelComboBox = QtWidgets.QComboBox(self.page_A2)
+        self.selectModelComboBox.setGeometry(QtCore.QRect(0, 20, 171, 26))
+        self.selectModelComboBox.setObjectName("selectModelComboBox")
+        self.selectModelComboBox.addItem("")
+        self.selectModelComboBox.addItem("")
+        self.selectModelComboBox.addItem("")
+        self.selectModelComboBox.addItem("")
+
+        # Created spinbox and label for batch size on the select model page
+        self.batchSizeSpinBox = QtWidgets.QSpinBox(self.page_A2)
+        self.batchSizeSpinBox.setGeometry(QtCore.QRect(120, 50, 91, 31))
+        self.batchSizeSpinBox.setObjectName("batchSizeSpinBox")
+        self.batchSizeLabel = QtWidgets.QLabel(self.page_A2)
+        self.batchSizeLabel.setGeometry(QtCore.QRect(0, 60, 71, 16))
+        self.batchSizeLabel.setObjectName("batchSizeLabel")
+
+        # Created spinbox and label for epoch number on the select model page
+        self.epochNumSpinBox = QtWidgets.QSpinBox(self.page_A2)
+        self.epochNumSpinBox.setGeometry(QtCore.QRect(120, 80, 91, 31))
+        self.epochNumSpinBox.setObjectName("epochNumSpinBox")
+        self.epochNumLabel = QtWidgets.QLabel(self.page_A2)
+        self.epochNumLabel.setGeometry(QtCore.QRect(0, 90, 101, 16))
+        self.epochNumLabel.setObjectName("epochNumLabel")
+
+        # Created a 'back' button on the select model page
+        self.backBtn = QtWidgets.QPushButton(self.page_A2)
+        self.backBtn.setGeometry(QtCore.QRect(0, 290, 113, 32))
+        self.backBtn.setObjectName("backBtn")
         
-        self.pushButton_TrainModel = QtWidgets.QPushButton(self.page_A2)
-        self.pushButton_TrainModel.setGeometry(QtCore.QRect(200, 290, 113, 32))
-        self.pushButton_TrainModel.setObjectName("pushButton_TrainModel")
-        self.horizontalSlider = QtWidgets.QSlider(self.page_A2)
-        self.horizontalSlider.setGeometry(QtCore.QRect(140, 200, 221, 22))
-        self.horizontalSlider.setMaximum(100)
-        self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalSlider.setObjectName("horizontalSlider")
-        self.spinBox_3 = QtWidgets.QSpinBox(self.page_A2)
-        self.spinBox_3.setGeometry(QtCore.QRect(90, 200, 48, 24))
-        self.spinBox_3.setObjectName("spinBox_3")
-        self.spinBox_4 = QtWidgets.QSpinBox(self.page_A2)
-        self.spinBox_4.setGeometry(QtCore.QRect(430, 200, 48, 24))
-        self.spinBox_4.setObjectName("spinBox_4")
+        # Created a 'train model' button on the select model page
+        self.trainModelBtn = QtWidgets.QPushButton(self.page_A2)
+        self.trainModelBtn.setGeometry(QtCore.QRect(200, 290, 113, 32))
+        self.trainModelBtn.setObjectName("trainModelBtn")
+        
+        # Below block are codes for train and validation
+        # Created a horizontal slider for the train and validation on the select model page
+        self.trainValidationSlider = QtWidgets.QSlider(self.page_A2)
+        self.trainValidationSlider.setGeometry(QtCore.QRect(140, 200, 221, 22))
+        self.trainValidationSlider.setMaximum(100)
+        self.trainValidationSlider.setOrientation(QtCore.Qt.Horizontal)
+        self.trainValidationSlider.setObjectName("trainValidationSlider")
+        # Spinbox for train
+        self.trainSpinBox = QtWidgets.QSpinBox(self.page_A2)
+        self.trainSpinBox.setGeometry(QtCore.QRect(90, 200, 48, 24))
+        self.trainSpinBox.setObjectName("trainSpinBox")
+        # Spinbox for validation
+        self.validationSpinBox = QtWidgets.QSpinBox(self.page_A2)
+        self.validationSpinBox.setGeometry(QtCore.QRect(430, 200, 48, 24))
+        self.validationSpinBox.setObjectName("validationSpinBox")
+        
         self.label_6 = QtWidgets.QLabel(self.page_A2)
         self.label_6.setGeometry(QtCore.QRect(50, 200, 41, 21))
         self.label_6.setObjectName("label_6")
@@ -270,7 +287,6 @@ class Ui_TabWidget(object):
         self.stackedWidget.setCurrentIndex(0)
         self.stackedWidget_2.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(TabWidget)
-
         
         
         # Click signal connect to open the SelectDataset Dialog
@@ -283,7 +299,7 @@ class Ui_TabWidget(object):
         self.pushButton_SaveModel.clicked.connect(self.open_dialog4)
 
         # Click signal connect to turn back to Dataset Selected
-        self.pushButton_Back.clicked.connect(self.switchToStack1)
+        self.backBtn.clicked.connect(self.switchToStack1)
 
         # Click signal connect to model configuration
         self.pushButton_Continue.clicked.connect(self.switchToStack2)
@@ -292,19 +308,19 @@ class Ui_TabWidget(object):
         self.pushButton_TrainNewModel.clicked.connect(self.switchToStack2)
 
         # Click signal connect to model Train
-        self.pushButton_TrainModel.clicked.connect(self.switchToStack3)
+        self.trainModelBtn.clicked.connect(self.switchToStack3)
 
         # Click signal connect to open the ViewDataset Dialog
         self.pushButton_ViewDataset.clicked.connect(self.open_dialog2)
 
         # Connect the slider value change signal to the left spinBox's setValue slot
-        self.horizontalSlider.valueChanged.connect(self.spinBox_3.setValue)
+        self.trainValidationSlider.valueChanged.connect(self.trainSpinBox.setValue)
         
         # Connect the left spinBox value change signal to the update_spinbox_2_value custom slot
-        self.spinBox_3.valueChanged.connect(self.update_spinbox_2_value)
+        self.trainSpinBox.valueChanged.connect(self.updateValidationSpinBox)
         
         # Connect the right spinBox value change signal to the update_spinbox_value custom slot
-        self.spinBox_4.valueChanged.connect(self.update_spinbox_value)
+        self.validationSpinBox.valueChanged.connect(self.updateTrainSpinBox)
         
         # Create shortcuts for switching stack_2 pages
         self.shortcut_pageB1 = QShortcut(QKeySequence("Ctrl+1"), TabWidget)
@@ -317,7 +333,7 @@ class Ui_TabWidget(object):
         
         #Create a Timer used for check if Dataset exit to update label
         self.check_dataset_timer = QTimer()
-        self.check_dataset_timer.timeout.connect(self.update_dataset_label)
+        self.check_dataset_timer.timeout.connect(self.updateDatasetLabel)
         self.check_dataset_timer.start(500) 
 
 
@@ -338,13 +354,18 @@ class Ui_TabWidget(object):
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">DNN Name:</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Batch Size:</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Epoch Number:</span></p></body></html>"))
-        self.comboBox.setItemText(0, _translate("TabWidget", "Selecet a DNN Model"))
-        self.comboBox.setItemText(1, _translate("TabWidget", "LeNet-5"))
-        self.label_4.setText(_translate("TabWidget", "Batch Size:"))
-        self.label_5.setText(_translate("TabWidget", "Epoch Number:"))
-        self.pushButton_Back.setText(_translate("TabWidget", "Back"))
-        self.pushButton_TrainModel.setText(_translate("TabWidget", "Train Model"))
-        self.horizontalSlider.setToolTip(_translate("TabWidget", "<html><head/><body><p><span style=\" color:#fd8008;\">Validation set and Train set must &gt; 10%</span></p></body></html>"))
+        
+        # ComboBox for model selection on select model page
+        self.selectModelComboBox.setItemText(0, _translate("TabWidget", "Selecet a DNN Model"))
+        self.selectModelComboBox.setItemText(1, _translate("TabWidget", "LeNet-5"))
+        self.selectModelComboBox.setItemText(2, _translate("TabWidget", "InceptionV1"))
+        self.selectModelComboBox.setItemText(3, _translate("TabWidget", "VGG16"))
+
+        self.batchSizeLabel.setText(_translate("TabWidget", "Batch Size:"))
+        self.epochNumLabel.setText(_translate("TabWidget", "Epoch Number:"))
+        self.backBtn.setText(_translate("TabWidget", "Back"))
+        self.trainModelBtn.setText(_translate("TabWidget", "Train Model"))
+        self.trainValidationSlider.setToolTip(_translate("TabWidget", "<html><head/><body><p><span style=\" color:#fd8008;\">Validation set and Train set must &gt; 10%</span></p></body></html>"))
         self.label_6.setText(_translate("TabWidget", "Train:"))
         self.label_7.setText(_translate("TabWidget", "Validata:"))
         self.textBrowser_2.setHtml(_translate("TabWidget", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -382,23 +403,23 @@ class Ui_TabWidget(object):
     
     def open_dialog1(self):
     # Create a QDialog instance
-     dialog = QtWidgets.QDialog()
+        dialog = QtWidgets.QDialog()
     # Create a Ui_Dialog instance
-     dialog1 = Ui_Dialog1()
+        dialog1 = Ui_Dialog1()
     # Configure the QDialog instance using the setupUi method
-     dialog1.setupUi(dialog)
-     dialog.exec_()
+        dialog1.setupUi(dialog)
+        dialog.exec_()
 
     #open Dataster Viewer Dialog
     def open_dialog2(self):
     # Create a QDialog instance
-     dialog = QtWidgets.QDialog()
+        dialog = QtWidgets.QDialog()
     # Create a Ui_Dialog instance
-     dialog2 = Ui_Dialog2()
+        dialog2 = Ui_Dialog2()
     # Configure the QDialog instance using the setupUi method
-     dialog2.setupUi(dialog)
+        dialog2.setupUi(dialog)
      
-     dialog.exec_()
+        dialog.exec_()
 
     
     def open_dialog3(self):
@@ -438,29 +459,28 @@ class Ui_TabWidget(object):
 
     # Switch to the test phase
     def switchToTab3(self):
-       
        TabWidget.setCurrentIndex(2)
 
    
-    # Custom slot to update the right spinBox's value based on the left spinBox's value
-    def update_spinbox_2_value(self):
-        # Calculate the value of the right spinBox to make the sum equal to 100
-        value = 100 - self.spinBox_3.value()
+    # Custom slot to update the validation (right) spinBox's value based on the train (left) spinBox's value
+    def updateValidationSpinBox(self):
+        # Calculate the value of the validation (right) spinBox to make the sum equal to 100
+        value = 100 - self.trainSpinBox.value()
         # Set the calculated value to the right spinBox
-        self.spinBox_4.setValue(value)
+        self.validationSpinBox.setValue(value)
         # Update the slider value to match the left spinBox's value
-        self.horizontalSlider.setValue(self.spinBox_3.value())
+        self.trainValidationSlider.setValue(self.trainSpinBox.value())
 
-    # Custom slot to update the left spinBox's value based on the right spinBox's value
-    def update_spinbox_value(self):
-        # Calculate the value of the left spinBox to make the sum equal to 100
-        value = 100 - self.spinBox_4.value()
+    # Custom slot to update the train (left) spinBox's value based on the validation (right) spinBox's value
+    def updateTrainSpinBox(self):
+        # Calculate the value of the train (left) spinBox to make the sum equal to 100
+        value = 100 - self.validationSpinBox.value()
         # Set the calculated value to the left spinBox
-        self.spinBox_3.setValue(value)
+        self.trainSpinBox.setValue(value)
         # Update the slider value to match the left spinBox's value
-        self.horizontalSlider.setValue(value)
+        self.trainValidationSlider.setValue(value)
 
-    def update_dataset_label(self):
+    def updateDatasetLabel(self):
     # Specify the dataset path
        dataset_path = "/Users/qinqi/project-1-python-team_10/qqin543"
     # Join the dataset file path with the dataset path
@@ -468,17 +488,12 @@ class Ui_TabWidget(object):
 
     # Check if the dataset file exists
        if os.path.exists(dataset_file):
-        # If the dataset file exists, set the label text to "MNIST Dataset Selected"
-        self.label.setText("MNIST Dataset Selected")
+           # If the dataset file exists, set the label text to "MNIST Dataset Selected"
+           self.label.setText("MNIST Dataset Selected")
        else:
-        self.label.setText("No Dataset Selected")
+           self.label.setText("No Dataset Selected")
         
         # Stop the timer
-        
-
-
-    
-
 
 
 if __name__ == '__main__':
