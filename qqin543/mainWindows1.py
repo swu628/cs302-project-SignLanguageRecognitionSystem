@@ -9,6 +9,9 @@ from SaveModel import Ui_SaveModel
 from PyQt5.QtCore import QTimer
 import os
 
+from train import trainModel
+
+
 class Ui_TabWidget(object):
     def setupUi(self, TabWidget):
         TabWidget.setObjectName("TabWidget")
@@ -147,28 +150,28 @@ class Ui_TabWidget(object):
         self.trainModelBtn.setGeometry(QtCore.QRect(200, 290, 113, 32))
         self.trainModelBtn.setObjectName("trainModelBtn")
         
-        # Below block are codes for train and validation
+        # Below block of codes are for train and validation
         # Created a horizontal slider for the train and validation on the select model page
         self.trainValidationSlider = QtWidgets.QSlider(self.page_A2)
         self.trainValidationSlider.setGeometry(QtCore.QRect(140, 200, 221, 22))
         self.trainValidationSlider.setMaximum(100)
         self.trainValidationSlider.setOrientation(QtCore.Qt.Horizontal)
         self.trainValidationSlider.setObjectName("trainValidationSlider")
-        # Spinbox for train
+        # Create a spinbox and label for 'train' on the select model page
         self.trainSpinBox = QtWidgets.QSpinBox(self.page_A2)
         self.trainSpinBox.setGeometry(QtCore.QRect(90, 200, 48, 24))
         self.trainSpinBox.setObjectName("trainSpinBox")
-        # Spinbox for validation
+        self.trainLabel = QtWidgets.QLabel(self.page_A2)
+        self.trainLabel.setGeometry(QtCore.QRect(50, 200, 41, 21))
+        self.trainLabel.setObjectName("trainLabel")
+        # Create a spinbox and label for 'validation' on the select model page
         self.validationSpinBox = QtWidgets.QSpinBox(self.page_A2)
         self.validationSpinBox.setGeometry(QtCore.QRect(430, 200, 48, 24))
         self.validationSpinBox.setObjectName("validationSpinBox")
-        
-        self.label_6 = QtWidgets.QLabel(self.page_A2)
-        self.label_6.setGeometry(QtCore.QRect(50, 200, 41, 21))
-        self.label_6.setObjectName("label_6")
-        self.label_7 = QtWidgets.QLabel(self.page_A2)
-        self.label_7.setGeometry(QtCore.QRect(370, 200, 60, 21))
-        self.label_7.setObjectName("label_7")
+        self.validationLabel = QtWidgets.QLabel(self.page_A2)
+        self.validationLabel.setGeometry(QtCore.QRect(370, 200, 60, 21))
+        self.validationLabel.setObjectName("validationLabel")
+
         self.stackedWidget.addWidget(self.page_A2)
         self.page_A3 = QtWidgets.QWidget()
         self.page_A3.setObjectName("page_A3")
@@ -309,6 +312,7 @@ class Ui_TabWidget(object):
 
         # Click signal connect to model Train
         self.trainModelBtn.clicked.connect(self.switchToStack3)
+        self.trainModelBtn.clicked.connect(lambda: trainModel.train(self, self.batchSizeSpinBox.value(), self.epochNumSpinBox.value()))
 
         # Click signal connect to open the ViewDataset Dialog
         self.pushButton_ViewDataset.clicked.connect(self.open_dialog2)
@@ -366,8 +370,8 @@ class Ui_TabWidget(object):
         self.backBtn.setText(_translate("TabWidget", "Back"))
         self.trainModelBtn.setText(_translate("TabWidget", "Train Model"))
         self.trainValidationSlider.setToolTip(_translate("TabWidget", "<html><head/><body><p><span style=\" color:#fd8008;\">Validation set and Train set must &gt; 10%</span></p></body></html>"))
-        self.label_6.setText(_translate("TabWidget", "Train:"))
-        self.label_7.setText(_translate("TabWidget", "Validata:"))
+        self.trainLabel.setText(_translate("TabWidget", "Train:"))
+        self.validationLabel.setText(_translate("TabWidget", "Validation:"))
         self.textBrowser_2.setHtml(_translate("TabWidget", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -494,7 +498,6 @@ class Ui_TabWidget(object):
            self.label.setText("No Dataset Selected")
         
         # Stop the timer
-
 
 if __name__ == '__main__':
     import sys
