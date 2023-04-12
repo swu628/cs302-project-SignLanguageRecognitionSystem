@@ -8,7 +8,6 @@ from PyQt5.QtGui import QKeySequence
 from SaveModel import Ui_SaveModel
 from PyQt5.QtCore import QTimer
 import os
-
 from train import trainModel
 
 
@@ -312,7 +311,8 @@ class Ui_TabWidget(object):
 
         # Click signal connect to model Train
         self.trainModelBtn.clicked.connect(self.switchToStack3)
-        self.trainModelBtn.clicked.connect(lambda: trainModel.train(self, self.batchSizeSpinBox.value(), self.epochNumSpinBox.value()))
+        self.trainModelBtn.clicked.connect(lambda: trainModel.train(self, self.batchSizeSpinBox.value(), 
+        self.epochNumSpinBox.value(), self.validationSpinBox.value()))
 
         # Click signal connect to open the ViewDataset Dialog
         self.pushButton_ViewDataset.clicked.connect(self.open_dialog2)
@@ -362,7 +362,7 @@ class Ui_TabWidget(object):
         # ComboBox for model selection on select model page
         self.selectModelComboBox.setItemText(0, _translate("TabWidget", "Selecet a DNN Model"))
         self.selectModelComboBox.setItemText(1, _translate("TabWidget", "LeNet-5"))
-        self.selectModelComboBox.setItemText(2, _translate("TabWidget", "InceptionV1"))
+        self.selectModelComboBox.setItemText(2, _translate("TabWidget", "CNN"))
         self.selectModelComboBox.setItemText(3, _translate("TabWidget", "VGG16"))
 
         self.batchSizeLabel.setText(_translate("TabWidget", "Batch Size:"))

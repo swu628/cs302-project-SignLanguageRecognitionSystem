@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 class loadData:
 
-    def load(self, batchSize):  
+    def load(self, batchSize, validationValue):  
         # Below block of codes load the dataset
         # get the path
         path = os.getcwd()
@@ -49,11 +49,12 @@ class loadData:
         img, label = train_dataset_full[0]
 
         # Split validation and train dataset
+        val_size = int(validationValue/100 * 27455)
         random_seed = 11
-        torch.manual_seed(random_seed);
-        val_size = 7455
+        torch.manual_seed(random_seed)
         train_size = len(train_dataset_full) - val_size
         train_dataset, validation_dataset = random_split(train_dataset_full, [train_size, val_size,])
+        print(len(train_dataset), len(validation_dataset), len(test_dataset))
         
         # Load the training,validation and test dataset in batches
         train_dataloder = DataLoader(train_dataset, batchSize, shuffle=True, num_workers=4, pin_memory=True)

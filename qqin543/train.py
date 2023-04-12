@@ -10,10 +10,10 @@ from loadDataset import loadData
 class trainModel:
 
     # This is the function to call when the train button is clicked
-    def train(self, batchSize, epochNum):
+    def train(self, batchSize, epochNum, validationValue):
         
         # load dataset
-        train_dataloder, validation_dataloader, test_dataloader = loadData.load(self, batchSize)
+        train_dataloder, validation_dataloader, test_dataloader = loadData.load(self, batchSize, validationValue)
 
         # If the user choose lenet5 model, it will call the leNet5 class
         if self.selectModelComboBox.currentIndex() == 1:
