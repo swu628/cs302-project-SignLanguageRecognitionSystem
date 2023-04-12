@@ -79,15 +79,15 @@ class Ui_Dialog3(object):
         self.textBrowser.setObjectName("textBrowser")
         self.gridLayout.addWidget(self.textBrowser, 15, 0, 1, 1)
 
-        # Create list widget for show Test Display
-        self.listWidget = QtWidgets.QListWidget(Dialog)
-        self.listWidget.setTabletTracking(True)
-        self.listWidget.setFrameShape(QtWidgets.QFrame.Box)
-        self.listWidget.setTabKeyNavigation(True)
-        self.listWidget.setDragEnabled(True)
-        self.listWidget.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
-        self.listWidget.setObjectName("listWidget")
-        self.gridLayout.addWidget(self.listWidget, 4, 1, 22, 1)
+        # Create table widget for show Test Display
+        self.tablewidget = QtWidgets.QTableWidget(Dialog)
+        self.tablewidget.setTabletTracking(True)
+        self.tablewidget.setFrameShape(QtWidgets.QFrame.Box)
+        self.tablewidget.setTabKeyNavigation(True)
+        self.tablewidget.setDragEnabled(True)
+        self.tablewidget.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.tablewidget.setObjectName("tablewidget")
+        self.gridLayout.addWidget(self.tablewidget, 4, 1, 22, 1)
 
     
         # Space to give some breathing room
@@ -125,5 +125,5 @@ class Ui_Dialog3(object):
         self.checkBox.setText(_translate("Dialog", "CheckBox"))
         self.checkBox_2.setText(_translate("Dialog", "CheckBox"))
         self.pushButton_5.setText(_translate("Dialog", "Deselect All"))
-        self.listWidget.setSortingEnabled(True)
+        self.tablewidget.setSortingEnabled(True)
         self.label.setText(_translate("Dialog", "Filter"))

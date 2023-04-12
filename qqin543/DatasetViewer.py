@@ -87,11 +87,11 @@ class Ui_Dialog2(object):
         spacerItem1 = QtWidgets.QSpacerItem(20, 80, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout.addItem(spacerItem1, 8, 0, 1, 1)
         
-        # List widget for Dataset Display
-        self.listWidget = QtWidgets.QListWidget(Dialog)
-        self.listWidget.setFrameShape(QtWidgets.QFrame.Box)
-        self.listWidget.setObjectName("listWidget")
-        self.gridLayout.addWidget(self.listWidget, 5, 1, 21, 1)
+        # Table widget for Dataset Display
+        self.tablewidget = QtWidgets.QTableWidget(Dialog)
+        self.tablewidget.setFrameShape(QtWidgets.QFrame.Box)
+        self.tablewidget.setObjectName("tablewidget")
+        self.gridLayout.addWidget(self.tablewidget, 5, 1, 21, 1)
         
     
         spacerItem2 = QtWidgets.QSpacerItem(20, 80, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)

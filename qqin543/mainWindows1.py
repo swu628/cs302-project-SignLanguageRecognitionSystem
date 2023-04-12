@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox,QShortcut
 import qtpy
@@ -8,6 +9,25 @@ from PyQt5.QtGui import QKeySequence
 from SaveModel import Ui_SaveModel
 from PyQt5.QtCore import QTimer
 import os
+=======
+
+import os
+<<<<<<< HEAD
+from PyQt5            import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets  import QShortcut
+
+from SelectDataset    import Ui_Dialog1
+from DatasetViewer    import Ui_Dialog2
+from TestImagesViewer import Ui_Dialog3
+from PyQt5.QtGui      import QKeySequence
+from SaveModel        import Ui_SaveModel
+from PyQt5.QtCore     import QTimer
+from Camera           import Ui_Dialog5
+
+
+=======
+>>>>>>> 3c1a610f4d77615f11cb8f517192f41d0de677f0
+>>>>>>> Stashed changes
 from train import trainModel
 
 
@@ -300,6 +320,9 @@ class Ui_TabWidget(object):
         # Click signal connect to open the Test Images Viewer Dialog
         self.pushButton_SaveModel.clicked.connect(self.open_dialog4)
 
+        # Click signal connect to open the Capture Images Dialog
+        self.pushButton_Camera.clicked.connect(self.open_dialog5)
+
         # Click signal connect to turn back to Dataset Selected
         self.backBtn.clicked.connect(self.switchToStack1)
 
@@ -444,6 +467,15 @@ class Ui_TabWidget(object):
       dialog4.setupUi(dialog)
       dialog.exec_()
 
+    def open_dialog5(self):
+     # Create a QDialog instance
+      dialog = QtWidgets.QDialog()
+     # Create a Ui_Dialog instance
+      dialog5 = Ui_Dialog5()
+     # Configure the QDialog instance using the setupUi method
+      dialog5.setupUi(dialog)
+      dialog.exec_()
+
     
     #After Selected Dataset change to configration model
     def switchToStack2(self):
@@ -498,6 +530,8 @@ class Ui_TabWidget(object):
            self.label.setText("No Dataset Selected")
         
         # Stop the timer
+
+    
 
 if __name__ == '__main__':
     import sys
