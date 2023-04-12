@@ -290,8 +290,8 @@ class Ui_TabWidget(object):
 
         self.retranslateUi(TabWidget)
         TabWidget.setCurrentIndex(0)
-        self.stackedWidget.setCurrentIndex(2)
-        self.stackedWidget_2.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget_2.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(TabWidget)
         
         
