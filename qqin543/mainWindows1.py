@@ -1,33 +1,17 @@
-<<<<<<< Updated upstream
+import os
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox,QShortcut
-import qtpy
 from SelectDataset import Ui_Dialog1
 from DatasetViewer import Ui_Dialog2
 from TestImagesViewer import Ui_Dialog3
+from Camera import Ui_Dialog5
 from PyQt5.QtGui import QKeySequence
 from SaveModel import Ui_SaveModel
 from PyQt5.QtCore import QTimer
-import os
-=======
-
-import os
-<<<<<<< HEAD
-from PyQt5            import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets  import QShortcut
-
-from SelectDataset    import Ui_Dialog1
-from DatasetViewer    import Ui_Dialog2
-from TestImagesViewer import Ui_Dialog3
-from PyQt5.QtGui      import QKeySequence
-from SaveModel        import Ui_SaveModel
-from PyQt5.QtCore     import QTimer
-from Camera           import Ui_Dialog5
 
 
-=======
->>>>>>> 3c1a610f4d77615f11cb8f517192f41d0de677f0
->>>>>>> Stashed changes
+
+
 from train import trainModel
 
 
@@ -306,8 +290,8 @@ class Ui_TabWidget(object):
 
         self.retranslateUi(TabWidget)
         TabWidget.setCurrentIndex(0)
-        self.stackedWidget.setCurrentIndex(0)
-        self.stackedWidget_2.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget_2.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(TabWidget)
         
         
