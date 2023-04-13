@@ -54,13 +54,6 @@ class Ui_Dialog2(object):
         self.pushButton_3.setObjectName("pushButton_3")
         self.gridLayout.addWidget(self.pushButton_3, 19, 0, 1, 1)
         
-        # Check box 
-        self.checkBox = QtWidgets.QCheckBox(Dialog)
-        self.checkBox.setObjectName("checkBox")
-        self.gridLayout.addWidget(self.checkBox, 9, 0, 1, 1)
-        self.checkBox_2 = QtWidgets.QCheckBox(Dialog)
-        self.checkBox_2.setObjectName("checkBox_2")
-        self.gridLayout.addWidget(self.checkBox_2, 10, 0, 1, 1)
         
         # Custom check box
         self.checkBox_3 = QtWidgets.QCheckBox(Dialog)
@@ -112,10 +105,10 @@ class Ui_Dialog2(object):
         self.label_2.setText(_translate("Dialog", "No. image"))
         self.label.setText(_translate("Dialog", "Filter"))
         self.pushButton.setText(_translate("Dialog", "Add Tag"))
-        self.checkBox_2.setText(_translate("Dialog", "CheckBox"))
+       
         self.radioButton.setText(_translate("Dialog", "Train Set"))
         self.pushButton_3.setText(_translate("Dialog", "Filter"))
-        self.checkBox.setText(_translate("Dialog", "CheckBox"))
+        
         self.checkBox_3.setText(_translate("Dialog", "Custom"))
         self.radioButton_2.setText(_translate("Dialog", "Test Set"))
         self.pushButton_2.setText(_translate("Dialog", "Clear Tags"))

@@ -2,16 +2,12 @@ import os
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox,QShortcut
 from SelectDataset import Ui_Dialog1
-from DatasetViewer import Ui_Dialog2
+from ViewDataset import DatasetViewer
 from TestImagesViewer import Ui_Dialog3
 from Camera import Ui_Dialog5
 from PyQt5.QtGui import QKeySequence
 from SaveModel import Ui_SaveModel
 from PyQt5.QtCore import QTimer
-
-
-
-
 from train import trainModel
 
 
@@ -426,9 +422,9 @@ class Ui_TabWidget(object):
     # Create a QDialog instance
         dialog = QtWidgets.QDialog()
     # Create a Ui_Dialog instance
-        dialog2 = Ui_Dialog2()
+        dialog2 = DatasetViewer()
     # Configure the QDialog instance using the setupUi method
-        dialog2.setupUi(dialog)
+        dialog2.setupUi(dialog,"/Users/qinqi/project-1-python-team_10/qqin543/sign-language-mnist/sign_mnist_test.csv")
      
         dialog.exec_()
 

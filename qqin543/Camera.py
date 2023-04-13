@@ -118,10 +118,6 @@ class Ui_Dialog5(object):
         # Update the column count for the next image
         self.tableWidget.setColumnCount(col + 1)
 
-
-
-
-
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Capture Images"))
