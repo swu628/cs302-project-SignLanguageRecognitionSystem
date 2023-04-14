@@ -45,7 +45,13 @@ class Ui_SaveModel(object):
         
         self.retranslateUi(SaveModel)
         QtCore.QMetaObject.connectSlotsByName(SaveModel)
-        
+
+        # Save model and close the window when 'save' button is clicked
+        self.pushButton_1.clicked.connect(lambda: trainModel.saveModel(self, self.lineEdit.text()))
+        self.pushButton_1.clicked.connect(SaveModel.reject)
+
+        # Close the window when the 'cancel' button is clicked
+        self.pushButton_2.clicked.connect(SaveModel.reject)
 
     def retranslateUi(self, SaveModel):
         _translate = QtCore.QCoreApplication.translate
@@ -53,6 +59,4 @@ class Ui_SaveModel(object):
         self.label.setText(_translate("SaveModel", "Please Enter a Name (Letters Only)"))
         self.pushButton_1.setText(_translate("SaveModel", "Save"))
         self.pushButton_2.setText(_translate("SaveModel", "Cancel"))
-        # Save model when 'save' button is clicked
-        self.pushButton_1.clicked.connect(lambda: trainModel.saveModel(self, self.lineEdit.text()))
     
