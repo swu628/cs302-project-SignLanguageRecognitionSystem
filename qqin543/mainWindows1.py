@@ -364,9 +364,9 @@ class Ui_TabWidget(object):
         
         # ComboBox for model selection on select model page
         self.selectModelComboBox.setItemText(0, _translate("TabWidget", "Selecet a DNN Model"))
-        self.selectModelComboBox.setItemText(1, _translate("TabWidget", "LeNet-5"))
+        self.selectModelComboBox.setItemText(1, _translate("TabWidget", "Logistic Regression"))
         self.selectModelComboBox.setItemText(2, _translate("TabWidget", "CNN"))
-        self.selectModelComboBox.setItemText(3, _translate("TabWidget", "VGG16"))
+        self.selectModelComboBox.setItemText(3, _translate("TabWidget", "DNN"))
 
         self.batchSizeLabel.setText(_translate("TabWidget", "Batch Size:"))
         self.epochNumLabel.setText(_translate("TabWidget", "Epoch Number:"))
