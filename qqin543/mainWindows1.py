@@ -1,6 +1,6 @@
 import os
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox,QShortcut
+from PyQt5.QtWidgets import QShortcut
 from SelectDataset import Ui_Dialog1
 from ViewDataset import DatasetViewer
 from TestImagesViewer import Ui_Dialog3
@@ -9,7 +9,10 @@ from PyQt5.QtGui import QKeySequence
 from SaveModel import Ui_SaveModel
 from PyQt5.QtCore import QTimer
 from train import trainModel
+from PyQt5.QtCore import QThread, pyqtSignal
 
+class TaskThread(QThread):
+    update_signal = pyqtSignal()
 
 class Ui_TabWidget(object):
     def setupUi(self, TabWidget):
@@ -290,7 +293,6 @@ class Ui_TabWidget(object):
         self.stackedWidget_2.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(TabWidget)
         
-        
         # Click signal connect to open the SelectDataset Dialog
         self.pushButton.clicked.connect(self.open_dialog1)
 
@@ -314,8 +316,7 @@ class Ui_TabWidget(object):
 
         # Click signal connect to model Train
         self.trainModelBtn.clicked.connect(self.switchToStack3)
-        self.trainModelBtn.clicked.connect(lambda: trainModel.train(self, self.batchSizeSpinBox.value(), 
-        self.epochNumSpinBox.value(), self.validationSpinBox.value()))
+        self.trainModelBtn.clicked.connect(lambda: trainModel.train(self, self.batchSizeSpinBox.value(), self.epochNumSpinBox.value(), self.validationSpinBox.value()))
 
         # Click signal connect to open the ViewDataset Dialog
         self.pushButton_ViewDataset.clicked.connect(self.open_dialog2)
@@ -363,7 +364,7 @@ class Ui_TabWidget(object):
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Epoch Number:</span></p></body></html>"))
         
         # ComboBox for model selection on select model page
-        self.selectModelComboBox.setItemText(0, _translate("TabWidget", "Selecet a DNN Model"))
+        self.selectModelComboBox.setItemText(0, _translate("TabWidget", "Selecet a Model"))
         self.selectModelComboBox.setItemText(1, _translate("TabWidget", "Logistic Regression"))
         self.selectModelComboBox.setItemText(2, _translate("TabWidget", "CNN"))
         self.selectModelComboBox.setItemText(3, _translate("TabWidget", "DNN"))
@@ -470,7 +471,7 @@ class Ui_TabWidget(object):
     # Switch into the Train Model Phase
     def switchToStack3(self):
         self.stackedWidget.setCurrentIndex(2)
-        self.stackedWidget_2.setCurrentIndex(0)
+        self.stackedWidget_2.setCurrentIndex(1)
 
 
     # Switch to the test phase

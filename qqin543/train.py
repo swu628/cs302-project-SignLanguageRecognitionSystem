@@ -8,6 +8,8 @@ class trainModel:
 
     # This is the function to call when the train button is clicked
     def train(self, batchSize, epochNum, validationValue):
+
+        global model
         
         # load dataset
         train_dataloder, validation_dataloader, test_dataloader = loadData.load(self, batchSize, validationValue)
@@ -101,3 +103,7 @@ class trainModel:
 
         else:
             print("Please select a model")
+
+    # Save the model with user input name
+    def saveModel(self, fileName):
+        torch.save(model.state_dict(), fileName + ".pth")
