@@ -424,7 +424,7 @@ class Ui_TabWidget(object):
     # Create a Ui_Dialog instance
         dialog2 = DatasetViewer()
     # Configure the QDialog instance using the setupUi method
-        dialog2.setupUi(dialog,"/Users/qinqi/project-1-python-team_10/qqin543/sign-language-mnist/sign_mnist_test.csv")
+        dialog2.setupUi(dialog)
      
         dialog.exec_()
 

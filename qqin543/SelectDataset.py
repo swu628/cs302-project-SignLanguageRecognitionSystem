@@ -1,3 +1,4 @@
+import zipfile
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 
@@ -105,6 +106,13 @@ class Ui_Dialog1(object):
         # When the download is complete, set the progress bar value to 100%
            self.progressBar.setValue(100)
            self.label_3.setText("100%")
+        path = os.getcwd()
+        # specify the path to the zip file
+        zip_file_path = f"{path}/sign-language-mnist.zip"
+        # extract the contents of the zip file to a directory if the directory does not exist
+        if not os.path.exists(f"{path}/sign-language-mnist"):
+            with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
+                zip_ref.extractall(f"{path}/sign-language-mnist")
     
     # Update the label text when "MNIST" is selected
     def on_dataset_selected(self, dataset_name):
@@ -128,6 +136,7 @@ class Ui_Dialog1(object):
           print(f"Successfully deleted file {file_name}")
       except FileNotFoundError:
           print(f"File {file_name} does not exist")
+    
     def Update_Progress(self):
 
      self.progressBar.setValue(0)
