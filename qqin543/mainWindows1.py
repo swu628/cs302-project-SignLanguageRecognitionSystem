@@ -390,8 +390,8 @@ class Ui_TabWidget(object):
         self.pushButton_TrainNewModel.setText(_translate("TabWidget", "Train New Model"))
         self.pushButton_TestModel.setText(_translate("TabWidget", "Test Model"))
         self.pushButton_SaveModel.setText(_translate("TabWidget", "Save Model as..."))
-        self.label_2.setText(_translate("TabWidget", "TextLab"))
-        self.label_3.setText(_translate("TabWidget", "TextLabel"))
+        self.label_2.setText(_translate("TabWidget", "Dataset Name:"))
+        self.label_3.setText(_translate("TabWidget", "Number of Images:"))
         TabWidget.setTabText(TabWidget.indexOf(self.tab_Train), _translate("TabWidget", "Train"))
         self.textBrowser_1.setHtml(_translate("TabWidget", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -506,6 +506,7 @@ class Ui_TabWidget(object):
        if os.path.exists(dataset_file):
            # If the dataset file exists, set the label text to "MNIST Dataset Selected"
            self.label.setText("MNIST Dataset Selected")
+           self.label_2.setText("Dataset Name: MNIST")
        else:
            self.label.setText("No Dataset Selected")
         
