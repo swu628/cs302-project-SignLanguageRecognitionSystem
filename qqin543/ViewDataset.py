@@ -3,6 +3,8 @@ import numpy as np
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtGui import QImage, QPixmap
 from DatasetViewer import Ui_Dialog2
+import os
+import zipfile
 
 class DatasetViewer(Ui_Dialog2):
     def setupUi(self, Dialog):
@@ -18,7 +20,12 @@ class DatasetViewer(Ui_Dialog2):
         # self.tableWidegt.verticalHeader().setVisible(False)
 
         # Initialize file_path and select default dataset
-        self.file_path = "/Users/qinqi/project-1-python-team_10/qqin543/sign-language-mnist/sign_mnist_test.csv"
+        path = os.getcwd()
+        zip_file_path = f"{path}/sign-language-mnist.zip"
+        if not os.path.exists(f"{path}/sign-language-mnist"):
+            with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
+                zip_ref.extractall(f"{path}/sign-language-mnist")
+        self.file_path = f"{path}/sign-language-mnist/sign_mnist_test.csv"
         self.checkBox_3.setChecked(True)
         self.radioButton.toggled.connect(self.train_set_selected)
         self.radioButton_2.toggled.connect(self.test_set_selected)
@@ -38,13 +45,15 @@ class DatasetViewer(Ui_Dialog2):
     # Slot to change file_path when "Train Set" radio button is selected
     def train_set_selected(self, checked):
         if checked:
-            self.file_path = "/Users/qinqi/project-1-python-team_10/qqin543/sign-language-mnist/sign_mnist_train.csv"
+            path = os.getcwd()
+            self.file_path = f"{path}/sign-language-mnist/sign_mnist_train.csv"
             self.load_data()
 
     # Slot to change file_path when "Test Set" radio button is selected
     def test_set_selected(self, checked):
         if checked:
-            self.file_path = "/Users/qinqi/project-1-python-team_10/qqin543/sign-language-mnist/sign_mnist_test.csv"
+            path = os.getcwd()
+            self.file_path = f"{path}/sign-language-mnist/sign_mnist_test.csv"
             self.load_data()
 
     # Function to load dataset from the selected file_path
