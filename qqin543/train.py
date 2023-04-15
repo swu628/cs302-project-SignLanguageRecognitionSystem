@@ -3,6 +3,7 @@ from loadDataset import loadData
 from cnn import CNNModel
 from logisticRegression import logisticRegressionModel
 from dnn import DNNModel
+from PyQt5 import QtWidgets
 
 class trainModel:
 
@@ -10,7 +11,7 @@ class trainModel:
     def train(self, batchSize, epochNum, validationValue):
 
         global model
-        
+
         # load dataset
         train_dataloder, validation_dataloader, test_dataloader = loadData.load(self, batchSize, validationValue)
 
@@ -102,7 +103,8 @@ class trainModel:
             history += fit(epochNum, .001, model, train_dataloder, validation_dataloader)
 
         else:
-            print("Please select a model")
+            # Show warning message if no model was selected
+            QtWidgets.QMessageBox.warning(None, "No Model Selected", "Please select a model before training.")
 
     # Save the model with user input name
     def saveModel(self, fileName):

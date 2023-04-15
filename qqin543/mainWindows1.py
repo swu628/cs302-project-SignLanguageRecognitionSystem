@@ -131,6 +131,7 @@ class Ui_TabWidget(object):
         self.batchSizeSpinBox = QtWidgets.QSpinBox(self.page_A2)
         self.batchSizeSpinBox.setGeometry(QtCore.QRect(120, 50, 91, 31))
         self.batchSizeSpinBox.setObjectName("batchSizeSpinBox")
+        self.batchSizeSpinBox.setMinimum(1) # Set minimum to 1
         self.batchSizeLabel = QtWidgets.QLabel(self.page_A2)
         self.batchSizeLabel.setGeometry(QtCore.QRect(0, 60, 71, 16))
         self.batchSizeLabel.setObjectName("batchSizeLabel")
@@ -139,6 +140,7 @@ class Ui_TabWidget(object):
         self.epochNumSpinBox = QtWidgets.QSpinBox(self.page_A2)
         self.epochNumSpinBox.setGeometry(QtCore.QRect(120, 80, 91, 31))
         self.epochNumSpinBox.setObjectName("epochNumSpinBox")
+        self.epochNumSpinBox.setMinimum(1) # Set minimum to 1
         self.epochNumLabel = QtWidgets.QLabel(self.page_A2)
         self.epochNumLabel.setGeometry(QtCore.QRect(0, 90, 101, 16))
         self.epochNumLabel.setObjectName("epochNumLabel")
@@ -157,13 +159,16 @@ class Ui_TabWidget(object):
         # Created a horizontal slider for the train and validation on the select model page
         self.trainValidationSlider = QtWidgets.QSlider(self.page_A2)
         self.trainValidationSlider.setGeometry(QtCore.QRect(140, 200, 221, 22))
-        self.trainValidationSlider.setMaximum(100)
+        self.trainValidationSlider.setRange(0, 100) # Set minimum value to 0 and maximum to 100
+        self.trainValidationSlider.setValue(50) # Set initial value to 50
         self.trainValidationSlider.setOrientation(QtCore.Qt.Horizontal)
         self.trainValidationSlider.setObjectName("trainValidationSlider")
         # Create a spinbox and label for 'train' on the select model page
         self.trainSpinBox = QtWidgets.QSpinBox(self.page_A2)
         self.trainSpinBox.setGeometry(QtCore.QRect(90, 200, 48, 24))
         self.trainSpinBox.setObjectName("trainSpinBox")
+        self.trainSpinBox.setRange(0, 100) # Set minimum value to 0 and maximum to 100
+        self.trainSpinBox.setValue(50) # Set initial value to 50
         self.trainLabel = QtWidgets.QLabel(self.page_A2)
         self.trainLabel.setGeometry(QtCore.QRect(50, 200, 41, 21))
         self.trainLabel.setObjectName("trainLabel")
@@ -171,6 +176,8 @@ class Ui_TabWidget(object):
         self.validationSpinBox = QtWidgets.QSpinBox(self.page_A2)
         self.validationSpinBox.setGeometry(QtCore.QRect(430, 200, 48, 24))
         self.validationSpinBox.setObjectName("validationSpinBox")
+        self.validationSpinBox.setRange(0, 100) # Set minimum value to 0 and maximum to 100
+        self.validationSpinBox.setValue(50) # Set initial value to 50
         self.validationLabel = QtWidgets.QLabel(self.page_A2)
         self.validationLabel.setGeometry(QtCore.QRect(370, 200, 60, 21))
         self.validationLabel.setObjectName("validationLabel")
