@@ -1,6 +1,6 @@
 import os
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QShortcut
+from PyQt5.QtWidgets import QShortcut, QFileDialog
 from SelectDataset import Ui_Dialog1
 from ViewDataset import DatasetViewer
 from TestImagesViewer import Ui_Dialog3
@@ -10,6 +10,7 @@ from SaveModel import Ui_SaveModel
 from PyQt5.QtCore import QTimer
 from train import trainModel
 from PyQt5.QtCore import QThread, pyqtSignal
+import torch
 
 class TaskThread(QThread):
     update_signal = pyqtSignal()
@@ -402,7 +403,11 @@ class Ui_TabWidget(object):
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">DNN Name:</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Batch Size:</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Epoch Number:</span></p></body></html>"))
-        self.pushButton_LoadModel.setText(_translate("TabWidget", "Load Model form file "))
+        
+        # When the 'load model from file' is clicked, open file dialog and load the saved model
+        self.pushButton_LoadModel.setText(_translate("TabWidget", "Load Model from file "))
+        self.pushButton_LoadModel.clicked.connect(self.showFileDialog)
+
         self.label_9.setText(_translate("TabWidget", "Chose Test using:"))
         self.pushButton_DatasetImages.setText(_translate("TabWidget", "Dataset Images"))
         self.pushButton_Camera.setText(_translate("TabWidget", "Camera"))
@@ -512,10 +517,11 @@ class Ui_TabWidget(object):
         
         # Stop the timer
 
-    def onActivated(self, text):
-        self.lbl.setText(text) 
+    def showFileDialog(self):
+        fname = QFileDialog.getOpenFileName(self.horizontalLayoutWidget_4, 'Open file', './')
+        if fname[0]:                            # if we get the file name, load the model
+            torch.load(fname[0])
 
-    
 
 if __name__ == '__main__':
     import sys
