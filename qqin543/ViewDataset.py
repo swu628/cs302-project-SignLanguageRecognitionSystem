@@ -107,16 +107,19 @@ class DatasetViewer(Ui_Dialog2):
             self.tableWidegt.setItem(row, col, item)
 
 
-    # Function to convert input character to label, considering invalid characters
+    # Function to convert input character to label, taking into account the special mapping of characters to labels
     def get_label_from_char(self, char):
-            if char.upper() == 'J' or char.upper() == 'Z':
+        if char.upper() == 'J' or char.upper() == 'Z':
             # Display an error message
-                QtWidgets.QMessageBox.warning(None, "Invalid Input", "J and Z are not valid input characters.")
-                return None
-            elif 'A' <= char.upper() <= 'I':
-                return ord(char.upper()) - ord('A')
-            else:
-                return ord(char.upper()) - ord('A') - 1
+            QtWidgets.QMessageBox.warning(None, "Invalid Input", "J and Z are not valid input characters.")
+            return None
+        elif 'A' <= char.upper() <= 'I':
+            return ord(char.upper()) - ord('A')
+        elif 'K' <= char.upper() <= 'Y':
+            return ord(char.upper()) - ord('A') 
+
+
+
 
     # Slot to handle "Add Tag" button click
     def add_tag_button_clicked(self):
