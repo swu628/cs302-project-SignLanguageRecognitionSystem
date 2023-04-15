@@ -1,6 +1,7 @@
 import zipfile
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
+import shutil
 
 
 class Ui_Dialog1(object):
@@ -40,19 +41,21 @@ class Ui_Dialog1(object):
         # Create a layout for the Cancel button
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.pushButton_2 = QtWidgets.QPushButton(Dialog)
-        self.pushButton_2.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.verticalLayout_2.addWidget(self.pushButton_2)
+        self.cancelBtn = QtWidgets.QPushButton(Dialog)
+        self.cancelBtn.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.cancelBtn.setObjectName("cancelBtn")
+        self.cancelBtn.setEnabled(False)
+        self.verticalLayout_2.addWidget(self.cancelBtn)
         self.gridLayout.addLayout(self.verticalLayout_2, 3, 2, 1, 2)
         
         # Create a layout for the Import button
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
-        self.pushButton = QtWidgets.QPushButton(Dialog)
-        self.pushButton.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.pushButton.setObjectName("pushButton")
-        self.verticalLayout.addWidget(self.pushButton)
+        self.downloadBtn = QtWidgets.QPushButton(Dialog)
+        self.downloadBtn.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.downloadBtn.setObjectName("downloadBtn")
+        self.downloadBtn.setEnabled(True)
+        self.verticalLayout.addWidget(self.downloadBtn)
         self.gridLayout.addLayout(self.verticalLayout, 3, 0, 1, 2)
         
         # Create a layout for the progress bar and labels
@@ -78,12 +81,11 @@ class Ui_Dialog1(object):
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
         
-        self.pushButton.clicked.connect(self.Download_dataset)
+        self.downloadBtn.clicked.connect(self.Download_dataset)
         # Connect the Cancel Button to Delete Dataset File
-        self.pushButton_2.clicked.connect(self.Delete_file)
+        self.cancelBtn.clicked.connect(self.Delete_file)
         # Connect the Cancel Button to Delete Dataset File and Update Progressbar's valure
-        self.pushButton_2.clicked.connect(self.Update_Progress)
-
+        self.cancelBtn.clicked.connect(self.Update_Progress)
 
 
     def retranslateUi(self, Dialog):
@@ -92,27 +94,30 @@ class Ui_Dialog1(object):
         self.comboBox.setItemText(0, _translate("Dialog", "Select Dataset"))
         self.comboBox.setItemText(1, _translate("Dialog", "MNIST"))
         self.label.setText(_translate("Dialog", " Please Selected a Dataset"))
-        self.pushButton_2.setText(_translate("Dialog", "Cancel"))
-        self.pushButton.setText(_translate("Dialog", "Download"))
+        self.cancelBtn.setText(_translate("Dialog", "Cancel"))
+        self.downloadBtn.setText(_translate("Dialog", "Download"))
         self.label_3.setText(_translate("Dialog", "0%"))
-
 
     def Download_dataset(self):
         #Got the current be Selected Dataset Name
         Current_dataset_name = self.comboBox.currentText()
         if Current_dataset_name == "MNIST":
-           kaggle_dataset = "datamunge/sign-language-mnist"
-           os.system(f"kaggle datasets download -d datamunge/sign-language-mnist")
-        # When the download is complete, set the progress bar value to 100%
-           self.progressBar.setValue(100)
-           self.label_3.setText("100%")
-        path = os.getcwd()
-        # specify the path to the zip file
-        zip_file_path = f"{path}/sign-language-mnist.zip"
-        # extract the contents of the zip file to a directory if the directory does not exist
-        if not os.path.exists(f"{path}/sign-language-mnist"):
-            with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
-                zip_ref.extractall(f"{path}/sign-language-mnist")
+            kaggle_dataset = "datamunge/sign-language-mnist"
+            os.system(f"kaggle datasets download -d datamunge/sign-language-mnist")
+            # When the download is complete, set the progress bar value to 100%
+            self.progressBar.setValue(100)
+            self.label_3.setText("100%")
+            self.downloadBtn.setEnabled(False)
+            self.cancelBtn.setEnabled(True)
+            path = os.getcwd()
+            # specify the path to the zip file
+            zip_file_path = f"{path}/sign-language-mnist.zip"
+            # extract the contents of the zip file to a directory if the directory does not exist
+            if not os.path.exists(f"{path}/sign-language-mnist"):
+                with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
+                    zip_ref.extractall(f"{path}/sign-language-mnist")
+        else: 
+            QtWidgets.QMessageBox.warning(None, "No Dataset Selected", "Please select a dataset.")
     
     # Update the label text when "MNIST" is selected
     def on_dataset_selected(self, dataset_name):
@@ -121,26 +126,23 @@ class Ui_Dialog1(object):
             self.label.setText("You have selected MNIST dataset, please click Download")
         else:
             self.label.setText("Please select a dataset")
-
-  
-
     
     # Delete the Dataset file
-    def Delete_file(file_path, file_name):
-    
-      file_to_delete = os.path.join("/Users/qinqi/project-1-python-team_10/qqin543", "sign-language-mnist.zip")
-      
-      try:
-        # Remove the file
-          os.remove(file_to_delete)
-          print(f"Successfully deleted file {file_name}")
-      except FileNotFoundError:
-          print(f"File {file_name} does not exist")
+    def Delete_file(file_path):
+        try:
+            # Remove the file
+            path = os.getcwd()
+            os.remove(f"{path}/sign-language-mnist.zip")
+            shutil.rmtree(f"{path}/sign-language-mnist")
+            print(f"Successfully deleted file: sign-language-mnist")
+        except FileNotFoundError:
+            print(f"File: sign-language-mnist does not exist")
     
     def Update_Progress(self):
-
      self.progressBar.setValue(0)
      self.label_3.setText("0%")
+     self.downloadBtn.setEnabled(True)
+     self.cancelBtn.setEnabled(False)
 
       
 
