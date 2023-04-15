@@ -1,6 +1,6 @@
 import os
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox,QShortcut
+from PyQt5.QtWidgets import QShortcut, QFileDialog
 from SelectDataset import Ui_Dialog1
 from ViewDataset import DatasetViewer
 from TestImagesViewer import Ui_Dialog3
@@ -9,7 +9,11 @@ from PyQt5.QtGui import QKeySequence
 from SaveModel import Ui_SaveModel
 from PyQt5.QtCore import QTimer
 from train import trainModel
+from PyQt5.QtCore import QThread, pyqtSignal
+import torch
 
+class TaskThread(QThread):
+    update_signal = pyqtSignal()
 
 class Ui_TabWidget(object):
     def setupUi(self, TabWidget):
@@ -127,6 +131,7 @@ class Ui_TabWidget(object):
         self.batchSizeSpinBox = QtWidgets.QSpinBox(self.page_A2)
         self.batchSizeSpinBox.setGeometry(QtCore.QRect(120, 50, 91, 31))
         self.batchSizeSpinBox.setObjectName("batchSizeSpinBox")
+        self.batchSizeSpinBox.setMinimum(1) # Set minimum to 1
         self.batchSizeLabel = QtWidgets.QLabel(self.page_A2)
         self.batchSizeLabel.setGeometry(QtCore.QRect(0, 60, 71, 16))
         self.batchSizeLabel.setObjectName("batchSizeLabel")
@@ -135,6 +140,7 @@ class Ui_TabWidget(object):
         self.epochNumSpinBox = QtWidgets.QSpinBox(self.page_A2)
         self.epochNumSpinBox.setGeometry(QtCore.QRect(120, 80, 91, 31))
         self.epochNumSpinBox.setObjectName("epochNumSpinBox")
+        self.epochNumSpinBox.setMinimum(1) # Set minimum to 1
         self.epochNumLabel = QtWidgets.QLabel(self.page_A2)
         self.epochNumLabel.setGeometry(QtCore.QRect(0, 90, 101, 16))
         self.epochNumLabel.setObjectName("epochNumLabel")
@@ -153,13 +159,16 @@ class Ui_TabWidget(object):
         # Created a horizontal slider for the train and validation on the select model page
         self.trainValidationSlider = QtWidgets.QSlider(self.page_A2)
         self.trainValidationSlider.setGeometry(QtCore.QRect(140, 200, 221, 22))
-        self.trainValidationSlider.setMaximum(100)
+        self.trainValidationSlider.setRange(0, 100) # Set minimum value to 0 and maximum to 100
+        self.trainValidationSlider.setValue(50) # Set initial value to 50
         self.trainValidationSlider.setOrientation(QtCore.Qt.Horizontal)
         self.trainValidationSlider.setObjectName("trainValidationSlider")
         # Create a spinbox and label for 'train' on the select model page
         self.trainSpinBox = QtWidgets.QSpinBox(self.page_A2)
         self.trainSpinBox.setGeometry(QtCore.QRect(90, 200, 48, 24))
         self.trainSpinBox.setObjectName("trainSpinBox")
+        self.trainSpinBox.setRange(0, 100) # Set minimum value to 0 and maximum to 100
+        self.trainSpinBox.setValue(50) # Set initial value to 50
         self.trainLabel = QtWidgets.QLabel(self.page_A2)
         self.trainLabel.setGeometry(QtCore.QRect(50, 200, 41, 21))
         self.trainLabel.setObjectName("trainLabel")
@@ -167,6 +176,8 @@ class Ui_TabWidget(object):
         self.validationSpinBox = QtWidgets.QSpinBox(self.page_A2)
         self.validationSpinBox.setGeometry(QtCore.QRect(430, 200, 48, 24))
         self.validationSpinBox.setObjectName("validationSpinBox")
+        self.validationSpinBox.setRange(0, 100) # Set minimum value to 0 and maximum to 100
+        self.validationSpinBox.setValue(50) # Set initial value to 50
         self.validationLabel = QtWidgets.QLabel(self.page_A2)
         self.validationLabel.setGeometry(QtCore.QRect(370, 200, 60, 21))
         self.validationLabel.setObjectName("validationLabel")
@@ -290,7 +301,6 @@ class Ui_TabWidget(object):
         self.stackedWidget_2.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(TabWidget)
         
-        
         # Click signal connect to open the SelectDataset Dialog
         self.pushButton.clicked.connect(self.open_dialog1)
 
@@ -314,8 +324,7 @@ class Ui_TabWidget(object):
 
         # Click signal connect to model Train
         self.trainModelBtn.clicked.connect(self.switchToStack3)
-        self.trainModelBtn.clicked.connect(lambda: trainModel.train(self, self.batchSizeSpinBox.value(), 
-        self.epochNumSpinBox.value(), self.validationSpinBox.value()))
+        self.trainModelBtn.clicked.connect(lambda: trainModel.train(self, self.batchSizeSpinBox.value(), self.epochNumSpinBox.value(), self.validationSpinBox.value()))
 
         # Click signal connect to open the ViewDataset Dialog
         self.pushButton_ViewDataset.clicked.connect(self.open_dialog2)
@@ -360,13 +369,13 @@ class Ui_TabWidget(object):
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">DNN Name:</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Batch Size:</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Epoch Number:</span></p></body></html>"))
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Epoch Number:" + str(self.epochNumSpinBox.value()) + "</span></p></body></html>"))
         
         # ComboBox for model selection on select model page
-        self.selectModelComboBox.setItemText(0, _translate("TabWidget", "Selecet a DNN Model"))
-        self.selectModelComboBox.setItemText(1, _translate("TabWidget", "LeNet-5"))
+        self.selectModelComboBox.setItemText(0, _translate("TabWidget", "Selecet a Model"))
+        self.selectModelComboBox.setItemText(1, _translate("TabWidget", "Logistic Regression"))
         self.selectModelComboBox.setItemText(2, _translate("TabWidget", "CNN"))
-        self.selectModelComboBox.setItemText(3, _translate("TabWidget", "VGG16"))
+        self.selectModelComboBox.setItemText(3, _translate("TabWidget", "DNN"))
 
         self.batchSizeLabel.setText(_translate("TabWidget", "Batch Size:"))
         self.epochNumLabel.setText(_translate("TabWidget", "Epoch Number:"))
@@ -401,7 +410,11 @@ class Ui_TabWidget(object):
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">DNN Name:</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Batch Size:</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Epoch Number:</span></p></body></html>"))
-        self.pushButton_LoadModel.setText(_translate("TabWidget", "Load Model form file "))
+        
+        # When the 'load model from file' is clicked, open file dialog and load the saved model
+        self.pushButton_LoadModel.setText(_translate("TabWidget", "Load Model from file "))
+        self.pushButton_LoadModel.clicked.connect(self.showFileDialog)
+
         self.label_9.setText(_translate("TabWidget", "Chose Test using:"))
         self.pushButton_DatasetImages.setText(_translate("TabWidget", "Dataset Images"))
         self.pushButton_Camera.setText(_translate("TabWidget", "Camera"))
@@ -470,7 +483,7 @@ class Ui_TabWidget(object):
     # Switch into the Train Model Phase
     def switchToStack3(self):
         self.stackedWidget.setCurrentIndex(2)
-        self.stackedWidget_2.setCurrentIndex(0)
+        self.stackedWidget_2.setCurrentIndex(1)
 
 
     # Switch to the test phase
@@ -512,7 +525,11 @@ class Ui_TabWidget(object):
         
         # Stop the timer
 
-    
+    def showFileDialog(self):
+        fname = QFileDialog.getOpenFileName(self.horizontalLayoutWidget_4, 'Open file', './')
+        if fname[0]:                            # if we get the file name, load the model
+            torch.load(fname[0])
+
 
 if __name__ == '__main__':
     import sys
