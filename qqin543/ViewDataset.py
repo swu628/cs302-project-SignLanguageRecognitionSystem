@@ -109,14 +109,19 @@ class DatasetViewer(Ui_Dialog2):
 
     # Function to convert input character to label, taking into account the special mapping of characters to labels
     def get_label_from_char(self, char):
+        # Check if the input character is 'J' or 'Z', as these characters are not valid in this dataset
         if char.upper() == 'J' or char.upper() == 'Z':
-            # Display an error message
+            # Display an error message to inform the user that 'J' and 'Z' are not valid input characters
             QtWidgets.QMessageBox.warning(None, "Invalid Input", "J and Z are not valid input characters.")
             return None
+        # If the input character is between 'A' and 'I', calculate the corresponding label using the character's Unicode value
         elif 'A' <= char.upper() <= 'I':
             return ord(char.upper()) - ord('A')
+        # If the input character is between 'K' and 'Y', calculate the corresponding label using the character's Unicode value
+        # Note that we need to subtract an extra 1 here to account for the missing 'J' label
         elif 'K' <= char.upper() <= 'Y':
             return ord(char.upper()) - ord('A') 
+
 
 
 

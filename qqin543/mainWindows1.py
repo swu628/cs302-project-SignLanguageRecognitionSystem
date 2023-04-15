@@ -1,6 +1,7 @@
 import os
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QShortcut, QFileDialog
+import pandas as pd
 from SelectDataset import Ui_Dialog1
 from ViewDataset import DatasetViewer
 from TestImagesViewer import Ui_Dialog3
@@ -154,7 +155,7 @@ class Ui_TabWidget(object):
         self.trainModelBtn = QtWidgets.QPushButton(self.page_A2)
         self.trainModelBtn.setGeometry(QtCore.QRect(200, 290, 113, 32))
         self.trainModelBtn.setObjectName("trainModelBtn")
-        
+
         # Below block of codes are for train and validation
         # Created a horizontal slider for the train and validation on the select model page
         self.trainValidationSlider = QtWidgets.QSlider(self.page_A2)
@@ -438,7 +439,6 @@ class Ui_TabWidget(object):
         dialog2 = DatasetViewer()
     # Configure the QDialog instance using the setupUi method
         dialog2.setupUi(dialog)
-     
         dialog.exec_()
 
     
@@ -478,13 +478,11 @@ class Ui_TabWidget(object):
     # Allow user turn back to Select Dataset
     def switchToStack1(self):
         self.stackedWidget.setCurrentIndex(0)
-    
-    
+ 
     # Switch into the Train Model Phase
     def switchToStack3(self):
         self.stackedWidget.setCurrentIndex(2)
         self.stackedWidget_2.setCurrentIndex(1)
-
 
     # Switch to the test phase
     def switchToTab3(self):
@@ -509,21 +507,69 @@ class Ui_TabWidget(object):
         # Update the slider value to match the left spinBox's value
         self.trainValidationSlider.setValue(value)
 
+    def displayNumbers(self):
+        # Specify the dataset path
+        dataset_path = os.getcwd()
+        # Join the dataset file path with the dataset path
+        dataset_file = f"{dataset_path}/sign-language-mnist/sign_mnist_test.csv"
+        data = pd.read_csv(dataset_file)
+        letter_counts = data['label'].value_counts().sort_index()
+
+        # Separate the letters into two groups
+        group1 = [x for x in range(0, 13) if x != 9]  # A-I,K,L,M
+        group2 = range(13, 25)  # N-Y
+
+        # Clear the ListWidgets before adding new items
+        self.listWidget.clear()
+        self.listWidget_2.clear()
+
+        # Add the counts for the first group (A-I, K, L, M) to the first ListWidget
+        for label in group1:
+            # Determine the corresponding letter for the label
+            if label <= 8:
+                letter = chr(ord('A') + label)
+            elif 10 <= label <= 24:
+                letter = chr(ord('A') + label)
+
+            # Retrieve the count for the current label
+            count = letter_counts.get(label, 0)
+            # Create a QListWidgetItem with the formatted label count
+            item = QtWidgets.QListWidgetItem(f"{letter}: {count}")
+            # Add the item to the list widget
+            self.listWidget.addItem(item)
+
+        # Add the counts for the second group (N-Y) to the second ListWidget
+        for label in group2:
+            # Determine the corresponding letter for the label
+            if label <= 8:
+                letter = chr(ord('A') + label)
+            elif 10 <= label <= 24:
+                letter = chr(ord('A') + label)
+                
+            # Retrieve the count for the current label
+            count = letter_counts.get(label, 0)
+            # Create a QListWidgetItem with the formatted label count
+            item = QtWidgets.QListWidgetItem(f"{letter}: {count}")
+            # Add the item to the list widget
+            self.listWidget_2.addItem(item)
+
     def updateDatasetLabel(self):
     # Specify the dataset path
-       dataset_path = "/Users/qinqi/project-1-python-team_10/qqin543"
+       dataset_path = os.getcwd()
     # Join the dataset file path with the dataset path
-       dataset_file = os.path.join(dataset_path, "sign-language-mnist.zip")
+       dataset_file = f"{dataset_path}/sign-language-mnist/sign_mnist_test.csv"
 
     # Check if the dataset file exists
        if os.path.exists(dataset_file):
            # If the dataset file exists, set the label text to "MNIST Dataset Selected"
            self.label.setText("MNIST Dataset Selected")
            self.label_2.setText("Dataset Name: MNIST")
+           self.label_3.setText("Number of Images: 34627")
+           self.displayNumbers()
        else:
            self.label.setText("No Dataset Selected")
-        
-        # Stop the timer
+           self.label_2.setText("Dataset Name:")
+           self.label_3.setText("Number of Images:")
 
     def showFileDialog(self):
         fname = QFileDialog.getOpenFileName(self.horizontalLayoutWidget_4, 'Open file', './')

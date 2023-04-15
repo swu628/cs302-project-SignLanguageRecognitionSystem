@@ -105,11 +105,14 @@ class Ui_Dialog3(object):
         # Add Space to give some breathing room
         spacerItem2 = QtWidgets.QSpacerItem(20, 80, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout.addItem(spacerItem2, 3, 0, 1, 1)
-
-        self.retranslateUi(Dialog)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        
         # Connect Cancel Button click signal to QDialog reject slot
         self.pushButton_4.clicked.connect(Dialog.reject)
+        
+        self.retranslateUi(Dialog)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        
+       
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
