@@ -27,10 +27,8 @@ class TestViewer(Ui_Dialog3):
                 zip_ref.extractall(f"{path}/sign-language-mnist")
         self.file_path = f"{path}/sign-language-mnist/sign_mnist_test.csv"
         self.checkBox_3.setChecked(True)
-        self.radioButton_2.toggled.connect(self.test_set_selected)
-
-        # Initialize self.data to None
-        self.data = None
+        self.radioButton_2.setChecked(True)
+        self.load_data()
 
         # Connect signals to slots for handling button clicks
         self.pushButton.clicked.connect(self.add_tag_button_clicked)
@@ -40,20 +38,6 @@ class TestViewer(Ui_Dialog3):
     # Slot to clear text browser when "Clear Tag" button is clicked
     def clear_tags_button_clicked(self):
         self.textBrowser.clear()
-
-    # Slot to change file_path when "Train Set" radio button is selected
-    def train_set_selected(self, checked):
-        if checked:
-            path = os.getcwd()
-            self.file_path = f"{path}/sign-language-mnist/sign_mnist_train.csv"
-            self.load_data()
-
-    # Slot to change file_path when "Test Set" radio button is selected
-    def test_set_selected(self, checked):
-        if checked:
-            path = os.getcwd()
-            self.file_path = f"{path}/sign-language-mnist/sign_mnist_test.csv"
-            self.load_data()
 
     # Function to load dataset from the selected file_path
     def load_data(self):
