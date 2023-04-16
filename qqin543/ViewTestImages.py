@@ -2,17 +2,17 @@ import pandas as pd
 import numpy as np
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtGui import QImage, QPixmap
-from DatasetViewer import Ui_Dialog2
+from TestImagesViewer import Ui_Dialog3
 import os
 import zipfile
 
-class DatasetViewer(Ui_Dialog2):
+class TestViewer(Ui_Dialog3):
     def setupUi(self, Dialog):
         super().setupUi(Dialog)
 
         # Set row height and column width for table widget
-        self.tableWidegt.horizontalHeader().setDefaultSectionSize(28)
-        self.tableWidegt.verticalHeader().setDefaultSectionSize(28)
+        self.tablewidget.horizontalHeader().setDefaultSectionSize(28)
+        self.tablewidget.verticalHeader().setDefaultSectionSize(28)
 
         # Uncomment below lines to hide grid and headers in table widget
         # self.tableWidegt.setShowGrid(False)
@@ -27,7 +27,6 @@ class DatasetViewer(Ui_Dialog2):
                 zip_ref.extractall(f"{path}/sign-language-mnist")
         self.file_path = f"{path}/sign-language-mnist/sign_mnist_test.csv"
         self.checkBox_3.setChecked(True)
-        self.radioButton.toggled.connect(self.train_set_selected)
         self.radioButton_2.toggled.connect(self.test_set_selected)
 
         # Initialize self.data to None
@@ -81,8 +80,8 @@ class DatasetViewer(Ui_Dialog2):
         col_count = images_per_row
 
         # Configure the table widget with the calculated row and column count
-        self.tableWidegt.setRowCount(row_count)
-        self.tableWidegt.setColumnCount(col_count)
+        self.tablewidget.setRowCount(row_count)
+        self.tablewidget.setColumnCount(col_count)
 
         # Loop through each image in the filtered data
         for idx, (_, image_data) in enumerate(data.iterrows()):
@@ -104,7 +103,7 @@ class DatasetViewer(Ui_Dialog2):
             col = idx % images_per_row
             
             # Add the QTableWidgetItem to the table widget at the calculated position
-            self.tableWidegt.setItem(row, col, item)
+            self.tablewidget.setItem(row, col, item)
 
 
     # Function to convert input character to label, taking into account the special mapping of characters to labels

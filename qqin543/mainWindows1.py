@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QShortcut, QFileDialog
 import pandas as pd
 from SelectDataset import Ui_Dialog1
 from ViewDataset import DatasetViewer
-from TestImagesViewer import Ui_Dialog3
+from ViewTestImages import TestViewer
 from Camera import Ui_Dialog5
 from PyQt5.QtGui import QKeySequence
 from SaveModel import Ui_SaveModel
@@ -446,7 +446,7 @@ class Ui_TabWidget(object):
     # Create a QDialog instance
      dialog = QtWidgets.QDialog()
     # Create a Ui_Dialog instance
-     dialog3 = Ui_Dialog3()
+     dialog3 = TestViewer()
     # Configure the QDialog instance using the setupUi method
      dialog3.setupUi(dialog)
      dialog.exec_()

@@ -28,29 +28,11 @@ class Ui_Dialog3(object):
         self.radioButton_2.setObjectName("radioButton_2")
         self.gridLayout.addWidget(self.radioButton_2, 5, 0, 1, 1)
 
-        
-        
+                
         # Create check boxes for filter dataset
         self.checkBox_3 = QtWidgets.QCheckBox(Dialog)
         self.checkBox_3.setObjectName("checkBox_3")
         self.gridLayout.addWidget(self.checkBox_3, 10, 0, 1, 1)
-
-       
-        self.checkBox = QtWidgets.QCheckBox(Dialog)
-        self.checkBox.setObjectName("checkBox")
-        self.gridLayout.addWidget(self.checkBox, 8, 0, 1, 1)
-
-        self.checkBox_2 = QtWidgets.QCheckBox(Dialog)
-        self.checkBox_2.setObjectName("checkBox_2")
-        self.gridLayout.addWidget(self.checkBox_2, 9, 0, 1, 1)
-
-        # Create label
-        self.label_2 = QtWidgets.QLabel(Dialog)
-        self.label_2.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.label_2.setTextFormat(QtCore.Qt.AutoText)
-        self.label_2.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_2.setObjectName("label_2")
-        self.gridLayout.addWidget(self.label_2, 20, 0, 5, 1)
         
         # Create Add Tag and Clear Tag buttons
         self.pushButton_2 = QtWidgets.QPushButton(Dialog)
@@ -122,11 +104,8 @@ class Ui_Dialog3(object):
         self.pushButton_6.setText(_translate("Dialog", "Predict"))
         self.radioButton_2.setText(_translate("Dialog", "Test Set"))
         self.checkBox_3.setText(_translate("Dialog", "Custom"))
-        self.label_2.setText(_translate("Dialog", "No. image"))
         self.pushButton_2.setText(_translate("Dialog", "Clear Tags"))
         self.pushButton.setText(_translate("Dialog", "Add Tag"))
-        self.checkBox.setText(_translate("Dialog", "CheckBox"))
-        self.checkBox_2.setText(_translate("Dialog", "CheckBox"))
         self.pushButton_5.setText(_translate("Dialog", "Deselect All"))
         self.tablewidget.setSortingEnabled(True)
         self.label.setText(_translate("Dialog", "Filter"))
