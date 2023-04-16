@@ -353,7 +353,11 @@ class Ui_TabWidget(object):
         self.check_dataset_timer.timeout.connect(self.updateDatasetLabel)
         self.check_dataset_timer.start(500) 
 
-
+        # This timer is used to check whether the dataset is being imported or not
+        self.train_timer = QTimer()
+        self.train_timer.timeout.connect(lambda: self.fileExist(1))
+        self.train_timer.start(1000)
+  
 
     def retranslateUi(self, TabWidget):
         _translate = QtCore.QCoreApplication.translate
@@ -370,7 +374,7 @@ class Ui_TabWidget(object):
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">DNN Name:</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Batch Size:</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Epoch Number:" + str(self.epochNumSpinBox.value()) + "</span></p></body></html>"))
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Epoch Number:</span></p></body></html>"))
         
         # ComboBox for model selection on select model page
         self.selectModelComboBox.setItemText(0, _translate("TabWidget", "Selecet a Model"))
@@ -411,7 +415,7 @@ class Ui_TabWidget(object):
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">DNN Name:</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Batch Size:</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Epoch Number:</span></p></body></html>"))
-        
+
         # When the 'load model from file' is clicked, open file dialog and load the saved model
         self.pushButton_LoadModel.setText(_translate("TabWidget", "Load Model from file "))
         self.pushButton_LoadModel.clicked.connect(self.showFileDialog)
@@ -420,8 +424,9 @@ class Ui_TabWidget(object):
         self.pushButton_DatasetImages.setText(_translate("TabWidget", "Dataset Images"))
         self.pushButton_Camera.setText(_translate("TabWidget", "Camera"))
         TabWidget.setTabText(TabWidget.indexOf(self.tab_Test), _translate("TabWidget", "Test"))
-    
-    
+
+        TabWidget.tabBarClicked.connect(lambda: self.fileExist(1))
+
     def open_dialog1(self):
     # Create a QDialog instance
         dialog = QtWidgets.QDialog()
@@ -576,6 +581,18 @@ class Ui_TabWidget(object):
         if fname[0]:                            # if we get the file name, load the model
             torch.load(fname[0])
 
+    # This function is used to check whether the dataset is being imported or not
+    # If no then disable the tab and set tooltip, if yes then enable the tab and disable tooltip
+    def fileExist(self, index):
+        path = os.getcwd()
+        file_path = f"{path}/sign-language-mnist"
+        if index == 1:
+            if os.path.exists(file_path):
+                TabWidget.setTabEnabled(1, True)
+                TabWidget.setTabToolTip(1, "")
+            else:
+                TabWidget.setTabEnabled(1, False)
+                TabWidget.setTabToolTip(1, "Please import a dataset before training")
 
 if __name__ == '__main__':
     import sys
