@@ -12,9 +12,21 @@ from PyQt5.QtCore import QTimer
 from train import trainModel
 from PyQt5.QtCore import QThread, pyqtSignal
 import torch
+import time
 
-class TaskThread(QThread):
-    update_signal = pyqtSignal()
+class TrainingThread(QThread):
+    # define a signal that can be used to emit progress updates
+    update_progress = pyqtSignal(int)
+
+    def __init__(self):
+        super().__init__()
+
+    def run(self):
+        for i in range(101):
+            # emit the progress update signal
+            self.update_progress.emit(i)
+            time.sleep(0.1)
+
 
 class Ui_TabWidget(object):
     def setupUi(self, TabWidget):
@@ -202,9 +214,9 @@ class Ui_TabWidget(object):
         self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
         self.horizontalLayout.addWidget(self.progressBar)
-        self.label_8 = QtWidgets.QLabel(self.horizontalLayoutWidget)
-        self.label_8.setObjectName("label_8")
-        self.horizontalLayout.addWidget(self.label_8)
+        self.progressLabel = QtWidgets.QLabel(self.horizontalLayoutWidget)
+        self.progressLabel.setObjectName("progressLabel")
+        self.horizontalLayout.addWidget(self.progressLabel)
         self.stackedWidget_2 = QtWidgets.QStackedWidget(self.page_A3)
         self.stackedWidget_2.setGeometry(QtCore.QRect(0, 250, 521, 71))
         self.stackedWidget_2.setObjectName("stackedWidget_2")
@@ -325,6 +337,7 @@ class Ui_TabWidget(object):
 
         # Click signal connect to model Train
         self.trainModelBtn.clicked.connect(self.switchToStack3)
+        self.trainModelBtn.clicked.connect(self.start_training)
         self.trainModelBtn.clicked.connect(lambda: trainModel.train(self, self.batchSizeSpinBox.value(), self.epochNumSpinBox.value(), self.validationSpinBox.value()))
 
         # Click signal connect to open the ViewDataset Dialog
@@ -399,7 +412,7 @@ class Ui_TabWidget(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt;\">Train Set Size:</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt;\">Validation Set Size:</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt;\">Test Set Size:</span></p></body></html>"))
-        self.label_8.setText(_translate("TabWidget", "0%"))
+        self.progressLabel.setText(_translate("TabWidget", "0%"))
         self.pushButton_CancelTraining.setText(_translate("TabWidget", "Cancel Training"))
         self.pushButton_TrainNewModel.setText(_translate("TabWidget", "Train New Model"))
         self.pushButton_TestModel.setText(_translate("TabWidget", "Test Model"))
@@ -487,7 +500,7 @@ class Ui_TabWidget(object):
     # Switch into the Train Model Phase
     def switchToStack3(self):
         self.stackedWidget.setCurrentIndex(2)
-        self.stackedWidget_2.setCurrentIndex(1)
+        self.stackedWidget_2.setCurrentIndex(0)
 
     # Switch to the test phase
     def switchToTab3(self):
@@ -593,6 +606,23 @@ class Ui_TabWidget(object):
             else:
                 TabWidget.setTabEnabled(1, False)
                 TabWidget.setTabToolTip(1, "Please import a dataset before training")
+
+
+    def start_training(self):
+        # create the training thread
+        self.thread = TrainingThread()
+        # connect the progress update signal to the update_progress method
+        self.thread.update_progress.connect(self.update_progress)
+        # start the thread
+        self.thread.start()
+
+    def update_progress(self, value):
+        # update the progress bar value
+        self.progressBar.setValue(value)
+        self.progressLabel.setText(str(value) + "%")
+        if value == 100:
+            self.stackedWidget_2.setCurrentIndex(1)
+        
 
 if __name__ == '__main__':
     import sys
