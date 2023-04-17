@@ -41,11 +41,11 @@ class Ui_Dialog1(object):
         # Create a layout for the Cancel button
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.cancelBtn = QtWidgets.QPushButton(Dialog)
-        self.cancelBtn.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.cancelBtn.setObjectName("cancelBtn")
-        self.cancelBtn.setEnabled(False)
-        self.verticalLayout_2.addWidget(self.cancelBtn)
+        self.deleteBtn = QtWidgets.QPushButton(Dialog)
+        self.deleteBtn.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.deleteBtn.setObjectName("deleteBtn")
+        self.deleteBtn.setEnabled(False)
+        self.verticalLayout_2.addWidget(self.deleteBtn)
         self.gridLayout.addLayout(self.verticalLayout_2, 3, 2, 1, 2)
         
         # Create a layout for the Import button
@@ -83,9 +83,18 @@ class Ui_Dialog1(object):
         
         self.downloadBtn.clicked.connect(self.Download_dataset)
         # Connect the Cancel Button to Delete Dataset File
-        self.cancelBtn.clicked.connect(self.Delete_file)
+        self.deleteBtn.clicked.connect(self.Delete_file)
         # Connect the Cancel Button to Delete Dataset File and Update Progressbar's valure
-        self.cancelBtn.clicked.connect(self.Update_Progress)
+        self.deleteBtn.clicked.connect(self.Update_Progress)
+
+        # Check whether the dataset is imported, if yes: enable delete button, if no: enable download button
+        path = os.getcwd()
+        if os.path.exists(f"{path}/sign-language-mnist"):
+            self.downloadBtn.setEnabled(False)
+            self.deleteBtn.setEnabled(True)
+        else:
+            self.downloadBtn.setEnabled(True)
+            self.deleteBtn.setEnabled(False)
 
 
     def retranslateUi(self, Dialog):
@@ -94,7 +103,7 @@ class Ui_Dialog1(object):
         self.comboBox.setItemText(0, _translate("Dialog", "Select Dataset"))
         self.comboBox.setItemText(1, _translate("Dialog", "MNIST"))
         self.label.setText(_translate("Dialog", " Please Selected a Dataset"))
-        self.cancelBtn.setText(_translate("Dialog", "Cancel"))
+        self.deleteBtn.setText(_translate("Dialog", "Delete"))
         self.downloadBtn.setText(_translate("Dialog", "Download"))
         self.label_3.setText(_translate("Dialog", "0%"))
 
@@ -108,7 +117,7 @@ class Ui_Dialog1(object):
             self.progressBar.setValue(100)
             self.label_3.setText("100%")
             self.downloadBtn.setEnabled(False)
-            self.cancelBtn.setEnabled(True)
+            self.deleteBtn.setEnabled(True)
             path = os.getcwd()
             # specify the path to the zip file
             zip_file_path = f"{path}/sign-language-mnist.zip"
@@ -142,7 +151,7 @@ class Ui_Dialog1(object):
      self.progressBar.setValue(0)
      self.label_3.setText("0%")
      self.downloadBtn.setEnabled(True)
-     self.cancelBtn.setEnabled(False)
+     self.deleteBtn.setEnabled(False)
 
       
 
