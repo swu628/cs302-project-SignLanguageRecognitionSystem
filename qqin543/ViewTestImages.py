@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtGui import QImage, QPixmap
+from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout
 import torch
 import torch.nn.functional as F
 from TestImagesViewer import Ui_Dialog3
@@ -22,12 +23,12 @@ class TestViewer(Ui_Dialog3):
         self.pushButton_6.clicked.connect(self.on_predict_button_click)
 
         # Set row height and column width for table widget
-        self.tablewidget.horizontalHeader().setDefaultSectionSize(28)
-        self.tablewidget.verticalHeader().setDefaultSectionSize(28)
+        self.tablewidget.horizontalHeader().setDefaultSectionSize(32)
+        self.tablewidget.verticalHeader().setDefaultSectionSize(32)
 
         # Uncomment below lines to hide grid and headers in table widget
-        # self.tableWidegt.setShowGrid(False)
-        # self.tableWidegt.horizontalHeader().setVisible(False)
+        #self.tableWidegt.setShowGrid(False)
+        #self.tablewidget.horizontalHeader().setVisible(False)
         # self.tableWidegt.verticalHeader().setVisible(False)
 
         # Initialize file_path and select default dataset
@@ -184,7 +185,7 @@ class TestViewer(Ui_Dialog3):
         # Get the prediction and its confidence
         confidence, preds = torch.max(probs, dim=1)
         
-      # # print("Predicted class:", preds[0].item())
+       # print("Predicted class:", preds[0].item())
        # #print("Confidence:", confidence[0].item())
         
         return preds[0].item(), confidence[0].item()
@@ -193,24 +194,44 @@ class TestViewer(Ui_Dialog3):
     def on_predict_button_click(self):
         selected_items = self.tablewidget.selectedItems()
         selected_rows = []
-
         for item in selected_items:
             csv_row = item.data(QtCore.Qt.UserRole)
             selected_rows.append(csv_row)
-
         print("Selected rows in CSV:", selected_rows)
-    
         test_ds = test_dataframe_to_pytorch.load(self)
-        img, label = test_ds[selected_rows]
-        plt.imshow(img.view(28,28), cmap='gray')
-        
 
         model_path = "/Users/qinqi/Team10/未命名/qqin543/DNN.pth"
         input_size = 784
         output_size = 26
-        A,B= self.predict(model_path, DNNModel, input_size, output_size, img)
-        
-        print("Predicted class:", A)
-        print("Confidence:", B)
+
+        for row in selected_rows:
+            img, label = test_ds[row]
+            A, B = self.predict(model_path, DNNModel, input_size, output_size, img)
+            print(f"Prediction for row {row}:")
+            print("Predicted class:", A)
+            print("Confidence:", B)
+
+            # Display the image and prediction in a dialog
+            dialog = QDialog(None)
+
+            dialog.setWindowTitle(f"Prediction for row {row}")
+            layout = QVBoxLayout()
+
+            # Image label
+            image_label = QLabel(dialog)
+            qimage = QImage(img.view(28, 28).numpy().astype(np.uint8), 28, 28, QImage.Format_Grayscale8)
+            pixmap = QPixmap.fromImage(qimage)
+            image_label.setPixmap(pixmap)
+            layout.addWidget(image_label)
+
+            # Prediction label
+            prediction_label = QLabel(dialog)
+            prediction_label.setText(f"Predicted class: {A}\nConfidence: {B}")
+            layout.addWidget(prediction_label)
+
+            dialog.setLayout(layout)
+            dialog.exec_()
+
+
 
 
