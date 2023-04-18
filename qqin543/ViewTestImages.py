@@ -18,7 +18,8 @@ class TestViewer(Ui_Dialog3):
         
         self.tablewidget.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
         self.pushButton_5.clicked.connect(self.delete_all_button_clicked)
-        self.pushButton_6.clicked.connect(self.store_selected_rows)
+        self.pushButton_5.clicked.connect(self.store_selected_rows)
+        self.pushButton_6.clicked.connect(self.on_predict_button_click)
 
         # Set row height and column width for table widget
         self.tablewidget.horizontalHeader().setDefaultSectionSize(28)
@@ -138,6 +139,7 @@ class TestViewer(Ui_Dialog3):
             selected_rows.append(csv_row)
 
         print("Selected rows in CSV:", selected_rows)
+        
 
     # Slot to handle "Add Tag" button click
     def add_tag_button_clicked(self):
@@ -189,13 +191,21 @@ class TestViewer(Ui_Dialog3):
        
 
     def on_predict_button_click(self):
-    # Assuming 'img' is your test image, and 'DNNModel' is your model class
+        selected_items = self.tablewidget.selectedItems()
+        selected_rows = []
+
+        for item in selected_items:
+            csv_row = item.data(QtCore.Qt.UserRole)
+            selected_rows.append(csv_row)
+
+        print("Selected rows in CSV:", selected_rows)
+    
         test_ds = test_dataframe_to_pytorch.load(self)
-        img, label = test_ds[1000]
+        img, label = test_ds[selected_rows]
         plt.imshow(img.view(28,28), cmap='gray')
         
 
-        model_path = "dnn_model.pth"
+        model_path = "/Users/qinqi/Team10/未命名/qqin543/DNN.pth"
         input_size = 784
         output_size = 26
         A,B= self.predict(model_path, DNNModel, input_size, output_size, img)
