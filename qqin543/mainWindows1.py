@@ -439,11 +439,7 @@ class Ui_TabWidget(QObject):
         TabWidget.setTabText(TabWidget.indexOf(self.tab_Test), _translate("TabWidget", "Test"))
 
         TabWidget.tabBarClicked.connect(lambda: self.fileExist(1))
-
-    def get_combobox_value(self):
-            return self.selectModelComboBox.currentIndex()
-    
-    
+ 
     def open_dialog1(self):
     # Create a QDialog instance
         dialog = QtWidgets.QDialog()
@@ -603,16 +599,19 @@ class Ui_TabWidget(QObject):
     def select_file_dialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
-        file_path, _ = QFileDialog.getOpenFileName(None, "Select a file", "", "All Files (*);;CSV Files (*.csv)", options=options)
-        return file_path
+        self.file_path, _ = QFileDialog.getOpenFileName(None, "Select a file", "", "All Files (*);;CSV Files (*.csv)", options=options)
+        
 
     def get_model_file_path(self):
-        file_path = self.select_file_dialog()
+        file_path = self.file_path
 
         if file_path:
             return file_path
         else:
             return None
+        
+    def get_combobox_value(self):
+        return self.selectModelComboBox.currentIndex()
 
     # This function is used to check whether the dataset is being imported or not
     # If no then disable the tab and set tooltip, if yes then enable the tab and disable tooltip
