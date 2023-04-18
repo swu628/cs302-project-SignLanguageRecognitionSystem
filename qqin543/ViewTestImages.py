@@ -1,17 +1,19 @@
 from matplotlib import pyplot as plt
 import pandas as pd
 import numpy as np
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout
 import torch
 import torch.nn.functional as F
 from TestImagesViewer import Ui_Dialog3
+from cnn import CNNModel
+from logisticRegression import logisticRegressionModel
 from dnn import DNNModel
-from train import trainModel
 from loadDataset import test_dataframe_to_pytorch
 import os
 import zipfile
+
 
 class TestViewer(Ui_Dialog3):
     def setupUi(self, Dialog):
@@ -190,7 +192,15 @@ class TestViewer(Ui_Dialog3):
         
         return preds[0].item(), confidence[0].item()
        
-
+    
+    def get_File_Path(self,path):
+            self.Model_File_Path = path
+        
+    def get_Combobox_Value(self,data1):
+            self.Value = data1
+            print(self.Value)
+            
+    
     def on_predict_button_click(self):
         selected_items = self.tablewidget.selectedItems()
         selected_rows = []
@@ -200,13 +210,38 @@ class TestViewer(Ui_Dialog3):
         print("Selected rows in CSV:", selected_rows)
         test_ds = test_dataframe_to_pytorch.load(self)
 
-        model_path = "/Users/qinqi/Team10/未命名/qqin543/DNN.pth"
-        input_size = 784
-        output_size = 26
+        model_path = self.Model_File_Path
+        if model_path:
+            print(f"Selected file path: {model_path}")
+        else:
+            print("No file was selected.")
+
+        if self.Value == 1:
+            
+            model_calss= logisticRegressionModel
+            in_channels = 1
+            num_classes = 26
+            input_size  = in_channels
+            output_size = num_classes 
+
+        elif self.Value == 2:
+
+            model_calss= CNNModel
+            in_channels = 1
+            num_classes = 26
+            input_size  = in_channels
+            output_size = num_classes 
+
+        elif self.Value == 3:
+
+            model_calss= DNNModel
+            input_size  = 784
+            output_size = 26
+
 
         for row in selected_rows:
             img, label = test_ds[row]
-            A, B = self.predict(model_path, DNNModel, input_size, output_size, img)
+            A, B = self.predict(model_path, model_calss, input_size, output_size, img)
             print(f"Prediction for row {row}:")
             print("Predicted class:", A)
             print("Confidence:", B)

@@ -10,8 +10,7 @@ from PyQt5.QtGui import QKeySequence
 from SaveModel import Ui_SaveModel
 from PyQt5.QtCore import QTimer
 from train import trainModel
-from PyQt5.QtCore import QThread, pyqtSignal
-import torch
+from PyQt5.QtCore import QThread, pyqtSignal,QObject
 import time
 
 class TrainingThread(QThread):
@@ -28,7 +27,7 @@ class TrainingThread(QThread):
             time.sleep(0.1)
 
 
-class Ui_TabWidget(object):
+class Ui_TabWidget(QObject):
     def setupUi(self, TabWidget):
         TabWidget.setObjectName("TabWidget")
         TabWidget.resize(550, 450)
@@ -395,6 +394,7 @@ class Ui_TabWidget(object):
         self.selectModelComboBox.setItemText(2, _translate("TabWidget", "CNN"))
         self.selectModelComboBox.setItemText(3, _translate("TabWidget", "DNN"))
 
+
         self.batchSizeLabel.setText(_translate("TabWidget", "Batch Size:"))
         self.epochNumLabel.setText(_translate("TabWidget", "Epoch Number:"))
         self.backBtn.setText(_translate("TabWidget", "Back"))
@@ -431,7 +431,7 @@ class Ui_TabWidget(object):
 
         # When the 'load model from file' is clicked, open file dialog and load the saved model
         self.pushButton_LoadModel.setText(_translate("TabWidget", "Load Model from file "))
-        self.pushButton_LoadModel.clicked.connect(self.showFileDialog)
+        self.pushButton_LoadModel.clicked.connect(self.select_file_dialog)
 
         self.label_9.setText(_translate("TabWidget", "Chose Test using:"))
         self.pushButton_DatasetImages.setText(_translate("TabWidget", "Dataset Images"))
@@ -440,6 +440,10 @@ class Ui_TabWidget(object):
 
         TabWidget.tabBarClicked.connect(lambda: self.fileExist(1))
 
+    def get_combobox_value(self):
+            return self.selectModelComboBox.currentIndex()
+    
+    
     def open_dialog1(self):
     # Create a QDialog instance
         dialog = QtWidgets.QDialog()
@@ -459,7 +463,9 @@ class Ui_TabWidget(object):
         dialog2.setupUi(dialog)
         dialog.exec_()
 
-    
+    data_signal1 = pyqtSignal(int)
+    data_signal2 = pyqtSignal(str)
+   
     def open_dialog3(self):
     # Create a QDialog instance
      dialog = QtWidgets.QDialog()
@@ -467,6 +473,10 @@ class Ui_TabWidget(object):
      dialog3 = TestViewer()
     # Configure the QDialog instance using the setupUi method
      dialog3.setupUi(dialog)
+     self.data_signal1.connect(dialog3.get_Combobox_Value)
+     self.data_signal1.emit(self.get_combobox_value()) 
+     self.data_signal2.connect(dialog3.get_File_Path)
+     self.data_signal2.emit(self.get_model_file_path())
      dialog.exec_()
 
     def open_dialog4(self):
@@ -589,10 +599,20 @@ class Ui_TabWidget(object):
            self.label_2.setText("Dataset Name:")
            self.label_3.setText("Number of Images:")
 
-    def showFileDialog(self):
-        fname = QFileDialog.getOpenFileName(self.horizontalLayoutWidget_4, 'Open file', './')
-        if fname[0]:                            # if we get the file name, load the model
-            torch.load(fname[0])
+
+    def select_file_dialog(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+        file_path, _ = QFileDialog.getOpenFileName(None, "Select a file", "", "All Files (*);;CSV Files (*.csv)", options=options)
+        return file_path
+
+    def get_model_file_path(self):
+        file_path = self.select_file_dialog()
+
+        if file_path:
+            return file_path
+        else:
+            return None
 
     # This function is used to check whether the dataset is being imported or not
     # If no then disable the tab and set tooltip, if yes then enable the tab and disable tooltip
@@ -622,6 +642,7 @@ class Ui_TabWidget(object):
         self.progressLabel.setText(str(value) + "%")
         if value == 100:
             self.stackedWidget_2.setCurrentIndex(1)
+
         
 
 if __name__ == '__main__':
