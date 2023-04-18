@@ -46,7 +46,7 @@ class loadData:
         # pytorch dataset
         train_dataset_full = TensorDataset(train_images_tensors, train_labels_tensors) #this dataset will further devided into validation dataset and training dataset
         test_dataset = TensorDataset(test_images_tensors, test_labels_tensors)
-        img, label = train_dataset_full[0]
+        #img, label = train_dataset_full[0]
 
         # Split validation and train dataset
         val_size = int(validationValue/100 * 27455)
@@ -61,3 +61,37 @@ class loadData:
         test_dataloader = DataLoader(test_dataset, batchSize*2, num_workers=4, pin_memory=True)
 
         return train_dataloder, validation_dataloader, test_dataloader
+    
+class test_dataframe_to_pytorch:
+   
+    def load(self):
+        path = os.getcwd()
+
+        test_datafile = pd.read_csv(f"{path}/sign-language-mnist/sign_mnist_test.csv")
+
+        classes = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+        
+        def dataframe_to_nparray(test_df):
+            
+            test_df = test_df.copy(deep = True)
+            
+            test_images = test_df.iloc[:, 1:].to_numpy(dtype = 'float32')
+            return test_images
+
+        test_img = dataframe_to_nparray(test_datafile)
+        
+        test_labels = test_datafile['label'].values
+       
+        test_images_shaped = test_img.reshape(test_img.shape[0],1,28,28)
+
+        # Convert all numpy arrays into pytorch tensors
+        
+        test_images_tensors = torch.from_numpy(test_images_shaped)
+        test_labels_tensors = torch.from_numpy(test_labels)
+
+        test_dataset = TensorDataset(test_images_tensors, test_labels_tensors)
+
+        # pytorch dataset
+        
+        return test_dataset
+

@@ -1,14 +1,24 @@
+from matplotlib import pyplot as plt
 import pandas as pd
 import numpy as np
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtGui import QImage, QPixmap
+import torch
+import torch.nn.functional as F
 from TestImagesViewer import Ui_Dialog3
+from dnn import DNNModel
+from train import trainModel
+from loadDataset import test_dataframe_to_pytorch
 import os
 import zipfile
 
 class TestViewer(Ui_Dialog3):
     def setupUi(self, Dialog):
         super().setupUi(Dialog)
+        
+        self.tablewidget.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
+        self.pushButton_5.clicked.connect(self.delete_all_button_clicked)
+        self.pushButton_6.clicked.connect(self.store_selected_rows)
 
         # Set row height and column width for table widget
         self.tablewidget.horizontalHeader().setDefaultSectionSize(28)
@@ -34,6 +44,9 @@ class TestViewer(Ui_Dialog3):
         self.pushButton.clicked.connect(self.add_tag_button_clicked)
         self.pushButton_2.clicked.connect(self.clear_tags_button_clicked)
         self.pushButton_3.clicked.connect(self.filter_button_clicked)
+
+        self.tablewidget.itemClicked.connect(self.on_item_clicked)
+
 
     # Slot to clear text browser when "Clear Tag" button is clicked
     def clear_tags_button_clicked(self):
@@ -68,7 +81,8 @@ class TestViewer(Ui_Dialog3):
         self.tablewidget.setColumnCount(col_count)
 
         # Loop through each image in the filtered data
-        for idx, (_, image_data) in enumerate(data.iterrows()):
+        for idx, (csv_row, image_data) in enumerate(data.iterrows(), start=0):
+
             # Reshape the image data into a 28x28 array and convert to uint8 format
             image_array = image_data[1:].values.reshape(28, 28).astype(np.uint8)
             
@@ -81,6 +95,7 @@ class TestViewer(Ui_Dialog3):
             # Create a QTableWidgetItem and set its decoration role to the QPixmap
             item = QtWidgets.QTableWidgetItem()
             item.setData(QtCore.Qt.DecorationRole, pixmap)
+            item.setData(QtCore.Qt.UserRole, csv_row)
 
             # Calculate the row and column position for the QTableWidgetItem in the table widget
             row = idx // images_per_row
@@ -104,6 +119,25 @@ class TestViewer(Ui_Dialog3):
         # Note that we need to subtract an extra 1 here to account for the missing 'J' label
         elif 'K' <= char.upper() <= 'Y':
             return ord(char.upper()) - ord('A') 
+        
+
+
+    def on_item_clicked(self, item):
+        csv_row = item.data(QtCore.Qt.UserRole)
+        print(f"Clicked image is at row {csv_row} in the CSV file")
+
+    def delete_all_button_clicked(self):
+        self.tablewidget.clearSelection()
+
+    def store_selected_rows(self):
+        selected_items = self.tablewidget.selectedItems()
+        selected_rows = []
+
+        for item in selected_items:
+            csv_row = item.data(QtCore.Qt.UserRole)
+            selected_rows.append(csv_row)
+
+        print("Selected rows in CSV:", selected_rows)
 
     # Slot to handle "Add Tag" button click
     def add_tag_button_clicked(self):
@@ -129,4 +163,44 @@ class TestViewer(Ui_Dialog3):
 
         filtered_data = self.filter_data(self.label)
         self.display_images(filtered_data)
+
+    def predict(self,model_path, model_class, input_size, output_size, img):
+        # Create a new model instance
+        model = model_class(input_size, output_size)
+        
+        # Load the saved model parameters
+        model.load_state_dict(torch.load(model_path))
+        
+        # Set the model to evaluation mode
+        model.eval()
+
+        # Perform prediction
+        xb = img.unsqueeze(0)  # Add a batch dimension
+        yb = model(xb)  # Get model predictions
+        # Apply softmax to convert outputs to probabilities
+        probs = F.softmax(yb, dim=1)
+        # Get the prediction and its confidence
+        confidence, preds = torch.max(probs, dim=1)
+        
+      # # print("Predicted class:", preds[0].item())
+       # #print("Confidence:", confidence[0].item())
+        
+        return preds[0].item(), confidence[0].item()
+       
+
+    def on_predict_button_click(self):
+    # Assuming 'img' is your test image, and 'DNNModel' is your model class
+        test_ds = test_dataframe_to_pytorch.load(self)
+        img, label = test_ds[1000]
+        plt.imshow(img.view(28,28), cmap='gray')
+        
+
+        model_path = "dnn_model.pth"
+        input_size = 784
+        output_size = 26
+        A,B= self.predict(model_path, DNNModel, input_size, output_size, img)
+        
+        print("Predicted class:", A)
+        print("Confidence:", B)
+
 
