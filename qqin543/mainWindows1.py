@@ -369,6 +369,10 @@ class Ui_TabWidget(QObject):
         self.train_timer = QTimer()
         self.train_timer.timeout.connect(lambda: self.fileExist(1))
         self.train_timer.start(1000)
+
+        self.batchSizeSpinBox.valueChanged.connect(self.update_values)
+        self.epochNumSpinBox.valueChanged.connect(self.update_values)
+        self.selectModelComboBox.currentIndexChanged.connect(self.update_values)
   
 
     def retranslateUi(self, TabWidget):
@@ -379,14 +383,7 @@ class Ui_TabWidget(QObject):
         TabWidget.setTabText(TabWidget.indexOf(self.tab_Import), _translate("TabWidget", "Import"))
         self.pushButton_ViewDataset.setText(_translate("TabWidget", "View Dataset"))
         self.pushButton_Continue.setText(_translate("TabWidget", "Continue"))
-        self.textBrowser.setHtml(_translate("TabWidget", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'.AppleSystemUIFont\'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">DNN Name:</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Batch Size:</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Epoch Number:</span></p></body></html>"))
+        self.textBrowser.setHtml(_translate("TabWidget", "<p><span style=\" color:#fd8008;\">DNN Name:</span></p><p><span style=\" color:#fd8008;\">Batch Size:" + str(self.batchSizeSpinBox.value()) + "</span></p><p><span style=\" color:#fd8008;\">Epoch Number:" + str(self.epochNumSpinBox.value()) + "</span></p></body></html>"))
         
         # ComboBox for model selection on select model page
         self.selectModelComboBox.setItemText(0, _translate("TabWidget", "Selecet a Model"))
@@ -402,16 +399,7 @@ class Ui_TabWidget(QObject):
         self.trainValidationSlider.setToolTip(_translate("TabWidget", "<html><head/><body><p><span style=\" color:#fd8008;\">Validation set and Train set must &gt; 10%</span></p></body></html>"))
         self.trainLabel.setText(_translate("TabWidget", "Train:"))
         self.validationLabel.setText(_translate("TabWidget", "Validation:"))
-        self.textBrowser_2.setHtml(_translate("TabWidget", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'.AppleSystemUIFont\'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt;\">DNN Name:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt;\">Batch Size:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt;\">Epoch Number:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt;\">Train Set Size:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt;\">Validation Set Size:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt;\">Test Set Size:</span></p></body></html>"))
+        self.textBrowser_2.setHtml(_translate("TabWidget", ""))
         self.progressLabel.setText(_translate("TabWidget", "0%"))
         self.pushButton_CancelTraining.setText(_translate("TabWidget", "Cancel Training"))
         self.pushButton_TrainNewModel.setText(_translate("TabWidget", "Train New Model"))
@@ -420,14 +408,7 @@ class Ui_TabWidget(QObject):
         self.label_2.setText(_translate("TabWidget", "Dataset Name:"))
         self.label_3.setText(_translate("TabWidget", "Number of Images:"))
         TabWidget.setTabText(TabWidget.indexOf(self.tab_Train), _translate("TabWidget", "Train"))
-        self.textBrowser_1.setHtml(_translate("TabWidget", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'.AppleSystemUIFont\'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">DNN Name:</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Batch Size:</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Epoch Number:</span></p></body></html>"))
+        self.textBrowser_1.setHtml(_translate("TabWidget",  ""))
 
         # When the 'load model from file' is clicked, open file dialog and load the saved model
         self.pushButton_LoadModel.setText(_translate("TabWidget", "Load Model from file "))
@@ -646,7 +627,26 @@ class Ui_TabWidget(QObject):
         if value == 100:
             self.stackedWidget_2.setCurrentIndex(1)
 
+    def update_values(self):
+        # Do not display the name of the model unless the user have chosen one
+        if self.selectModelComboBox.currentIndex() == 0:
+            name = ""
+        else: 
+            name = self.selectModelComboBox.currentText()
         
+        # Get the value of batch size, epoch number, train set size and validation set size from spin boxes
+        batch_size = self.batchSizeSpinBox.value()
+        epoch_number = self.epochNumSpinBox.value()
+        train_set_size = int(self.trainSpinBox.value() / 100 * 27455)
+        validation_set_size = int(self.validationSpinBox.value() / 100 * 27455)
+
+        # Update the values to the UI
+        text = f"<html></head><p><span style=\" color:#fd8008;\">DNN Name: {name}</span></p><p><span style=\" color:#fd8008;\">Batch Size: {batch_size}</span></p><p><span style=\" color:#fd8008;\">Epoch Number: {epoch_number}</span></p>"
+        self.textBrowser.setHtml(text + "</body></html>") 
+        text2 = text + f"<p><span style=\" color:#fd8008;\">Train Set Size: {train_set_size}</span></p><p><span style=\" color:#fd8008;\">Validation Set Size: {validation_set_size}</span></p><p><span style=\" color:#fd8008;\">Test Set Size: 7172</span></p>"
+        self.textBrowser_2.setHtml(text2 + "</body></html>")
+        self.textBrowser_1.setHtml(text + "</body></html>")
+
 
 if __name__ == '__main__':
     import sys
