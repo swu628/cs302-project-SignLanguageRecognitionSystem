@@ -190,7 +190,7 @@ class Ui_TabWidget(QObject):
         self.validationLabel = QtWidgets.QLabel(self.page_A2)
         self.validationLabel.setGeometry(QtCore.QRect(370, 200, 60, 21))
         self.validationLabel.setObjectName("validationLabel")
-
+ 
         self.stackedWidget.addWidget(self.page_A2)
         self.page_A3 = QtWidgets.QWidget()
         self.page_A3.setObjectName("page_A3")

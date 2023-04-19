@@ -81,93 +81,55 @@ class Ui_Dialog5(object):
         
 
     def capture_image(self):
-        # Open the camera
         cap = cv2.VideoCapture(0)
-
-        # Continuously capture frames
         while True:
-            # Read the current frame
             ret, frame = cap.read()
 
             # Flip the image horizontally
             frame = cv2.flip(frame, 1)
 
-            # Display instructions on the frame
             cv2.putText(frame, "Press 'S' to save a photo, 'Q' to quit the camera.", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-
-            # Show the frame
             cv2.imshow('Camera', frame)
-
-            # Check for key presses
             key = cv2.waitKey(1) & 0xFF
-
-            # If 's' is pressed
             if key == ord('s'):
-                # Convert the frame to grayscale
+                # Convert to grayscale
                 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-                # Define skin color range in HSV
-                lower_skin = np.array([0, 20, 70], dtype=np.uint8)
-                upper_skin = np.array([20, 255, 255], dtype=np.uint8)
+                # Calculate new dimensions while preserving the aspect ratio
+                height, width = gray.shape
+                aspect_ratio = float(width) / height
+                if width > height:
+                    new_width = int(28 * aspect_ratio)
+                    new_height = 28
+                else:
+                    new_height = int(28 / aspect_ratio)
+                    new_width = 28
+                
+                # Resize while preserving the aspect ratio
+                resized_gray = cv2.resize(gray, (new_width, new_height), interpolation=cv2.INTER_AREA)
 
-                # Convert the frame to HSV
-                hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+                # Calculate the position to crop the 28x28 image
+                y_offset = (new_height - 28) // 2
+                x_offset = (new_width - 28) // 2
 
-                # Create a mask for skin color
-                mask = cv2.inRange(hsv, lower_skin, upper_skin)
+                # Crop the 28x28 image without black borders
+                final_image = resized_gray[y_offset:y_offset+28, x_offset:x_offset+28]
 
-                # Apply the mask to the grayscale frame
-                res = cv2.bitwise_and(gray, gray, mask=mask)
-
-                # Find contours in the mask
-                contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-                # Initialize variables to find the contour with the largest area
-                max_area = -1
-                max_cnt = None
-
-                # Iterate through the contours
-                for cnt in contours:
-                    area = cv2.contourArea(cnt)
-
-                    # If the current contour has a larger area, update max_area and max_cnt
-                    if area > max_area:
-                        max_area = area
-                        max_cnt = cnt
-
-                # If a contour with the largest area is found
-                if max_cnt is not None:
-                    # Get the bounding rectangle of the contour
-                    x, y, w, h = cv2.boundingRect(max_cnt)
-
-                    # Crop the hand region from the grayscale frame
-                    hand_region = gray[y:y+h, x:x+w]
-
-                    # Apply Gaussian blur to the hand region
-                    blurred = cv2.GaussianBlur(hand_region, (5, 5), 0)
-
-                    # Keep aspect ratio and add padding
-                    height, width = blurred.shape
-                    if height > width:
-                        pad = (height - width) // 2
-                        padded_image = cv2.copyMakeBorder(blurred, 0, 0, pad, pad, cv2.BORDER_REPLICATE)
-                    else:
-                        pad = (width - height) // 2
-                        padded_image = cv2.copyMakeBorder(blurred, pad, pad, 0, 0, cv2.BORDER_REPLICATE)
-
-                    # Resize the padded hand region to 28x28
-                    resized_hand = cv2.resize(padded_image, (28, 28), interpolation=cv2.INTER_AREA)
-                    hand_filename = f"hand_image_{time.strftime('%Y%m%d_%H%M%S')}.png"
-                    cv2.imwrite(hand_filename, resized_hand)
-                    self.add_image_to_table(hand_filename)
-
-            # If 'q' is pressed, break the loop
+                hand_filename = f"hand_image_{time.strftime('%Y%m%d_%H%M%S')}.png"
+                cv2.imwrite(hand_filename, final_image)
+                self.add_image_to_table(hand_filename)
             elif key == ord('q'):
                 break
-
-        # Release the camera and close the window
         cap.release()
         cv2.destroyAllWindows()
+
+
+
+
+
+
+
+
 
 
     def add_image_to_table(self, image_path):
@@ -333,6 +295,7 @@ class Ui_Dialog5(object):
             input_size  = 784
             output_size = 26
       
+
         # 确保 row_indices 中的值在有效范围内
         valid_row_indices = [row for row in self.images_indices if 0 <= row < len(test_ds)]
         
