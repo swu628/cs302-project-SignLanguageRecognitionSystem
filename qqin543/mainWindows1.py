@@ -469,8 +469,10 @@ class Ui_TabWidget(QObject):
      dialog3 = TestViewer()
     # Configure the QDialog instance using the setupUi method
      dialog3.setupUi(dialog)
+     #Pass the current Combo box Index to Predict to ensure which model are we use for prediction
      self.data_signal1.connect(dialog3.get_Combobox_Value)
      self.data_signal1.emit(self.get_combobox_value()) 
+     #Pass the saved model file path to Predict for loading the model haven been training
      self.data_signal2.connect(dialog3.get_File_Path)
      self.data_signal2.emit(self.get_model_file_path())
      dialog.exec_()

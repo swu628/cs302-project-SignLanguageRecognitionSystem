@@ -18,8 +18,10 @@ import zipfile
 class TestViewer(Ui_Dialog3):
     def setupUi(self, Dialog):
         super().setupUi(Dialog)
-        
+        # Allow user choose multiple test set images used for prediction
         self.tablewidget.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
+        
+        # Connect delete button and predict button to clear and predict function
         self.pushButton_5.clicked.connect(self.delete_all_button_clicked)
         self.pushButton_5.clicked.connect(self.store_selected_rows)
         self.pushButton_6.clicked.connect(self.on_predict_button_click)
@@ -124,7 +126,6 @@ class TestViewer(Ui_Dialog3):
         elif 'K' <= char.upper() <= 'Y':
             return ord(char.upper()) - ord('A') 
         
-
 
     def on_item_clicked(self, item):
         csv_row = item.data(QtCore.Qt.UserRole)
