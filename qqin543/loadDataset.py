@@ -64,10 +64,10 @@ class loadData:
     
 class test_dataframe_to_pytorch:
    
-    def load(self):
+    def load(self,csv_path):
         path = os.getcwd()
 
-        test_datafile = pd.read_csv(f"{path}/sign-language-mnist/sign_mnist_test.csv")
+        test_datafile = pd.read_csv(csv_path)
 
         classes = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
         
@@ -79,6 +79,9 @@ class test_dataframe_to_pytorch:
             return test_images
 
         test_img = dataframe_to_nparray(test_datafile)
+
+        print("Test data shape:", test_img.shape)
+
         
         test_labels = test_datafile['label'].values
        

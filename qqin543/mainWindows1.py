@@ -467,11 +467,14 @@ class Ui_TabWidget(QObject):
      dialog = QtWidgets.QDialog()
     # Create a Ui_Dialog instance
      dialog3 = TestViewer()
+    
     # Configure the QDialog instance using the setupUi method
      dialog3.setupUi(dialog)
+     
      #Pass the current Combo box Index to Predict to ensure which model are we use for prediction
      self.data_signal1.connect(dialog3.get_Combobox_Value)
      self.data_signal1.emit(self.get_combobox_value()) 
+     
      #Pass the saved model file path to Predict for loading the model haven been training
      self.data_signal2.connect(dialog3.get_File_Path)
      self.data_signal2.emit(self.get_model_file_path())
@@ -485,12 +488,19 @@ class Ui_TabWidget(QObject):
      # Configure the QDialog instance using the setupUi method
       dialog4.setupUi(dialog)
       dialog.exec_()
+    
+    data_signal3 = pyqtSignal(int)
+    data_signal4 = pyqtSignal(str)
 
     def open_dialog5(self):
      # Create a QDialog instance
       dialog = QtWidgets.QDialog()
      # Create a Ui_Dialog instance
       dialog5 = Ui_Dialog5()
+      self.data_signal3.connect(dialog5.get_Combobox_Value)
+      self.data_signal3.emit(self.get_combobox_value()) 
+      self.data_signal2.connect(dialog5.get_File_Path)
+      self.data_signal2.emit(self.get_model_file_path())
      # Configure the QDialog instance using the setupUi method
       dialog5.setupUi(dialog)
       dialog.exec_()
@@ -507,9 +517,8 @@ class Ui_TabWidget(QObject):
  
     # Switch into the Train Model Phase
     def switchToStack3(self):
-        if not self.get_combobox_value() == 0:
-            self.stackedWidget.setCurrentIndex(2)
-            self.stackedWidget_2.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget_2.setCurrentIndex(0)
 
     # Switch to the test phase
     def switchToTab3(self):
@@ -631,13 +640,12 @@ class Ui_TabWidget(QObject):
 
 
     def start_training(self):
-        if not self.get_combobox_value() == 0:
-            # create the training thread
-            self.thread = TrainingThread()
-            # connect the progress update signal to the update_progress method
-            self.thread.update_progress.connect(self.update_progress)
-            # start the thread
-            self.thread.start()
+        # create the training thread
+        self.thread = TrainingThread()
+        # connect the progress update signal to the update_progress method
+        self.thread.update_progress.connect(self.update_progress)
+        # start the thread
+        self.thread.start()
 
     def update_progress(self, value):
         # update the progress bar value

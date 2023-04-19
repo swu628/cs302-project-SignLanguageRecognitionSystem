@@ -23,17 +23,13 @@ class TestViewer(Ui_Dialog3):
         
         # Connect delete button and predict button to clear and predict function
         self.pushButton_5.clicked.connect(self.delete_all_button_clicked)
-        self.pushButton_5.clicked.connect(self.store_selected_rows)
+        self.pushButton_6.clicked.connect(self.store_selected_rows)
         self.pushButton_6.clicked.connect(self.on_predict_button_click)
 
         # Set row height and column width for table widget
         self.tablewidget.horizontalHeader().setDefaultSectionSize(32)
         self.tablewidget.verticalHeader().setDefaultSectionSize(32)
 
-        # Uncomment below lines to hide grid and headers in table widget
-        #self.tableWidegt.setShowGrid(False)
-        #self.tablewidget.horizontalHeader().setVisible(False)
-        # self.tableWidegt.verticalHeader().setVisible(False)
 
         # Initialize file_path and select default dataset
         path = os.getcwd()
@@ -44,7 +40,7 @@ class TestViewer(Ui_Dialog3):
         self.file_path = f"{path}/sign-language-mnist/sign_mnist_test.csv"
         self.checkBox_3.setChecked(True)
         self.radioButton_2.setChecked(True)
-        self.load_data()
+        self.load_data() 
 
         # Connect signals to slots for handling button clicks
         self.pushButton.clicked.connect(self.add_tag_button_clicked)
@@ -61,10 +57,6 @@ class TestViewer(Ui_Dialog3):
     # Function to load dataset from the selected file_path
     def load_data(self):
         self.data = pd.read_csv(self.file_path)
-
-    # Function to get label from the input character
-    def get_label_from_char(self, char):
-        return ord(char.upper()) - ord('A')
 
     # Function to filter data based on the label
     def filter_data(self, label):
@@ -209,7 +201,7 @@ class TestViewer(Ui_Dialog3):
             csv_row = item.data(QtCore.Qt.UserRole)
             selected_rows.append(csv_row)
         print("Selected rows in CSV:", selected_rows)
-        test_ds = test_dataframe_to_pytorch.load(self)
+        test_ds = test_dataframe_to_pytorch.load(self,self.file_path)
 
         model_path = self.Model_File_Path
         if model_path:
