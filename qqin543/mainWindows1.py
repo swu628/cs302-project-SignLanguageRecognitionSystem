@@ -507,8 +507,9 @@ class Ui_TabWidget(QObject):
  
     # Switch into the Train Model Phase
     def switchToStack3(self):
-        self.stackedWidget.setCurrentIndex(2)
-        self.stackedWidget_2.setCurrentIndex(0)
+        if not self.get_combobox_value() == 0:
+            self.stackedWidget.setCurrentIndex(2)
+            self.stackedWidget_2.setCurrentIndex(0)
 
     # Switch to the test phase
     def switchToTab3(self):
@@ -630,12 +631,13 @@ class Ui_TabWidget(QObject):
 
 
     def start_training(self):
-        # create the training thread
-        self.thread = TrainingThread()
-        # connect the progress update signal to the update_progress method
-        self.thread.update_progress.connect(self.update_progress)
-        # start the thread
-        self.thread.start()
+        if not self.get_combobox_value() == 0:
+            # create the training thread
+            self.thread = TrainingThread()
+            # connect the progress update signal to the update_progress method
+            self.thread.update_progress.connect(self.update_progress)
+            # start the thread
+            self.thread.start()
 
     def update_progress(self, value):
         # update the progress bar value
