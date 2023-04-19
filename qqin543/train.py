@@ -12,12 +12,13 @@ class trainModel:
 
         global model
 
-        # load dataset
+        # Load dataset
         train_dataloder, validation_dataloader, test_dataloader = loadData.load(self, batchSize, validationValue)
 
-        # If the user choose lenet5 model, it will call the leNet5 class
+        # If the user choose logistic regression model, it will call the logistic regression class
         if self.selectModelComboBox.currentIndex() == 1:
             
+            # Import logistic regression model
             model = logisticRegressionModel(in_channels = 1, num_classes = 26)
 
             def evaluate(model, val_loader):
@@ -39,12 +40,15 @@ class trainModel:
                     model.epoch_end(epoch, result)
                     history.append(result)
                 return history
-
+            
+            # Call the function and return for connecting to UI
             history = fit(epochNum, 0.001, model, train_dataloder, validation_dataloader)
+            return history
 
+        # If the user choose cnn model, it will call the cnn class
         elif self.selectModelComboBox.currentIndex() == 2:
 
-            # import cnn model
+            # Import cnn model
             model = CNNModel(in_channels = 1, num_classes = 26)
 
             # train the model
@@ -74,10 +78,14 @@ class trainModel:
                     history.append(result)
                 return history
 
+            # Call the function and return for connecting to UI
             history = fit(epochNum, 0.001, model, train_dataloder, validation_dataloader)
-       
+            return history
+
+        # If the user choose dnn model, it will call the dnn class
         elif self.selectModelComboBox.currentIndex() == 3:
 
+            # Import dnn model
             model = DNNModel(784, out_size = 26)
             history = []
 
@@ -100,7 +108,9 @@ class trainModel:
                     history.append(result)
                 return history
 
-            history += fit(epochNum, .001, model, train_dataloder, validation_dataloader)
+            # Call the function and return for connecting to UI
+            history += fit(epochNum, 0.001, model, train_dataloder, validation_dataloader)
+            return history
 
         else:
             # Show warning message if no model was selected
@@ -109,3 +119,4 @@ class trainModel:
     # Save the model with user input name
     def saveModel(self, fileName):
         torch.save(model.state_dict(), fileName + ".pth")
+        

@@ -1,12 +1,11 @@
 import os
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QShortcut, QFileDialog
+from PyQt5.QtWidgets import QFileDialog
 import pandas as pd
 from SelectDataset import Ui_Dialog1
 from ViewDataset import DatasetViewer
 from ViewTestImages import TestViewer
 from Camera import Ui_Dialog5
-from PyQt5.QtGui import QKeySequence
 from SaveModel import Ui_SaveModel
 from PyQt5.QtCore import QTimer
 from train import trainModel
@@ -43,7 +42,6 @@ class Ui_TabWidget(QObject):
         self.gridLayout.setObjectName("gridLayout")
         self.pushButton = QtWidgets.QPushButton(self.tab_Import)
         self.pushButton.setObjectName("pushButton")
-       
         
         self.gridLayout.addWidget(self.pushButton, 2, 0, 1, 1)
         self.label = QtWidgets.QLabel(self.tab_Import)
@@ -107,14 +105,13 @@ class Ui_TabWidget(QObject):
         self.gridLayout_7.setObjectName("gridLayout_7")
         self.pushButton_Continue = QtWidgets.QPushButton(self.layoutWidget)
         self.pushButton_Continue.setObjectName("pushButton_Continue")
-        #sadasdasdasd
-        #self.pushButton_Continue.clicked.connect(self.switchToStack2)
+
         self.gridLayout_7.addWidget(self.pushButton_Continue, 1, 0, 1, 1)
         self.stackedWidget.addWidget(self.page_A1)
         self.page_A2 = QtWidgets.QWidget()
         self.page_A2.setObjectName("page_A2")
-        self.textBrowser = QtWidgets.QTextBrowser(self.page_A2)
-        self.textBrowser.setGeometry(QtCore.QRect(290, 20, 161, 91))
+        self.textBrowserOnSelectModel = QtWidgets.QTextBrowser(self.page_A2)
+        self.textBrowserOnSelectModel.setGeometry(QtCore.QRect(290, 20, 161, 91))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(234, 234, 234))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -125,10 +122,10 @@ class Ui_TabWidget(QObject):
         brush = QtGui.QBrush(QtGui.QColor(236, 236, 236))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
-        self.textBrowser.setPalette(palette)
-        self.textBrowser.setFrameShape(QtWidgets.QFrame.Box)
-        self.textBrowser.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.textBrowser.setObjectName("textBrowser")
+        self.textBrowserOnSelectModel.setPalette(palette)
+        self.textBrowserOnSelectModel.setFrameShape(QtWidgets.QFrame.Box)
+        self.textBrowserOnSelectModel.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.textBrowserOnSelectModel.setObjectName("textBrowserOnSelectModel")
 
         # Combobox for selecting model on select model page
         self.selectModelComboBox = QtWidgets.QComboBox(self.page_A2)
@@ -197,12 +194,12 @@ class Ui_TabWidget(QObject):
         self.stackedWidget.addWidget(self.page_A2)
         self.page_A3 = QtWidgets.QWidget()
         self.page_A3.setObjectName("page_A3")
-        self.textBrowser_2 = QtWidgets.QTextBrowser(self.page_A3)
-        self.textBrowser_2.setGeometry(QtCore.QRect(0, 10, 256, 191))
-        self.textBrowser_2.setObjectName("textBrowser_2")
-        self.textBrowser_3 = QtWidgets.QTextBrowser(self.page_A3)
-        self.textBrowser_3.setGeometry(QtCore.QRect(260, 11, 256, 191))
-        self.textBrowser_3.setObjectName("textBrowser_3")
+        self.textBrowserOnSave = QtWidgets.QTextBrowser(self.page_A3)
+        self.textBrowserOnSave.setGeometry(QtCore.QRect(0, 10, 256, 191))
+        self.textBrowserOnSave.setObjectName("textBrowserOnSave")
+        self.textBrowserOnTrainResult = QtWidgets.QTextBrowser(self.page_A3)
+        self.textBrowserOnTrainResult.setGeometry(QtCore.QRect(260, 11, 256, 191))
+        self.textBrowserOnTrainResult.setObjectName("textBrowserOnTrainResult")
         self.horizontalLayoutWidget = QtWidgets.QWidget(self.page_A3)
         self.horizontalLayoutWidget.setGeometry(QtCore.QRect(-1, 210, 521, 31))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
@@ -269,7 +266,7 @@ class Ui_TabWidget(QObject):
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_4)
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.textBrowser_1 = QtWidgets.QTextBrowser(self.horizontalLayoutWidget_4)
+        self.textBrowserOnTest = QtWidgets.QTextBrowser(self.horizontalLayoutWidget_4)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(234, 234, 234))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -280,11 +277,11 @@ class Ui_TabWidget(QObject):
         brush = QtGui.QBrush(QtGui.QColor(236, 236, 236))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
-        self.textBrowser_1.setPalette(palette)
-        self.textBrowser_1.setFrameShape(QtWidgets.QFrame.Box)
-        self.textBrowser_1.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.textBrowser_1.setObjectName("textBrowser_1")
-        self.horizontalLayout_4.addWidget(self.textBrowser_1)
+        self.textBrowserOnTest.setPalette(palette)
+        self.textBrowserOnTest.setFrameShape(QtWidgets.QFrame.Box)
+        self.textBrowserOnTest.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.textBrowserOnTest.setObjectName("textBrowserOnTest")
+        self.horizontalLayout_4.addWidget(self.textBrowserOnTest)
         self.pushButton_LoadModel = QtWidgets.QPushButton(self.horizontalLayoutWidget_4)
         self.pushButton_LoadModel.setObjectName("pushButton_LoadModel")
         self.horizontalLayout_4.addWidget(self.pushButton_LoadModel)
@@ -350,12 +347,6 @@ class Ui_TabWidget(QObject):
         
         # Connect the right spinBox value change signal to the update_spinbox_value custom slot
         self.validationSpinBox.valueChanged.connect(self.updateTrainSpinBox)
-        
-        # Create shortcuts for switching stack_2 pages
-        self.shortcut_pageB1 = QShortcut(QKeySequence("Ctrl+1"), TabWidget)
-        self.shortcut_pageB1.activated.connect(lambda: self.stackedWidget_2.setCurrentIndex(0))
-        self.shortcut_pageB2 = QShortcut(QKeySequence("Ctrl+2"), TabWidget)
-        self.shortcut_pageB2.activated.connect(lambda: self.stackedWidget_2.setCurrentIndex(1))
 
         #click signal connect to Test Tab
         self.pushButton_TestModel.clicked.connect(self.switchToTab3)
@@ -369,7 +360,11 @@ class Ui_TabWidget(QObject):
         self.train_timer = QTimer()
         self.train_timer.timeout.connect(lambda: self.fileExist(1))
         self.train_timer.start(1000)
-  
+
+        # Connect the spin boxes value to UI
+        self.batchSizeSpinBox.valueChanged.connect(self.update_values)
+        self.epochNumSpinBox.valueChanged.connect(self.update_values)
+        self.selectModelComboBox.currentIndexChanged.connect(self.update_values)
 
     def retranslateUi(self, TabWidget):
         _translate = QtCore.QCoreApplication.translate
@@ -379,21 +374,14 @@ class Ui_TabWidget(QObject):
         TabWidget.setTabText(TabWidget.indexOf(self.tab_Import), _translate("TabWidget", "Import"))
         self.pushButton_ViewDataset.setText(_translate("TabWidget", "View Dataset"))
         self.pushButton_Continue.setText(_translate("TabWidget", "Continue"))
-        self.textBrowser.setHtml(_translate("TabWidget", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'.AppleSystemUIFont\'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">DNN Name:</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Batch Size:</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Epoch Number:</span></p></body></html>"))
-        
+        self.textBrowserOnSelectModel.setHtml(_translate("TabWidget", "<p><span style=\" color:#fd8008;\">DNN Name: </span></p><p><span style=\" color:#fd8008;\">Batch Size: " + str(self.batchSizeSpinBox.value()) + "</span></p><p><span style=\" color:#fd8008;\">Epoch Number: " + str(self.epochNumSpinBox.value()) + "</span></p></body></html>"))
+        self.textBrowserOnTrainResult.setHtml(_translate("TabWidget", ""))
+
         # ComboBox for model selection on select model page
         self.selectModelComboBox.setItemText(0, _translate("TabWidget", "Selecet a Model"))
         self.selectModelComboBox.setItemText(1, _translate("TabWidget", "Logistic Regression"))
         self.selectModelComboBox.setItemText(2, _translate("TabWidget", "CNN"))
         self.selectModelComboBox.setItemText(3, _translate("TabWidget", "DNN"))
-
 
         self.batchSizeLabel.setText(_translate("TabWidget", "Batch Size:"))
         self.epochNumLabel.setText(_translate("TabWidget", "Epoch Number:"))
@@ -402,16 +390,7 @@ class Ui_TabWidget(QObject):
         self.trainValidationSlider.setToolTip(_translate("TabWidget", "<html><head/><body><p><span style=\" color:#fd8008;\">Validation set and Train set must &gt; 10%</span></p></body></html>"))
         self.trainLabel.setText(_translate("TabWidget", "Train:"))
         self.validationLabel.setText(_translate("TabWidget", "Validation:"))
-        self.textBrowser_2.setHtml(_translate("TabWidget", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'.AppleSystemUIFont\'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt;\">DNN Name:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt;\">Batch Size:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt;\">Epoch Number:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt;\">Train Set Size:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt;\">Validation Set Size:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt;\">Test Set Size:</span></p></body></html>"))
+        self.textBrowserOnSave.setHtml(_translate("TabWidget", ""))
         self.progressLabel.setText(_translate("TabWidget", "0%"))
         self.pushButton_CancelTraining.setText(_translate("TabWidget", "Cancel Training"))
         self.pushButton_TrainNewModel.setText(_translate("TabWidget", "Train New Model"))
@@ -420,14 +399,7 @@ class Ui_TabWidget(QObject):
         self.label_2.setText(_translate("TabWidget", "Dataset Name:"))
         self.label_3.setText(_translate("TabWidget", "Number of Images:"))
         TabWidget.setTabText(TabWidget.indexOf(self.tab_Train), _translate("TabWidget", "Train"))
-        self.textBrowser_1.setHtml(_translate("TabWidget", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'.AppleSystemUIFont\'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">DNN Name:</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Batch Size:</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#fd8008;\">Epoch Number:</span></p></body></html>"))
+        self.textBrowserOnTest.setHtml(_translate("TabWidget",  ""))
 
         # When the 'load model from file' is clicked, open file dialog and load the saved model
         self.pushButton_LoadModel.setText(_translate("TabWidget", "Load Model from file "))
@@ -437,7 +409,6 @@ class Ui_TabWidget(QObject):
         self.pushButton_DatasetImages.setText(_translate("TabWidget", "Dataset Images"))
         self.pushButton_Camera.setText(_translate("TabWidget", "Camera"))
         TabWidget.setTabText(TabWidget.indexOf(self.tab_Test), _translate("TabWidget", "Test"))
-
         TabWidget.tabBarClicked.connect(lambda: self.fileExist(1))
  
     def open_dialog1(self):
@@ -505,11 +476,9 @@ class Ui_TabWidget(QObject):
       dialog5.setupUi(dialog)
       dialog.exec_()
 
-    
     #After Selected Dataset change to configration model
     def switchToStack2(self):
         self.stackedWidget.setCurrentIndex(1)
-    
     
     # Allow user turn back to Select Dataset
     def switchToStack1(self):
@@ -524,7 +493,6 @@ class Ui_TabWidget(QObject):
     def switchToTab3(self):
        TabWidget.setCurrentIndex(2)
 
-   
     # Custom slot to update the validation (right) spinBox's value based on the train (left) spinBox's value
     def updateValidationSpinBox(self):
         # Calculate the value of the validation (right) spinBox to make the sum equal to 100
@@ -589,6 +557,7 @@ class Ui_TabWidget(QObject):
             # Add the item to the list widget
             self.listWidget_2.addItem(item)
 
+    # This function is used to update the information on UI when a dataset is selected
     def updateDatasetLabel(self):
     # Specify the dataset path
        dataset_path = os.getcwd()
@@ -607,13 +576,13 @@ class Ui_TabWidget(QObject):
            self.label_2.setText("Dataset Name:")
            self.label_3.setText("Number of Images:")
 
-
+    # This function is used to open a file dialog
     def select_file_dialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
         self.file_path, _ = QFileDialog.getOpenFileName(None, "Select a file", "", "All Files (*);;CSV Files (*.csv)", options=options)
         
-
+    # This function is used to get the file path of the saved model
     def get_model_file_path(self):
         file_path = self.file_path
 
@@ -622,6 +591,7 @@ class Ui_TabWidget(QObject):
         else:
             return None
         
+    # This function is used to get the value of the combo box for selecting the model
     def get_combobox_value(self):
         return self.selectModelComboBox.currentIndex()
 
@@ -638,7 +608,7 @@ class Ui_TabWidget(QObject):
                 TabWidget.setTabEnabled(1, False)
                 TabWidget.setTabToolTip(1, "Please import a dataset before training")
 
-
+    # This function is used to start the training progress
     def start_training(self):
         # create the training thread
         self.thread = TrainingThread()
@@ -647,6 +617,12 @@ class Ui_TabWidget(QObject):
         # start the thread
         self.thread.start()
 
+        # Update training result to UI
+        training_result_text = trainModel.train(self, self.batchSizeSpinBox.value(), self.epochNumSpinBox.value(), self.validationSpinBox.value())
+        text3 = f"<p><span style=\" color:#fd8008;\">Train Set Size: {training_result_text}</span></p>"
+        self.textBrowserOnTrainResult.setHtml(text3 + "</body></html>")
+
+    # This function is used to update the progress bar when the 'train model' button is pressed
     def update_progress(self, value):
         # update the progress bar value
         self.progressBar.setValue(value)
@@ -654,7 +630,27 @@ class Ui_TabWidget(QObject):
         if value == 100:
             self.stackedWidget_2.setCurrentIndex(1)
 
+    # This function is used to update the values from spin boxes and combo box to UI
+    def update_values(self):
+        # Do not display the name of the model unless the user have chosen one
+        if self.selectModelComboBox.currentIndex() == 0:
+            name = ""
+        else: 
+            name = self.selectModelComboBox.currentText()
         
+        # Get the value of batch size, epoch number, train set size and validation set size from spin boxes
+        batch_size = self.batchSizeSpinBox.value()
+        epoch_number = self.epochNumSpinBox.value()
+        train_set_size = int(self.trainSpinBox.value() / 100 * 27455)
+        validation_set_size = int(self.validationSpinBox.value() / 100 * 27455)
+
+        # Update the values to the UI
+        text = f"<html></head><p><span style=\" color:#fd8008;\">DNN Name: {name}</span></p><p><span style=\" color:#fd8008;\">Batch Size: {batch_size}</span></p><p><span style=\" color:#fd8008;\">Epoch Number: {epoch_number}</span></p>"
+        self.textBrowserOnSelectModel.setHtml(text + "</body></html>") 
+        text2 = text + f"<p><span style=\" color:#fd8008;\">Train Set Size: {train_set_size}</span></p><p><span style=\" color:#fd8008;\">Validation Set Size: {validation_set_size}</span></p><p><span style=\" color:#fd8008;\">Test Set Size: 7172</span></p>"
+        self.textBrowserOnSave.setHtml(text2 + "</body></html>")
+        self.textBrowserOnTest.setHtml(text + "</body></html>")
+
 
 if __name__ == '__main__':
     import sys
@@ -666,4 +662,3 @@ if __name__ == '__main__':
     TabWidget.show()
     sys.exit(app.exec_())
   
-
