@@ -1,12 +1,11 @@
 import os
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QShortcut, QFileDialog
+from PyQt5.QtWidgets import QFileDialog
 import pandas as pd
 from SelectDataset import Ui_Dialog1
 from ViewDataset import DatasetViewer
 from ViewTestImages import TestViewer
 from Camera import Ui_Dialog5
-from PyQt5.QtGui import QKeySequence
 from SaveModel import Ui_SaveModel
 from PyQt5.QtCore import QTimer
 from train import trainModel
@@ -377,7 +376,7 @@ class Ui_TabWidget(QObject):
         TabWidget.setTabText(TabWidget.indexOf(self.tab_Import), _translate("TabWidget", "Import"))
         self.pushButton_ViewDataset.setText(_translate("TabWidget", "View Dataset"))
         self.pushButton_Continue.setText(_translate("TabWidget", "Continue"))
-        self.textBrowserOnSelectModel.setHtml(_translate("TabWidget", "<p><span style=\" color:#fd8008;\">DNN Name:</span></p><p><span style=\" color:#fd8008;\">Batch Size:" + str(self.batchSizeSpinBox.value()) + "</span></p><p><span style=\" color:#fd8008;\">Epoch Number:" + str(self.epochNumSpinBox.value()) + "</span></p></body></html>"))
+        self.textBrowserOnSelectModel.setHtml(_translate("TabWidget", "<p><span style=\" color:#fd8008;\">DNN Name: </span></p><p><span style=\" color:#fd8008;\">Batch Size: " + str(self.batchSizeSpinBox.value()) + "</span></p><p><span style=\" color:#fd8008;\">Epoch Number: " + str(self.epochNumSpinBox.value()) + "</span></p></body></html>"))
         self.textBrowserOnTrainResult.setHtml(_translate("TabWidget", ""))
 
         # ComboBox for model selection on select model page
@@ -613,6 +612,11 @@ class Ui_TabWidget(QObject):
             self.thread.update_progress.connect(self.update_progress)
             # start the thread
             self.thread.start()
+
+        # Update training result to UI
+        training_result_text = trainModel.train(self, self.batchSizeSpinBox.value(), self.epochNumSpinBox.value(), self.validationSpinBox.value())
+        text3 = f"<p><span style=\" color:#fd8008;\">Train Set Size: {training_result_text}</span></p>"
+        self.textBrowserOnTrainResult.setHtml(text3 + "</body></html>")
 
     def update_progress(self, value):
         # update the progress bar value
