@@ -42,7 +42,6 @@ class Ui_TabWidget(QObject):
         self.gridLayout.setObjectName("gridLayout")
         self.pushButton = QtWidgets.QPushButton(self.tab_Import)
         self.pushButton.setObjectName("pushButton")
-       
         
         self.gridLayout.addWidget(self.pushButton, 2, 0, 1, 1)
         self.label = QtWidgets.QLabel(self.tab_Import)
@@ -106,8 +105,7 @@ class Ui_TabWidget(QObject):
         self.gridLayout_7.setObjectName("gridLayout_7")
         self.pushButton_Continue = QtWidgets.QPushButton(self.layoutWidget)
         self.pushButton_Continue.setObjectName("pushButton_Continue")
-        #sadasdasdasd
-        #self.pushButton_Continue.clicked.connect(self.switchToStack2)
+
         self.gridLayout_7.addWidget(self.pushButton_Continue, 1, 0, 1, 1)
         self.stackedWidget.addWidget(self.page_A1)
         self.page_A2 = QtWidgets.QWidget()
@@ -411,7 +409,6 @@ class Ui_TabWidget(QObject):
         self.pushButton_DatasetImages.setText(_translate("TabWidget", "Dataset Images"))
         self.pushButton_Camera.setText(_translate("TabWidget", "Camera"))
         TabWidget.setTabText(TabWidget.indexOf(self.tab_Test), _translate("TabWidget", "Test"))
-
         TabWidget.tabBarClicked.connect(lambda: self.fileExist(1))
  
     def open_dialog1(self):
@@ -469,11 +466,9 @@ class Ui_TabWidget(QObject):
       dialog5.setupUi(dialog)
       dialog.exec_()
 
-    
     #After Selected Dataset change to configration model
     def switchToStack2(self):
         self.stackedWidget.setCurrentIndex(1)
-    
     
     # Allow user turn back to Select Dataset
     def switchToStack1(self):
@@ -489,7 +484,6 @@ class Ui_TabWidget(QObject):
     def switchToTab3(self):
        TabWidget.setCurrentIndex(2)
 
-   
     # Custom slot to update the validation (right) spinBox's value based on the train (left) spinBox's value
     def updateValidationSpinBox(self):
         # Calculate the value of the validation (right) spinBox to make the sum equal to 100
@@ -554,6 +548,7 @@ class Ui_TabWidget(QObject):
             # Add the item to the list widget
             self.listWidget_2.addItem(item)
 
+    # This function is used to update the information on UI when a dataset is selected
     def updateDatasetLabel(self):
     # Specify the dataset path
        dataset_path = os.getcwd()
@@ -572,13 +567,13 @@ class Ui_TabWidget(QObject):
            self.label_2.setText("Dataset Name:")
            self.label_3.setText("Number of Images:")
 
-
+    # This function is used to open a file dialog
     def select_file_dialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
         self.file_path, _ = QFileDialog.getOpenFileName(None, "Select a file", "", "All Files (*);;CSV Files (*.csv)", options=options)
         
-
+    # This function is used to get the file path of the saved model
     def get_model_file_path(self):
         file_path = self.file_path
 
@@ -587,6 +582,7 @@ class Ui_TabWidget(QObject):
         else:
             return None
         
+    # This function is used to get the value of the combo box for selecting the model
     def get_combobox_value(self):
         return self.selectModelComboBox.currentIndex()
 
@@ -603,7 +599,7 @@ class Ui_TabWidget(QObject):
                 TabWidget.setTabEnabled(1, False)
                 TabWidget.setTabToolTip(1, "Please import a dataset before training")
 
-
+    # This function is used to start the training progress
     def start_training(self):
         if not self.get_combobox_value() == 0:
             # create the training thread
@@ -618,6 +614,7 @@ class Ui_TabWidget(QObject):
         text3 = f"<p><span style=\" color:#fd8008;\">Train Set Size: {training_result_text}</span></p>"
         self.textBrowserOnTrainResult.setHtml(text3 + "</body></html>")
 
+    # This function is used to update the progress bar when the 'train model' button is pressed
     def update_progress(self, value):
         # update the progress bar value
         self.progressBar.setValue(value)
@@ -657,4 +654,3 @@ if __name__ == '__main__':
     TabWidget.show()
     sys.exit(app.exec_())
   
-
