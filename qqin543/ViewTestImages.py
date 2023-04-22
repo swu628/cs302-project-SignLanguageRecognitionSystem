@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout
+from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout, QWidget, QScrollArea
 import torch
 import torch.nn.functional as F
 from TestImagesViewer import Ui_Dialog3
@@ -18,9 +18,7 @@ import zipfile
 class TestViewer(Ui_Dialog3):
     def setupUi(self, Dialog):
         super().setupUi(Dialog)
-        # Allow user choose multiple test set images used for prediction
-        self.tablewidget.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
-        
+      
         # Connect delete button and predict button to clear and predict function
         self.pushButton_5.clicked.connect(self.delete_all_button_clicked)
         self.pushButton_6.clicked.connect(self.store_selected_rows)
@@ -29,6 +27,7 @@ class TestViewer(Ui_Dialog3):
         # Set row height and column width for table widget
         self.tablewidget.horizontalHeader().setDefaultSectionSize(32)
         self.tablewidget.verticalHeader().setDefaultSectionSize(32)
+        self.tablewidget.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
 
 
         # Initialize file_path and select default dataset
@@ -162,13 +161,22 @@ class TestViewer(Ui_Dialog3):
         filtered_data = self.filter_data(self.label)
         self.display_images(filtered_data)
 
-    def predict(self,model_path, model_class, input_size, output_size, img):
+    def predict(self, model_path, model_class, input_size, output_size, img):
+    # Helper function to convert label to character
+        def get_char_from_label(label):
+            if 0 <= label <= 8:
+                return chr(label + ord('A'))
+            elif 9 <= label <= 24:
+                return chr(label + ord('A'))  
+            else:
+                return None
+
         # Create a new model instance
         model = model_class(input_size, output_size)
-        
+
         # Load the saved model parameters
         model.load_state_dict(torch.load(model_path))
-        
+
         # Set the model to evaluation mode
         model.eval()
 
@@ -179,11 +187,13 @@ class TestViewer(Ui_Dialog3):
         probs = F.softmax(yb, dim=1)
         # Get the prediction and its confidence
         confidence, preds = torch.max(probs, dim=1)
-        
-       # print("Predicted class:", preds[0].item())
-       # #print("Confidence:", confidence[0].item())
-        
-        return preds[0].item(), confidence[0].item()
+
+        # Convert the predicted label to the corresponding character
+        predicted_char = get_char_from_label(preds[0].item())
+
+        return predicted_char, round(confidence[0].item(), 4)
+
+
        
     
     def get_File_Path(self,path):
@@ -231,6 +241,16 @@ class TestViewer(Ui_Dialog3):
             input_size  = 784
             output_size = 26
 
+        # Create the dialog and layout outside the loop
+        dialog = QDialog(None)
+        dialog.setWindowTitle("Predictions")
+        scroll_area = QScrollArea(dialog)
+        scroll_area.setWidgetResizable(True)
+
+        # Container widget for the images and predictions
+        container = QWidget()
+        layout = QVBoxLayout(container)
+
 
         for row in selected_rows:
             img, label = test_ds[row]
@@ -239,26 +259,24 @@ class TestViewer(Ui_Dialog3):
             print("Predicted class:", A)
             print("Confidence:", B)
 
-            # Display the image and prediction in a dialog
-            dialog = QDialog(None)
-
-            dialog.setWindowTitle(f"Prediction for row {row}")
-            layout = QVBoxLayout()
-
             # Image label
-            image_label = QLabel(dialog)
+            image_label = QLabel()
             qimage = QImage(img.view(28, 28).numpy().astype(np.uint8), 28, 28, QImage.Format_Grayscale8)
             pixmap = QPixmap.fromImage(qimage)
             image_label.setPixmap(pixmap)
             layout.addWidget(image_label)
 
             # Prediction label
-            prediction_label = QLabel(dialog)
-            prediction_label.setText(f"Predicted class: {A}\nConfidence: {B}")
+            prediction_label = QLabel()
+            prediction_label.setText(f"Prediction for row: {row}\nPredicted class: {A}\nConfidence: {B}")
             layout.addWidget(prediction_label)
 
-            dialog.setLayout(layout)
-            dialog.exec_()
+        # Set up the scroll area and dialog layout
+        scroll_area.setWidget(container)
+        dialog_layout = QVBoxLayout(dialog)
+        dialog_layout.addWidget(scroll_area)
+        dialog.setLayout(dialog_layout)
+        dialog.exec_()
 
 
 

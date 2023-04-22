@@ -331,10 +331,9 @@ class Ui_TabWidget(QObject):
         # Click signal connect to model configuration
         self.pushButton_TrainNewModel.clicked.connect(self.switchToStack2)
 
-        # Click signal connect to model Train
         self.trainModelBtn.clicked.connect(self.switchToStack3)
         self.trainModelBtn.clicked.connect(self.start_training)
-        self.trainModelBtn.clicked.connect(lambda: trainModel.train(self, self.batchSizeSpinBox.value(), self.epochNumSpinBox.value(), self.validationSpinBox.value()))
+        self.trainModelBtn.clicked.connect(self.on_train_button_clicked)
 
         # Click signal connect to open the ViewDataset Dialog
         self.pushButton_ViewDataset.clicked.connect(self.open_dialog2)
@@ -617,10 +616,13 @@ class Ui_TabWidget(QObject):
         # start the thread
         self.thread.start()
 
-        # Update training result to UI
+
+
+    def on_train_button_clicked(self):
         training_result_text = trainModel.train(self, self.batchSizeSpinBox.value(), self.epochNumSpinBox.value(), self.validationSpinBox.value())
         text3 = f"<p><span style=\" color:#fd8008;\">Train Set Size: {training_result_text}</span></p>"
         self.textBrowserOnTrainResult.setHtml(text3 + "</body></html>")
+
 
     # This function is used to update the progress bar when the 'train model' button is pressed
     def update_progress(self, value):

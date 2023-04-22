@@ -8,7 +8,7 @@ import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout
+from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout, QWidget, QScrollArea
 import pandas as pd
 import torch
 from cnn import CNNModel
@@ -124,14 +124,6 @@ class Ui_Dialog5(object):
         cv2.destroyAllWindows()
 
 
-
-
-
-
-
-
-
-
     def add_image_to_table(self, image_path):
         row, col = self.tableWidget.rowCount(), self.tableWidget.columnCount()
 
@@ -160,22 +152,6 @@ class Ui_Dialog5(object):
         self.tableWidget.setItem(row - 1, col, item)
 
         self.tableWidget.setColumnCount(col + 1)
-
-    
-
-    #def on_item_clicked(self, item):
-    #    csv_row = item.data(QtCore.Qt.UserRole)
-    #    print(f"Clicked image is at row {csv_row} in the CSV file")
-
-    #def store_selected_rows(self):
-    #    selected_items = self.tableWidget.selectedItems()
-     #   selected_rows = []
-
-     #   for item in selected_items:
-     #       csv_row = item.data(QtCore.Qt.UserRole)
-     #       selected_rows.append(csv_row)
-
-     #   print("Selected rows in CSV:", selected_rows)
 
         
     import pandas as pd
@@ -216,20 +192,22 @@ class Ui_Dialog5(object):
         return self.images_indices
 
 
+    def predict(self, model_path, model_class, input_size, output_size, img):
+    # Helper function to convert label to character
+        def get_char_from_label(label):
+            if 0 <= label <= 8:
+                return chr(label + ord('A'))
+            elif 9 <= label <= 24:
+                return chr(label + ord('A'))  # Add 1 to account for the missing 'J' label
+            else:
+                return None
 
-
-
-
-
-
-
-    def predict(self,model_path, model_class, input_size, output_size, img):
         # Create a new model instance
         model = model_class(input_size, output_size)
-        
+
         # Load the saved model parameters
         model.load_state_dict(torch.load(model_path))
-        
+
         # Set the model to evaluation mode
         model.eval()
 
@@ -240,11 +218,12 @@ class Ui_Dialog5(object):
         probs = F.softmax(yb, dim=1)
         # Get the prediction and its confidence
         confidence, preds = torch.max(probs, dim=1)
-        
-       # print("Predicted class:", preds[0].item())
-       # #print("Confidence:", confidence[0].item())
-        
-        return preds[0].item(), confidence[0].item()
+
+        # Convert the predicted label to the corresponding character
+        predicted_char = get_char_from_label(preds[0].item())
+
+        return predicted_char, round(confidence[0].item(), 4)
+
     
     def get_File_Path(self,path):
         self.Model_File_Path = path
@@ -299,9 +278,17 @@ class Ui_Dialog5(object):
         # 确保 row_indices 中的值在有效范围内
         valid_row_indices = [row for row in self.images_indices if 0 <= row < len(test_ds)]
         
+        # Create the dialog and layout outside the loop
+        dialog = QDialog(None)
+        dialog.setWindowTitle("Predictions")
+        scroll_area = QScrollArea(dialog)
+        scroll_area.setWidgetResizable(True)
+
+        # Container widget for the images and predictions
+        container = QWidget()
+        layout = QVBoxLayout(container)
         
-
-
+        
         for row in valid_row_indices:
             
             img, label = test_ds[row]
@@ -312,26 +299,24 @@ class Ui_Dialog5(object):
             print("Predicted class:", A)
             print("Confidence:", B)
 
-            # Display the image and prediction in a dialog
-            dialog = QDialog(None)
-
-            dialog.setWindowTitle(f"Prediction for row {row}")
-            layout = QVBoxLayout()
-
             # Image label
-            image_label = QLabel(dialog)
+            image_label = QLabel()
             qimage = QImage(img.view(28, 28).numpy().astype(np.uint8), 28, 28, QImage.Format_Grayscale8)
             pixmap = QPixmap.fromImage(qimage)
             image_label.setPixmap(pixmap)
             layout.addWidget(image_label)
 
             # Prediction label
-            prediction_label = QLabel(dialog)
-            prediction_label.setText(f"Predicted class: {A}\nConfidence: {B}")
+            prediction_label = QLabel()
+            prediction_label.setText(f"Prediction for row: {row}\nPredicted class: {A}\nConfidence: {B}")
             layout.addWidget(prediction_label)
 
-            dialog.setLayout(layout)
-            dialog.exec_()
+     # Set up the scroll area and dialog layout
+        scroll_area.setWidget(container)
+        dialog_layout = QVBoxLayout(dialog)
+        dialog_layout.addWidget(scroll_area)
+        dialog.setLayout(dialog_layout)
+        dialog.exec_()
 
 
 
