@@ -76,7 +76,7 @@ class Ui_Dialog5(object):
 
         # Initialize file_path and select default dataset
         path = os.getcwd()
-        self.file_path = f"{path}/sign_mnist_test的副本.csv"
+        self.file_path = f"{path}/sign_mnist_camera.csv"
         
     def capture_image(self):
         cap = cv2.VideoCapture(0)
