@@ -30,6 +30,7 @@ class TrainingThread(QThread):
 
 class Ui_TabWidget(QObject):
     def setupUi(self, TabWidget):
+        # Set up TabWidget
         TabWidget.setObjectName("TabWidget")
         TabWidget.resize(550, 450)
         TabWidget.setMinimumSize(QtCore.QSize(550, 450))
@@ -38,13 +39,14 @@ class Ui_TabWidget(QObject):
         TabWidget.setUsesScrollButtons(False)
         TabWidget.setDocumentMode(True)
         TabWidget.setTabsClosable(False)
+        # Set up Import tab
         self.tab_Import = QtWidgets.QWidget()
         self.tab_Import.setObjectName("tab_Import")
         self.gridLayout = QtWidgets.QGridLayout(self.tab_Import)
         self.gridLayout.setObjectName("gridLayout")
         self.pushButton = QtWidgets.QPushButton(self.tab_Import)
         self.pushButton.setObjectName("pushButton")
-        
+
         self.gridLayout.addWidget(self.pushButton, 2, 0, 1, 1)
         self.label = QtWidgets.QLabel(self.tab_Import)
         self.label.setEnabled(True)
@@ -56,6 +58,8 @@ class Ui_TabWidget(QObject):
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
         TabWidget.addTab(self.tab_Import, "")
+
+        # Set up Train tab
         self.tab_Train = QtWidgets.QWidget()
         self.tab_Train.setObjectName("tab_Train")
         self.stackedWidget = QtWidgets.QStackedWidget(self.tab_Train)
@@ -63,6 +67,8 @@ class Ui_TabWidget(QObject):
         self.stackedWidget.setAcceptDrops(False)
         self.stackedWidget.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.stackedWidget.setObjectName("stackedWidget")
+
+        # Set up page A1 in Train tab
         self.page_A1 = QtWidgets.QWidget()
         self.page_A1.setObjectName("page_A1")
         self.gridLayoutWidget_10 = QtWidgets.QWidget(self.page_A1)
@@ -71,59 +77,87 @@ class Ui_TabWidget(QObject):
         self.gridLayout_12 = QtWidgets.QGridLayout(self.gridLayoutWidget_10)
         self.gridLayout_12.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_12.setObjectName("gridLayout_12")
+
+        # Set up horizontal layout in page A1
         self.horizontalLayoutWidget_2 = QtWidgets.QWidget(self.page_A1)
         self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(370, 100, 122, 101))
         self.horizontalLayoutWidget_2.setObjectName("horizontalLayoutWidget_2")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_2)
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+
+        # Set up View Dataset button in horizontal layout
         self.pushButton_ViewDataset = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.pushButton_ViewDataset.setObjectName("pushButton_ViewDataset")
-        
         self.horizontalLayout_2.addWidget(self.pushButton_ViewDataset)
+        # Create a grid layout widget (gridLayoutWidget_8) on page_A1
         self.gridLayoutWidget_8 = QtWidgets.QWidget(self.page_A1)
         self.gridLayoutWidget_8.setGeometry(QtCore.QRect(180, 0, 189, 293))
         self.gridLayoutWidget_8.setObjectName("gridLayoutWidget_8")
+
+        # Create a grid layout (gridLayout_10) for gridLayoutWidget_8
         self.gridLayout_10 = QtWidgets.QGridLayout(self.gridLayoutWidget_8)
         self.gridLayout_10.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_10.setObjectName("gridLayout_10")
+
+        # Create a list widget (listWidget_2) and add it to the gridLayout_10
         self.listWidget_2 = QtWidgets.QListWidget(self.gridLayoutWidget_8)
         self.listWidget_2.setObjectName("listWidget_2")
         self.gridLayout_10.addWidget(self.listWidget_2, 0, 0, 1, 1)
+
+        # Create a grid layout widget (gridLayoutWidget_5) on page_A1
         self.gridLayoutWidget_5 = QtWidgets.QWidget(self.page_A1)
         self.gridLayoutWidget_5.setGeometry(QtCore.QRect(0, 0, 179, 293))
         self.gridLayoutWidget_5.setObjectName("gridLayoutWidget_5")
+
+        # Create a grid layout (gridLayout_6) for gridLayoutWidget_5
         self.gridLayout_6 = QtWidgets.QGridLayout(self.gridLayoutWidget_5)
         self.gridLayout_6.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_6.setObjectName("gridLayout_6")
+
+        # Create a list widget (listWidget) and add it to the gridLayout_6
         self.listWidget = QtWidgets.QListWidget(self.gridLayoutWidget_5)
         self.listWidget.setObjectName("listWidget")
         self.gridLayout_6.addWidget(self.listWidget, 0, 0, 1, 1)
+
+        # Create a layout widget (layoutWidget) on page_A1
         self.layoutWidget = QtWidgets.QWidget(self.page_A1)
         self.layoutWidget.setGeometry(QtCore.QRect(370, 200, 121, 161))
         self.layoutWidget.setObjectName("layoutWidget")
+
+        # Create a grid layout (gridLayout_7) for layoutWidget
         self.gridLayout_7 = QtWidgets.QGridLayout(self.layoutWidget)
         self.gridLayout_7.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_7.setObjectName("gridLayout_7")
+
+        # Create a push button (pushButton_Continue) and add it to the gridLayout_7
         self.pushButton_Continue = QtWidgets.QPushButton(self.layoutWidget)
         self.pushButton_Continue.setObjectName("pushButton_Continue")
-
         self.gridLayout_7.addWidget(self.pushButton_Continue, 1, 0, 1, 1)
+
+        # Add page_A1 to the stacked widget
         self.stackedWidget.addWidget(self.page_A1)
+
+        # Create a new widget (page_A2)
         self.page_A2 = QtWidgets.QWidget()
         self.page_A2.setObjectName("page_A2")
+
+        # Create a text browser (textBrowserOnSelectModel) on page_A2
         self.textBrowserOnSelectModel = QtWidgets.QTextBrowser(self.page_A2)
         self.textBrowserOnSelectModel.setGeometry(QtCore.QRect(290, 20, 161, 91))
+        # Set the palette, frame shape, and frame shadow for textBrowserOnSelectModel
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(234, 234, 234))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
-        brush = QtGui.QBrush(QtGui.QColor(234, 234, 234))
+        brush = QtGui.QBrush(QtGui.QColor(236, 236, 236))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
         brush = QtGui.QBrush(QtGui.QColor(236, 236, 236))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
+        
+        # Frame shape, and frame shadow for textBrowserOnSelectModel
         self.textBrowserOnSelectModel.setPalette(palette)
         self.textBrowserOnSelectModel.setFrameShape(QtWidgets.QFrame.Box)
         self.textBrowserOnSelectModel.setFrameShadow(QtWidgets.QFrame.Sunken)
@@ -193,81 +227,135 @@ class Ui_TabWidget(QObject):
         self.validationLabel.setGeometry(QtCore.QRect(370, 200, 60, 21))
         self.validationLabel.setObjectName("validationLabel")
  
+       # Add page_A2 to the stacked widget
         self.stackedWidget.addWidget(self.page_A2)
+
+        # Create a new widget 
         self.page_A3 = QtWidgets.QWidget()
         self.page_A3.setObjectName("page_A3")
+
+        # Create a text browser  on page_A3
         self.textBrowserOnSave = QtWidgets.QTextBrowser(self.page_A3)
         self.textBrowserOnSave.setGeometry(QtCore.QRect(0, 10, 256, 191))
         self.textBrowserOnSave.setObjectName("textBrowserOnSave")
+
+        # Create a text browser on page_A3
         self.textBrowserOnTrainResult = QtWidgets.QTextBrowser(self.page_A3)
         self.textBrowserOnTrainResult.setGeometry(QtCore.QRect(260, 11, 256, 191))
         self.textBrowserOnTrainResult.setObjectName("textBrowserOnTrainResult")
+
+        # Create a horizontal layout widget on page_A3
         self.horizontalLayoutWidget = QtWidgets.QWidget(self.page_A3)
         self.horizontalLayoutWidget.setGeometry(QtCore.QRect(-1, 210, 521, 31))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
+
+        # Create a horizontal layout for horizontalLayoutWidget
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
+
+        # Create a progress bar and add it to the horizontal layout
         self.progressBar = QtWidgets.QProgressBar(self.horizontalLayoutWidget)
         self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
         self.horizontalLayout.addWidget(self.progressBar)
+
+        # Create a progress label and add it to the horizontal layout
         self.progressLabel = QtWidgets.QLabel(self.horizontalLayoutWidget)
         self.progressLabel.setObjectName("progressLabel")
         self.horizontalLayout.addWidget(self.progressLabel)
+
+        # Create a stacked widget on page_A3
         self.stackedWidget_2 = QtWidgets.QStackedWidget(self.page_A3)
         self.stackedWidget_2.setGeometry(QtCore.QRect(0, 250, 521, 71))
         self.stackedWidget_2.setObjectName("stackedWidget_2")
+
+   # Create a new widget (page_B1)
         self.page_B1 = QtWidgets.QWidget()
         self.page_B1.setObjectName("page_B1")
+
+        # Create a horizontal layout widget (horizontalLayoutWidget_3) on page_B1
         self.horizontalLayoutWidget_3 = QtWidgets.QWidget(self.page_B1)
         self.horizontalLayoutWidget_3.setGeometry(QtCore.QRect(29, 10, 471, 41))
         self.horizontalLayoutWidget_3.setObjectName("horizontalLayoutWidget_3")
+
+        # Create a horizontal layout (horizontalLayout_3) for horizontalLayoutWidget_3
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_3)
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+
+        # Create a push button (pushButton_CancelTraining) and add it to the horizontalLayout_3
         self.pushButton_CancelTraining = QtWidgets.QPushButton(self.horizontalLayoutWidget_3)
         self.pushButton_CancelTraining.setStyleSheet("background-color:rgb(253, 128, 8)")
         self.pushButton_CancelTraining.setObjectName("pushButton_CancelTraining")
         self.horizontalLayout_3.addWidget(self.pushButton_CancelTraining)
+
+        # Add page_B1 to the stacked widget (stackedWidget_2)
         self.stackedWidget_2.addWidget(self.page_B1)
+
+        # Create a new widget (page_B2)
         self.page_B2 = QtWidgets.QWidget()
         self.page_B2.setObjectName("page_B2")
+
+        # Create a grid layout widget on page_B2
         self.gridLayoutWidget = QtWidgets.QWidget(self.page_B2)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(30, 0, 471, 66))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
+
+        # Create a grid layout for gridLayoutWidget
         self.gridLayout_5 = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.gridLayout_5.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_5.setObjectName("gridLayout_5")
+
+        # Create push buttons and add them to gridLayout_5
         self.pushButton_TrainNewModel = QtWidgets.QPushButton(self.gridLayoutWidget)
         self.pushButton_TrainNewModel.setObjectName("pushButton_TrainNewModel")
         self.gridLayout_5.addWidget(self.pushButton_TrainNewModel, 1, 0, 1, 1)
+
         self.pushButton_TestModel = QtWidgets.QPushButton(self.gridLayoutWidget)
         self.pushButton_TestModel.setObjectName("pushButton_TestModel")
         self.gridLayout_5.addWidget(self.pushButton_TestModel, 1, 1, 1, 1)
+
         self.pushButton_SaveModel = QtWidgets.QPushButton(self.gridLayoutWidget)
         self.pushButton_SaveModel.setStyleSheet("background-color:rgb(33, 255, 6)")
         self.pushButton_SaveModel.setObjectName("pushButton_SaveModel")
         self.gridLayout_5.addWidget(self.pushButton_SaveModel, 0, 0, 1, 2)
+
+        # Add page_B2 to the stacked widget 
         self.stackedWidget_2.addWidget(self.page_B2)
+
+        # Add page_A3 to the stacked widget
         self.stackedWidget.addWidget(self.page_A3)
+
+        # Create labels  on tab_Train
         self.label_2 = QtWidgets.QLabel(self.tab_Train)
         self.label_2.setGeometry(QtCore.QRect(29, 15, 161, 61))
         self.label_2.setTextFormat(QtCore.Qt.PlainText)
         self.label_2.setObjectName("label_2")
+        # Create a label (label_3) on tab_Train
         self.label_3 = QtWidgets.QLabel(self.tab_Train)
         self.label_3.setGeometry(QtCore.QRect(209, 15, 181, 61))
         self.label_3.setTextFormat(QtCore.Qt.AutoText)
         self.label_3.setObjectName("label_3")
+
+        # Add tab_Train to TabWidget
         TabWidget.addTab(self.tab_Train, "")
+
+        # Create a new widget (tab_Test)
         self.tab_Test = QtWidgets.QWidget()
         self.tab_Test.setObjectName("tab_Test")
+
+        # Create a horizontal layout widget (horizontalLayoutWidget_4) on tab_Test
         self.horizontalLayoutWidget_4 = QtWidgets.QWidget(self.tab_Test)
         self.horizontalLayoutWidget_4.setGeometry(QtCore.QRect(59, 39, 421, 131))
         self.horizontalLayoutWidget_4.setObjectName("horizontalLayoutWidget_4")
+
+        # Create a horizontal layout (horizontalLayout_4) for horizontalLayoutWidget_4
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_4)
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+
+        # Create a text browser (textBrowserOnTest) and add it to the horizontalLayout_4
         self.textBrowserOnTest = QtWidgets.QTextBrowser(self.horizontalLayoutWidget_4)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(234, 234, 234))
@@ -284,22 +372,31 @@ class Ui_TabWidget(QObject):
         self.textBrowserOnTest.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.textBrowserOnTest.setObjectName("textBrowserOnTest")
         self.horizontalLayout_4.addWidget(self.textBrowserOnTest)
+
+        # Create a push button (pushButton_LoadModel) and add it to the horizontalLayout_4
         self.pushButton_LoadModel = QtWidgets.QPushButton(self.horizontalLayoutWidget_4)
         self.pushButton_LoadModel.setObjectName("pushButton_LoadModel")
         self.horizontalLayout_4.addWidget(self.pushButton_LoadModel)
+
+        # Create a label (label_9) on tab_Test
         self.label_9 = QtWidgets.QLabel(self.tab_Test)
         self.label_9.setGeometry(QtCore.QRect(59, 230, 421, 20))
         self.label_9.setAlignment(QtCore.Qt.AlignCenter)
         self.label_9.setObjectName("label_9")
+
+        # Create a horizontal layout widget (horizontalLayoutWidget_5) on tab_Test
         self.horizontalLayoutWidget_5 = QtWidgets.QWidget(self.tab_Test)
         self.horizontalLayoutWidget_5.setGeometry(QtCore.QRect(60, 320, 421, 51))
         self.horizontalLayoutWidget_5.setObjectName("horizontalLayoutWidget_5")
+
+        # Create a horizontal layout (horizontalLayout_5) for horizontalLayoutWidget_5
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_5)
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.pushButton_DatasetImages = QtWidgets.QPushButton(self.horizontalLayoutWidget_5)
         self.pushButton_DatasetImages.setObjectName("pushButton_DatasetImages")
         
+        # Create push buttons (pushButton_DatasetImages and pushButton_Camera) and add them to horizontalLayout_5
         self.horizontalLayout_5.addWidget(self.pushButton_DatasetImages)
         self.pushButton_Camera = QtWidgets.QPushButton(self.horizontalLayoutWidget_5)
         self.pushButton_Camera.setObjectName("pushButton_Camera")
@@ -519,50 +616,56 @@ class Ui_TabWidget(QObject):
 
     # This function is used to display the dataset class and it correspond alphabet 
     def displayNumbers(self):
-        # Specify the dataset path
-        dataset_path = os.getcwd()
-        # Join the dataset file path with the dataset path
-        dataset_file = f"{dataset_path}/sign-language-mnist/sign_mnist_test.csv"
-        data = pd.read_csv(dataset_file)
-        letter_counts = data['label'].value_counts().sort_index()
-
-        # Separate the letters into two groups
-        group1 = [x for x in range(0, 13) if x != 9]  # A-I,K,L,M
-        group2 = range(13, 25)  # N-Y
-
+        # Set the data you want to display
+        data = {
+            'A': 1457,
+            'B': 1442,
+            'C': 1454,
+            'D': 1441,
+            'E': 1455,
+            'F': 1451,
+            'G': 1438,
+            'H': 1449,
+            'I': 1450,
+            'K': 1445,
+            'L': 1450,
+            'M': 1449,
+            'N': 1442,
+            '0': 1442,
+            'P': 1435,
+            'Q': 1443,
+            'R': 1438,
+            'S': 1445,
+            'T': 1434,
+            'U': 1427,
+            'V': 1428,
+            'W': 1431,
+            'X': 1431,
+            'Y': 1450
+        }
+        
         # Clear the ListWidgets before adding new items
         self.listWidget.clear()
         self.listWidget_2.clear()
 
         # Add the counts for the first group (A-I, K, L, M) to the first ListWidget
+        group1 = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M']
         for label in group1:
-            # Determine the corresponding letter for the label
-            if label <= 8:
-                letter = chr(ord('A') + label)
-            elif 10 <= label <= 24:
-                letter = chr(ord('A') + label)
-
-            # Retrieve the count for the current label
-            count = letter_counts.get(label, 0)
+            count = data.get(label, 0)
             # Create a QListWidgetItem with the formatted label count
-            item = QtWidgets.QListWidgetItem(f"{letter}: {count}")
+            item = QtWidgets.QListWidgetItem(f"{label}: {count}")
             # Add the item to the list widget
             self.listWidget.addItem(item)
 
         # Add the counts for the second group (N-Y) to the second ListWidget
+        group2 = ['N', '0', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y']
         for label in group2:
-            # Determine the corresponding letter for the label
-            if label <= 8:
-                letter = chr(ord('A') + label)
-            elif 10 <= label <= 24:
-                letter = chr(ord('A') + label)
-                
-            # Retrieve the count for the current label
-            count = letter_counts.get(label, 0)
+            count = data.get(label, 0)
             # Create a QListWidgetItem with the formatted label count
-            item = QtWidgets.QListWidgetItem(f"{letter}: {count}")
+            item = QtWidgets.QListWidgetItem(f"{label}: {count}")
             # Add the item to the list widget
             self.listWidget_2.addItem(item)
+
 
     # This function is used to update the information on UI when a dataset is selected
     def updateDatasetLabel(self):
