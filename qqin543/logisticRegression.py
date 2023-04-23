@@ -1,8 +1,22 @@
+# Import relevant libraries
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-# Logistic Regression
+
+'''
+Purpose: This class is the logic behind the logistic regression model
+
+Source: Sachin Som. “Image Classification (American Sign Language) Using PyTorch.” 
+Medium. https://jovian.ml/sachinsom507/final-project-sign-language-prediction (accessed Apr 23, 2023).
+
+Inputs: It takes in the batch size and epoch number that the users have selected. 
+Number of channels (1 for greyscale images) and number of classes of the dataset used 
+(26 for MNIST sign language dataset).
+
+Outputs: Dispite the logic behind the model, there are other functions which 
+returns the validation loss, accuracy and the round of epochs to the command.
+'''
 class logisticRegressionModel(nn.Module):
 
     def __init__(self, in_channels, num_classes):

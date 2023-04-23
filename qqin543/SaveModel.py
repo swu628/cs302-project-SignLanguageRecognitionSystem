@@ -2,6 +2,7 @@ from pyexpat import model
 from PyQt5 import QtCore, QtWidgets
 from train import trainModel
 
+
 class Ui_SaveModel(object):
     def setupUi(self, SaveModel):
         # Set up the main dialog
@@ -58,5 +59,4 @@ class Ui_SaveModel(object):
         SaveModel.setWindowTitle(_translate("SaveModel", "Save Model"))
         self.label.setText(_translate("SaveModel", "Please Enter a Name (Letters Only)"))
         self.pushButton_1.setText(_translate("SaveModel", "Save"))
-        self.pushButton_2.setText(_translate("SaveModel", "Cancel"))
-    
+        self.pushButton_2.setText(_translate("SaveModel", "Cancel")) 

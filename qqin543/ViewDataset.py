@@ -1,10 +1,12 @@
+# Import relevant libraries
 import pandas as pd
 import numpy as np
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QImage, QPixmap
 from DatasetViewer import Ui_Dialog2
 import os
 import zipfile
+
 
 class DatasetViewer(Ui_Dialog2):
     def setupUi(self, Dialog):
@@ -69,7 +71,7 @@ class DatasetViewer(Ui_Dialog2):
         filtered_data = self.data[self.data['label'] == label]
         return filtered_data
 
-       # Function to display images in the table widget
+    # Function to display images in the table widget
     def display_images(self, data):
         # Set the number of images per row in the table widget
         images_per_row = 16
@@ -105,7 +107,6 @@ class DatasetViewer(Ui_Dialog2):
             
             # Add the QTableWidgetItem to the table widget at the calculated position
             self.tableWidegt.setItem(row, col, item)
-
 
     # Function to convert input character to label, taking into account the special mapping of characters to labels
     def get_label_from_char(self, char):
@@ -146,4 +147,3 @@ class DatasetViewer(Ui_Dialog2):
 
         filtered_data = self.filter_data(self.label)
         self.display_images(filtered_data)
-

@@ -26,7 +26,6 @@ class Predictor:
         plt.axis('off')
         plt.show()
 
-
 model_path = "/Users/qinqi/Team10/未命名/qqin543/CNN.pth"
 input_size = 784
 output_size = 26

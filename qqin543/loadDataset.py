@@ -1,13 +1,25 @@
+# Import relevant libraries
 import os
 import zipfile
 import pandas as pd 
 import torch
 from torch.utils.data import TensorDataset, random_split, DataLoader
-import matplotlib.pyplot as plt
-            
 
+
+'''
+Purpose: This class is used to load the MNIST dataset which the users have imported from the GUI
+
+Source: Sachin Som. “Image Classification (American Sign Language) Using PyTorch.” 
+Medium. https://jovian.ml/sachinsom507/final-project-sign-language-prediction (accessed Apr 23, 2023).
+
+Inputs: It takes in the batch size, epoch number and the ratio of train/validation sets on the train dataset
+which that the users have selected through our GUI.
+
+Outputs: It will return the dataframes into pytorch tensors
+'''
 class loadData:
 
+    # This function will be called in the 'train.py' file to load the MNIST sign language dataset
     def load(self, batchSize, validationValue):  
         # Below block of codes load the dataset
         # get the path
@@ -62,39 +74,29 @@ class loadData:
 
         return train_dataloder, validation_dataloader, test_dataloader
     
+
 class test_dataframe_to_pytorch:
    
     def load(self,csv_path):
         path = os.getcwd()
-
         test_datafile = pd.read_csv(csv_path)
-
         classes = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
         
         def dataframe_to_nparray(test_df):
-            
             test_df = test_df.copy(deep = True)
-            
             test_images = test_df.iloc[:, 1:].to_numpy(dtype = 'float32')
             return test_images
 
         test_img = dataframe_to_nparray(test_datafile)
 
         print("Test data shape:", test_img.shape)
-
-        
         test_labels = test_datafile['label'].values
-       
         test_images_shaped = test_img.reshape(test_img.shape[0],1,28,28)
 
         # Convert all numpy arrays into pytorch tensors
-        
         test_images_tensors = torch.from_numpy(test_images_shaped)
         test_labels_tensors = torch.from_numpy(test_labels)
-
         test_dataset = TensorDataset(test_images_tensors, test_labels_tensors)
 
         # pytorch dataset
-        
         return test_dataset
-

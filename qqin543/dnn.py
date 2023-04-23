@@ -1,10 +1,24 @@
+# Import relevant libraries
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 
+'''
+Purpose: This class is the logic behind the dnn model
+
+Source: Sachin Som. “Image Classification (American Sign Language) Using PyTorch.” 
+Medium. https://jovian.ml/sachinsom507/final-project-sign-language-prediction (accessed Apr 23, 2023).
+
+Inputs: It takes in the batch size and epoch number that the users have selected. 
+An input tensor of size 784, representing the number of pixels in a 28x28 image, 
+and returns an output tensor of size 26, representing the number of classes. 
+
+Outputs: Dispite the logic behind the model, there are other functions which 
+returns the validation loss, accuracy and the round of epochs to the command.
+'''
 class DNNModel(nn.Module):
-    """Feedfoward neural network with 2 hidden layer"""
+    # Feedfoward neural network with 2 hidden layer
     def __init__(self, in_size, out_size):
         super().__init__()
         # hidden layer 1

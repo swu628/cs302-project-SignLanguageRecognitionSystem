@@ -1,3 +1,4 @@
+# Import relevant libraries
 from matplotlib import pyplot as plt
 import pandas as pd
 import numpy as np
@@ -47,7 +48,6 @@ class TestViewer(Ui_Dialog3):
         self.pushButton_3.clicked.connect(self.filter_button_clicked)
 
         self.tablewidget.itemClicked.connect(self.on_item_clicked)
-
 
     # Slot to clear text browser when "Clear Tag" button is clicked
     def clear_tags_button_clicked(self):
@@ -101,7 +101,6 @@ class TestViewer(Ui_Dialog3):
             # Add the QTableWidgetItem to the table widget at the calculated position
             self.tablewidget.setItem(row, col, item)
 
-
     # Function to convert input character to label, taking into account the special mapping of characters to labels
     def get_label_from_char(self, char):
         # Check if the input character is 'J' or 'Z', as these characters are not valid in this dataset
@@ -117,7 +116,6 @@ class TestViewer(Ui_Dialog3):
         elif 'K' <= char.upper() <= 'Y':
             return ord(char.upper()) - ord('A') 
         
-
     def on_item_clicked(self, item):
         csv_row = item.data(QtCore.Qt.UserRole)
         print(f"Clicked image is at row {csv_row} in the CSV file")
@@ -133,8 +131,7 @@ class TestViewer(Ui_Dialog3):
             csv_row = item.data(QtCore.Qt.UserRole)
             selected_rows.append(csv_row)
 
-        print("Selected rows in CSV:", selected_rows)
-        
+        print("Selected rows in CSV:", selected_rows)   
 
     # Slot to handle "Add Tag" button click
     def add_tag_button_clicked(self):
@@ -190,19 +187,16 @@ class TestViewer(Ui_Dialog3):
 
         # Convert the predicted label to the corresponding character
         predicted_char = get_char_from_label(preds[0].item())
-
         return predicted_char, round(confidence[0].item(), 4)
 
-
-       
-    
+    # This is a helper function to help us getting the file path
     def get_File_Path(self,path):
             self.Model_File_Path = path
-        
+
+    # This is a helper function to help us getting the value of combo box
     def get_Combobox_Value(self,data1):
             self.Value = data1
             print(self.Value)
-            
     
     def on_predict_button_click(self):
         selected_items = self.tablewidget.selectedItems()
@@ -220,7 +214,6 @@ class TestViewer(Ui_Dialog3):
             print("No file was selected.")
 
         if self.Value == 1:
-            
             model_calss= logisticRegressionModel
             in_channels = 1
             num_classes = 26
@@ -228,7 +221,6 @@ class TestViewer(Ui_Dialog3):
             output_size = num_classes 
 
         elif self.Value == 2:
-
             model_calss= CNNModel
             in_channels = 1
             num_classes = 26
@@ -236,7 +228,6 @@ class TestViewer(Ui_Dialog3):
             output_size = num_classes 
 
         elif self.Value == 3:
-
             model_calss= DNNModel
             input_size  = 784
             output_size = 26
@@ -250,7 +241,6 @@ class TestViewer(Ui_Dialog3):
         # Container widget for the images and predictions
         container = QWidget()
         layout = QVBoxLayout(container)
-
 
         for row in selected_rows:
             img, label = test_ds[row]
@@ -277,7 +267,3 @@ class TestViewer(Ui_Dialog3):
         dialog_layout.addWidget(scroll_area)
         dialog.setLayout(dialog_layout)
         dialog.exec_()
-
-
-
-

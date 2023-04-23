@@ -1,3 +1,4 @@
+# Import relevent libraries
 import torch
 from loadDataset import loadData
 from cnn import CNNModel
@@ -5,6 +6,20 @@ from logisticRegression import logisticRegressionModel
 from dnn import DNNModel
 from PyQt5 import QtWidgets
 
+
+'''
+Purpose: This class is used to train the models when the user have selected a model.
+
+Source: Sachin Som. “Image Classification (American Sign Language) Using PyTorch.” 
+Medium. https://jovian.ml/sachinsom507/final-project-sign-language-prediction (accessed Apr 23, 2023).
+
+Inputs: It contains two functions, train and save. 
+- The inputs of train function is the batch size epoch number and the validation value that the user 
+chosen to split on the train dataset.
+- The input of the save function is the filename that the user have inputting from the GUI.
+
+Outputs: train function starts training progress, and the save function will return a saved trained model.
+'''
 class trainModel:
 
     # This is the function to call when the train button is clicked
@@ -21,10 +36,13 @@ class trainModel:
             # Import logistic regression model
             model = logisticRegressionModel(in_channels = 1, num_classes = 26)
 
+            # This function will be called in the 'fit' function
             def evaluate(model, val_loader):
                 outputs = [model.validation_step(batch) for batch in val_loader]
                 return model.validation_epoch_end(outputs)
-
+            
+            # This function will train the dataset on the logistic regression model 
+            # and return the validation loss and accuracy
             def fit(epochs, lr, model, train_loader, val_loader, opt_func=torch.optim.SGD):
                 history = []
                 optimizer = opt_func(model.parameters(), lr)
@@ -51,13 +69,14 @@ class trainModel:
             # Import cnn model
             model = CNNModel(in_channels = 1, num_classes = 26)
 
-            # train the model
+            # This function will be called in the 'fit' function
             @torch.no_grad()
             def evaluate(model, val_loader):
                 model.eval()
                 outputs = [model.validation_step(batch) for batch in val_loader]
                 return model.validation_epoch_end(outputs)
 
+            # This function will train the dataset on the cnn model and return the validation loss and accuracy
             def fit(epochs, learning_rate, model, train_loader, val_loader, opt_func=torch.optim.SGD):
                 history = []
                 optimizer = opt_func(model.parameters(), learning_rate)
@@ -89,10 +108,12 @@ class trainModel:
             model = DNNModel(784, out_size = 26)
             history = []
 
+            # This function will be called in the 'fit' function
             def evaluate(model, val_loader):
                 outputs = [model.validation_step(batch) for batch in val_loader]
                 return model.validation_epoch_end(outputs)
 
+            # This function will train the dataset on the dnn model and return the validation loss and accuracy
             def fit(epochs, lr, model, train_loader, val_loader, opt_func=torch.optim.SGD):
                 optimizer = opt_func(model.parameters(), lr)
                 for epoch in range(epochs):
@@ -119,4 +140,3 @@ class trainModel:
     # Save the model with user input name
     def saveModel(self, fileName):
         torch.save(model.state_dict(), fileName + ".pth")
-        

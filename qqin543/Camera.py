@@ -1,8 +1,8 @@
+# Import relevant libraries
 import os
 import time
 import torch.nn.functional as F
 import cv2
-import csv
 from PIL import Image
 import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -15,6 +15,7 @@ from cnn import CNNModel
 from logisticRegression import logisticRegressionModel
 from dnn import DNNModel
 from loadDataset import test_dataframe_to_pytorch
+
 
 class Ui_Dialog5(object):
     def setupUi(self, Dialog):
@@ -36,7 +37,6 @@ class Ui_Dialog5(object):
         self.gridLayout.addWidget(self.pushButton_4, 2, 1, 1, 1)
         self.pushButton_4.clicked.connect(self.save_selected_images_to_csv)
 
-
         # Configure 'Cancel' button
         self.pushButton = QtWidgets.QPushButton(Dialog)
         self.pushButton_3.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -49,7 +49,6 @@ class Ui_Dialog5(object):
         self.pushButton_2.setObjectName("pushButton_2")
         self.gridLayout.addWidget(self.pushButton_2, 3, 0, 1, 1)
         self.pushButton_2.clicked.connect(self.on_predict_button_click)
-
 
         # Set up QTableWidget
         self.tableWidget = QtWidgets.QTableWidget(Dialog)
@@ -79,7 +78,6 @@ class Ui_Dialog5(object):
         path = os.getcwd()
         self.file_path = f"{path}/sign_mnist_test的副本.csv"
         
-
     def capture_image(self):
         cap = cv2.VideoCapture(0)
         while True:
@@ -123,7 +121,6 @@ class Ui_Dialog5(object):
         cap.release()
         cv2.destroyAllWindows()
 
-
     def add_image_to_table(self, image_path):
         row, col = self.tableWidget.rowCount(), self.tableWidget.columnCount()
 
@@ -150,11 +147,7 @@ class Ui_Dialog5(object):
         item.setData(QtCore.Qt.UserRole, image_path)
 
         self.tableWidget.setItem(row - 1, col, item)
-
         self.tableWidget.setColumnCount(col + 1)
-
-        
-    import pandas as pd
 
     def save_selected_images_to_csv(self):
         selected_items = self.tableWidget.selectedItems()
@@ -191,7 +184,6 @@ class Ui_Dialog5(object):
         # Return the list of row indices
         return self.images_indices
 
-
     def predict(self, model_path, model_class, input_size, output_size, img):
     # Helper function to convert label to character
         def get_char_from_label(label):
@@ -223,27 +215,18 @@ class Ui_Dialog5(object):
         predicted_char = get_char_from_label(preds[0].item())
 
         return predicted_char, round(confidence[0].item(), 4)
-
     
+    # This is a helper function that helps us getting the file path
     def get_File_Path(self,path):
         self.Model_File_Path = path
         
+    # This is a helper function that helps us getting the value of the combo box
     def get_Combobox_Value(self,data1):
         self.Value = data1
         print(self.Value)
     
     def on_predict_button_click(self):
-        
-        
-        #for item in selected_items:
-        #    csv_row = item.data(QtCore.Qt.UserRole)
-        #    selected_rows.append(csv_row)
-        #print("Selected rows in CSV:", selected_rows)
         test_ds = test_dataframe_to_pytorch.load(self,self.file_path)
-        
-
-        
-
         model_path = self.Model_File_Path
         if model_path:
             print(f"Selected file path: {model_path}")
@@ -253,7 +236,6 @@ class Ui_Dialog5(object):
         print(f"self.Value: {self.Value}")
 
         if self.Value == 1:
-            
             model_calss= logisticRegressionModel
             in_channels = 1
             num_classes = 26
@@ -261,7 +243,6 @@ class Ui_Dialog5(object):
             output_size = num_classes 
 
         elif self.Value == 2:
-
             model_calss= CNNModel
             in_channels = 1
             num_classes = 26
@@ -269,13 +250,11 @@ class Ui_Dialog5(object):
             output_size = num_classes 
 
         elif self.Value == 3:
-
             model_calss= DNNModel
             input_size  = 784
             output_size = 26
-      
 
-        # 确保 row_indices 中的值在有效范围内
+        # Ensuring that the vlaue of 'row_indices' is valid
         valid_row_indices = [row for row in self.images_indices if 0 <= row < len(test_ds)]
         
         # Create the dialog and layout outside the loop
@@ -287,7 +266,6 @@ class Ui_Dialog5(object):
         # Container widget for the images and predictions
         container = QWidget()
         layout = QVBoxLayout(container)
-        
         
         for row in valid_row_indices:
             
@@ -318,8 +296,6 @@ class Ui_Dialog5(object):
         dialog.setLayout(dialog_layout)
         dialog.exec_()
 
-
-
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Capture Images"))
@@ -327,4 +303,3 @@ class Ui_Dialog5(object):
         self.pushButton.setText(_translate("Dialog", "Open Camera"))
         self.pushButton_2.setText(_translate("Dialog", "Predict"))
         self.pushButton_4.setText(_translate("Dialog", "Save Images"))
-

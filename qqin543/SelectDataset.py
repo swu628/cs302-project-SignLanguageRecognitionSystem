@@ -1,5 +1,6 @@
+# Import relevant libraries
 import zipfile
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 import os
 import shutil
 
@@ -96,7 +97,6 @@ class Ui_Dialog1(object):
             self.downloadBtn.setEnabled(True)
             self.deleteBtn.setEnabled(False)
 
-
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Select Dataset"))
@@ -107,6 +107,7 @@ class Ui_Dialog1(object):
         self.downloadBtn.setText(_translate("Dialog", "Download"))
         self.label_3.setText(_translate("Dialog", "0%"))
 
+    # This function will download the MNIST sign language dataset from kaggle using API
     def Download_dataset(self):
         #Got the current be Selected Dataset Name
         Current_dataset_name = self.comboBox.currentText()
@@ -126,9 +127,10 @@ class Ui_Dialog1(object):
                 with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
                     zip_ref.extractall(f"{path}/sign-language-mnist")
         else: 
+            # Display error message when no dataset is selected but the download button is pressed
             QtWidgets.QMessageBox.warning(None, "No Dataset Selected", "Please select a dataset.")
     
-    # Update the label text when "MNIST" is selected
+    # This fucntion will update the label text when "MNIST" is selected
     def on_dataset_selected(self, dataset_name):
         # Update the label text when "MNIST" is selected
         if dataset_name == "MNIST":
@@ -136,7 +138,7 @@ class Ui_Dialog1(object):
         else:
             self.label.setText("Please select a dataset")
     
-    # Delete the Dataset file
+    # This function will be used to delete the downloaded dataset file
     def Delete_file(file_path):
         try:
             # Remove the file
@@ -147,14 +149,9 @@ class Ui_Dialog1(object):
         except FileNotFoundError:
             print(f"File: sign-language-mnist does not exist")
     
+    # This function will be used to update the progress of the download dataset
     def Update_Progress(self):
      self.progressBar.setValue(0)
      self.label_3.setText("0%")
      self.downloadBtn.setEnabled(True)
      self.deleteBtn.setEnabled(False)
-
-      
-
-
-
-        

@@ -1,3 +1,4 @@
+# Import relevant libraries
 import os
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
@@ -12,8 +13,9 @@ from train import trainModel
 from PyQt5.QtCore import QThread, pyqtSignal,QObject
 import time
 
+
 class TrainingThread(QThread):
-    # define a signal that can be used to emit progress updates
+    # Define a signal that can be used to emit progress updates for training
     update_progress = pyqtSignal(int)
 
     def __init__(self):
@@ -21,7 +23,7 @@ class TrainingThread(QThread):
 
     def run(self):
         for i in range(101):
-            # emit the progress update signal
+            # Emit the progress update signal
             self.update_progress.emit(i)
             time.sleep(0.1)
 
@@ -331,6 +333,7 @@ class Ui_TabWidget(QObject):
         # Click signal connect to model configuration
         self.pushButton_TrainNewModel.clicked.connect(self.switchToStack2)
 
+        # Actions will be done when the 'train model' button is clicked
         self.trainModelBtn.clicked.connect(self.switchToStack3)
         self.trainModelBtn.clicked.connect(self.start_training)
         self.trainModelBtn.clicked.connect(self.on_train_button_clicked)
@@ -429,6 +432,7 @@ class Ui_TabWidget(QObject):
         dialog2.setupUi(dialog)
         dialog.exec_()
 
+    # Signal for select test set for prediction, will be used in the 'open_dialog3' function
     data_signal1 = pyqtSignal(int)
     data_signal2 = pyqtSignal(str)
    
@@ -475,24 +479,25 @@ class Ui_TabWidget(QObject):
       dialog5.setupUi(dialog)
       dialog.exec_()
 
-    #After Selected Dataset change to configration model
+    # This function will be used after Selected Dataset tab has been changed to configration model page
     def switchToStack2(self):
         self.stackedWidget.setCurrentIndex(1)
     
-    # Allow user turn back to Select Dataset
+    # This function allows the user go back to the Select Dataset tab
     def switchToStack1(self):
         self.stackedWidget.setCurrentIndex(0)
  
-    # Switch into the Train Model Phase
+    # This function is used to switch to the Train Model tab
     def switchToStack3(self):
         self.stackedWidget.setCurrentIndex(2)
         self.stackedWidget_2.setCurrentIndex(0)
 
-    # Switch to the test phase
+    # This function is used to switch to the test tab
     def switchToTab3(self):
        TabWidget.setCurrentIndex(2)
 
-    # Custom slot to update the validation (right) spinBox's value based on the train (left) spinBox's value
+    # This function is used to update the validation (right) spinBox's value 
+    # based on the train (left) spinBox's value
     def updateValidationSpinBox(self):
         # Calculate the value of the validation (right) spinBox to make the sum equal to 100
         value = 100 - self.trainSpinBox.value()
@@ -501,7 +506,8 @@ class Ui_TabWidget(QObject):
         # Update the slider value to match the left spinBox's value
         self.trainValidationSlider.setValue(self.trainSpinBox.value())
 
-    # Custom slot to update the train (left) spinBox's value based on the validation (right) spinBox's value
+    # This function is used to update the train (left) spinBox's value 
+    # based on the validation (right) spinBox's value
     def updateTrainSpinBox(self):
         # Calculate the value of the train (left) spinBox to make the sum equal to 100
         value = 100 - self.validationSpinBox.value()
@@ -510,6 +516,7 @@ class Ui_TabWidget(QObject):
         # Update the slider value to match the left spinBox's value
         self.trainValidationSlider.setValue(value)
 
+    # This function is used to display the dataset class and it correspond alphabet 
     def displayNumbers(self):
         # Specify the dataset path
         dataset_path = os.getcwd()
@@ -560,6 +567,7 @@ class Ui_TabWidget(QObject):
     def updateDatasetLabel(self):
     # Specify the dataset path
        dataset_path = os.getcwd()
+
     # Join the dataset file path with the dataset path
        dataset_file = f"{dataset_path}/sign-language-mnist/sign_mnist_test.csv"
 
@@ -616,13 +624,12 @@ class Ui_TabWidget(QObject):
         # start the thread
         self.thread.start()
 
-
-
+    # This function will be called when the train button is clicked, 
+    # to update the training result to the UI
     def on_train_button_clicked(self):
         training_result_text = trainModel.train(self, self.batchSizeSpinBox.value(), self.epochNumSpinBox.value(), self.validationSpinBox.value())
         text3 = f"<p><span style=\" color:#fd8008;\">Train Set Size: {training_result_text}</span></p>"
         self.textBrowserOnTrainResult.setHtml(text3 + "</body></html>")
-
 
     # This function is used to update the progress bar when the 'train model' button is pressed
     def update_progress(self, value):
@@ -652,7 +659,7 @@ class Ui_TabWidget(QObject):
         text2 = text + f"<p><span style=\" color:#fd8008;\">Train Set Size: {train_set_size}</span></p><p><span style=\" color:#fd8008;\">Validation Set Size: {validation_set_size}</span></p><p><span style=\" color:#fd8008;\">Test Set Size: 7172</span></p>"
         self.textBrowserOnSave.setHtml(text2 + "</body></html>")
         self.textBrowserOnTest.setHtml(text + "</body></html>")
-
+        
 
 if __name__ == '__main__':
     import sys
@@ -663,4 +670,3 @@ if __name__ == '__main__':
     ui.setupUi(TabWidget)
     TabWidget.show()
     sys.exit(app.exec_())
-  

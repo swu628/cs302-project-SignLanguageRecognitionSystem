@@ -1,4 +1,6 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+# Import relevant libraries
+from PyQt5 import QtCore, QtWidgets
+
 
 class Ui_Dialog3(object):
     def setupUi(self, Dialog):
@@ -27,8 +29,7 @@ class Ui_Dialog3(object):
         self.radioButton_2 = QtWidgets.QRadioButton(Dialog)
         self.radioButton_2.setObjectName("radioButton_2")
         self.gridLayout.addWidget(self.radioButton_2, 5, 0, 1, 1)
-
-                
+       
         # Create check boxes for filter dataset
         self.checkBox_3 = QtWidgets.QCheckBox(Dialog)
         self.checkBox_3.setObjectName("checkBox_3")
@@ -71,7 +72,6 @@ class Ui_Dialog3(object):
         self.tablewidget.setObjectName("tablewidget")
         self.gridLayout.addWidget(self.tablewidget, 4, 1, 22, 1)
 
-    
         # Space to give some breathing room
         spacerItem = QtWidgets.QSpacerItem(20, 80, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout.addItem(spacerItem, 7, 0, 1, 1)
@@ -93,8 +93,6 @@ class Ui_Dialog3(object):
         
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-        
-       
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
