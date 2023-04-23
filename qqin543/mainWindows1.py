@@ -489,8 +489,9 @@ class Ui_TabWidget(QObject):
  
     # This function is used to switch to the Train Model tab
     def switchToStack3(self):
-        self.stackedWidget.setCurrentIndex(2)
-        self.stackedWidget_2.setCurrentIndex(0)
+        if not self.get_combobox_value() == 0:
+            self.stackedWidget.setCurrentIndex(2)
+            self.stackedWidget_2.setCurrentIndex(0)
 
     # This function is used to switch to the test tab
     def switchToTab3(self):
@@ -617,12 +618,13 @@ class Ui_TabWidget(QObject):
 
     # This function is used to start the training progress
     def start_training(self):
-        # create the training thread
-        self.thread = TrainingThread()
-        # connect the progress update signal to the update_progress method
-        self.thread.update_progress.connect(self.update_progress)
-        # start the thread
-        self.thread.start()
+        if not self.get_combobox_value() == 0:
+            # create the training thread
+            self.thread = TrainingThread()
+            # connect the progress update signal to the update_progress method
+            self.thread.update_progress.connect(self.update_progress)
+            # start the thread
+            self.thread.start()
 
     # This function will be called when the train button is clicked, 
     # to update the training result to the UI
